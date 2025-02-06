@@ -20,6 +20,7 @@ const eslintConfig = [
       "out",
       "**/*.config.js", // 忽略配置文件
       "**/*.config.mjs",
+      "next.config.ts"
     ],
   },
 ];
