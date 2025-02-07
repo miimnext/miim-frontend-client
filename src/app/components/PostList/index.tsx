@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import Image from "next/image";
 import { Post } from "@/types/post";
 import styles from "./PostList.module.scss"; // 引入自定义样式
@@ -31,6 +31,7 @@ export default function PostList({ posts }: PostListProps) {
               href={`/post/${post.id}`}
               className={styles.title}
               aria-label={`Read more about ${post.title}`}
+              prefetch={false}
             >
               {post.title}
             </Link>

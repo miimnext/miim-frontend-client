@@ -1,14 +1,14 @@
 import { useEffect, useRef } from "react";
-
+import Loading from "@/app/components/Loading";
 type InfiniteScrollProps = {
-  loadMore: () => void; // 加载更多数据的函数
+  onLoad: () => void; // 加载更多数据的函数
   isLoading: boolean; // 是否正在加载中
   hasMore: boolean; // 是否还有更多数据
   children: React.ReactNode; // 要包裹的子元素
 };
 
 const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
-  loadMore,
+  onLoad,
   isLoading,
   hasMore,
   children,
@@ -22,7 +22,7 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
         // 确保只有在元素可见并且没有正在加载时才触发loadMore
         if (entry.isIntersecting && !isLoading && hasMore) {
           console.log("Load more triggered"); // 用于调试，检查loadMore是否被调用
-          loadMore(); // 当元素可见时触发加载更多数据
+          onLoad(); // 当元素可见时触发加载更多数据
         }
       },
       {
@@ -41,24 +41,14 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
         observer.unobserve(triggerElement); // 组件卸载时清理观察器
       }
     };
-  }, [isLoading, hasMore, loadMore]);
+  }, [isLoading, hasMore, onLoad]);
 
   return (
     <div>
       {children}
-      <div
-        ref={triggerRef}
-        style={{
-          height: "50px",
-          background: "#f5f5f5",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          textAlign: "center",
-        }}
-      >
+      <div ref={triggerRef} className="text-center">
         {isLoading ? (
-          <p>加载中...</p> // 显示加载中
+          <Loading /> // 显示加载中
         ) : hasMore ? (
           <p>向下滚动以加载更多...</p> // 提示用户向下滚动
         ) : (

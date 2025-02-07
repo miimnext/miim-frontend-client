@@ -4,11 +4,13 @@ import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import Providers from "../providers";
 import Modal from "@/app/components/utils/Modal";
+import PwaServiceWorker from "../PwaServiceWorker";
 import { NextIntlClientProvider } from "next-intl";
 import "@/styles/global.css";
 import { routing } from "@/i18n/routing";
 import { getMessages } from "next-intl/server";
 import { Locale } from "@/enum/locales";
+import Loading from "../components/Loading";
 export default async function Layout({
   children,
   params,
@@ -32,10 +34,12 @@ export default async function Layout({
         <meta name="theme-color" content="#000000" />
         <style></style>
       </head>
-      <body>
+      <body className="min-h-screen flex justify-between flex-col">
+        <PwaServiceWorker></PwaServiceWorker>
         <NextIntlClientProvider messages={messages}>
           <Providers>
             <Header />
+            <Loading />
             {children}
             <Footer />
             <Modal />

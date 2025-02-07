@@ -4,6 +4,7 @@ import counterReducer from "./counterSlice";
 import todoReducer from "./todoSlice";
 import themeReducer from "./themeSlice";
 import modalReducer from "./modalSlice";
+import loadingSlice from "./loadingSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     todo: todoReducer,
     theme: themeReducer,
     modal: modalReducer,
+    loading: loadingSlice,
   },
 });
 

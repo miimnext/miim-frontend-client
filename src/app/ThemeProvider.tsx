@@ -19,7 +19,6 @@ export default function ThemeProvider({
   }, [dispatch, theme]);
 
   useEffect(() => {
-    if (document.documentElement.classList.contains(theme)) return;
     document.documentElement.classList.remove(
       Theme.Light,
       Theme.Dark,
