@@ -28,14 +28,12 @@ export default async function Layout({
   const theme = cookieStore.get("theme")?.value || "system";
   const messages = await getMessages();
   return (
-    <html className={theme} lang={locale}>
+    <html lang={locale} data-theme={theme}>
       <head>
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#000000" />
-        <style></style>
+        <link id="theme-stylesheet" rel="stylesheet" href={`/styles/${theme}.css`} />
       </head>
-      <body className="min-h-screen flex justify-between flex-col">
-        <PwaServiceWorker></PwaServiceWorker>
+      <body>
         <NextIntlClientProvider messages={messages}>
           <Providers>
             <Header />
@@ -45,6 +43,7 @@ export default async function Layout({
             <Modal />
           </Providers>
         </NextIntlClientProvider>
+        <PwaServiceWorker></PwaServiceWorker>
       </body>
     </html>
   );

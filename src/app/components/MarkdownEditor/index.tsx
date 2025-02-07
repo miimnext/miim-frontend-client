@@ -99,7 +99,8 @@ export default function MarkdownEditor() {
 
   return (
     <div
-      className={`${styles.container} ${isDarkMode ? styles.darkMode : ""}`}
+      className={`${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'
+        } flex flex-col h-screen shadow-lg`}
       ref={containerRef} // 将容器元素的引用传递给containerRef
     >
       <MarkdownToolbar
@@ -107,21 +108,23 @@ export default function MarkdownEditor() {
         toggleDarkMode={toggleDarkMode} // 将toggleDarkMode函数传递给MarkdownToolbar
         isDarkMode={isDarkMode} // 将当前暗黑模式状态传递给MarkdownToolbar
       />
-      <div className={styles.editorContainer}>
+      <div className="flex flex-col md:flex-row h-full">
         <textarea
           ref={editorRef} // 将文本编辑器的引用传递给editorRef
           id="editor"
-          className={styles.editor}
+          className="w-full md:w-1/2 p-4 bg-transparent border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={markdown} // 将当前的markdown状态值传递给textarea
           onChange={handleInput} // 在输入框内容变化时调用handleInput
-          placeholder="输入Markdown..." // 设置输入框的提示文字
+          placeholder="输入Markdown..."
         />
-        <div ref={separatorRef} className={styles.separator} />{" "}
-        {/* 用于调整大小的分隔符 */}
+        <div
+          ref={separatorRef} // 用于调整大小的分隔符
+          className="hidden md:block w-px bg-gray-300 cursor-ew-resize"
+        />
         <div
           ref={previewRef} // 将预览区域的引用传递给previewRef
           id="preview"
-          className={styles.previewContainer} // 设置预览容器的样式
+          className="w-full md:w-1/2 h-full overflow-auto border border-gray-300 rounded-md p-4 bg-gray-50"
         />
       </div>
     </div>

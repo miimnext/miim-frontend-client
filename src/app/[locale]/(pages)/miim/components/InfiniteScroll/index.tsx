@@ -50,14 +50,12 @@ export default function List() {
   }, []);
 
   return (
-    <div className="max-w-3xl mx-auto p-4">
-      <InfiniteScroll
-        onLoad={onLoad} // 使用防抖后的函数
-        isLoading={isLoading}
-        hasMore={hasMore}
-      >
-        <PostList posts={posts} />
-      </InfiniteScroll>
-    </div>
+    <InfiniteScroll
+      onLoad={onLoad} // 使用防抖后的函数
+      isLoading={isLoading}
+      hasMore={hasMore}
+    >
+      <PostList posts={posts} />
+    </InfiniteScroll>
   );
 }

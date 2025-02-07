@@ -1,6 +1,0 @@
-@import url('./theme/dark.css');
-@import url('./theme/light.css');
-@import url('./theme/system.css');
-:root {
-   --Theme:#ccc;
-}

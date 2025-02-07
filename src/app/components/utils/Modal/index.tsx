@@ -34,12 +34,10 @@ export default function ModalWrapper() {
           className={styles.modalBackdrop}
           onClick={() => dispatch(closePersistentModal())} // 点击背景关闭持久化模态框
         >
-          <div
-            className={styles.modalContent}
-            onClick={(e) => e.stopPropagation()} // 阻止点击内容区域关闭模态框
-          >
-            {SelectedModal && <SelectedModal />} {/* 渲染选中的持久化模态框 */}
+          <div onClick={(e) => e.stopPropagation()} >
+            {SelectedModal && <SelectedModal /> /* 渲染选中的持久化模态框 */}
           </div>
+
         </div>
       )}
       {/* 渲染普通模态框 */}
@@ -48,32 +46,39 @@ export default function ModalWrapper() {
           {modalList.map((modal, index) => (
             <div
               key={index}
-              className={styles.modalBackdrop}
-              style={{ zIndex: 4000 + index }}
-              onClick={() => dispatch(closeModal(index))} //
+              className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50"
+              onClick={() => dispatch(closeModal(index))} // 点击背景关闭模态框
             >
               <div
-                // 使用 index 作为 key（这里使用 index 只是示例，生产环境可以改用唯一的 id）
-                className={styles.modalContent}
+                className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full"
                 onClick={(e) => e.stopPropagation()} // 阻止点击内容区域关闭模态框
               >
-                <h2>{modal.title}</h2>
-                <p>{modal.content}</p>
-                <button
-                  onClick={() =>
-                    dispatch(openModal({ title: "弹窗 4", content: "内容 2" }))
-                  }
-                >
-                  关闭普通模态框
-                </button>
-                <button onClick={() => dispatch(closeModal(index))}>
-                  关闭普通模态框
-                </button>
+                <h2 className="text-xl font-semibold text-center text-gray-700 mb-4">{modal.title}</h2>
+                <p className="text-gray-600 mb-6">{modal.content}</p>
+
+                <div className="flex justify-center gap-4">
+                  <button
+                    onClick={() =>
+                      dispatch(openModal({ title: "弹窗 4", content: "内容 2" }))
+                    }
+                    className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300"
+                  >
+                    打开更多
+                  </button>
+
+                  <button
+                    onClick={() => dispatch(closeModal(index))}
+                    className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition duration-300"
+                  >
+                    关闭
+                  </button>
+                </div>
               </div>
             </div>
           ))}
         </>
       )}
+
     </>
   );
 }

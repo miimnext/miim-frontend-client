@@ -3,11 +3,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('./var.css');
-*{
+* {
     margin: 0;
     padding: 0;
 }
-body{
+
+body {
     background: var(--primary-color);
 }
