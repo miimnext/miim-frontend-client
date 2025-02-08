@@ -44,8 +44,6 @@ const Form: React.FC<FormProps> = ({ fields, onSubmit }) => {
       try {
         // 调用传入的异步 onSubmit 函数
         await onSubmit(formData);
-        console.log(12312123123);
-
         // 请求完成后关闭 loading 状态
         setIsSubmitting(false);
         setErrors({});

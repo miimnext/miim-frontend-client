@@ -9,10 +9,10 @@ export default function Login() {
   const fields = [
     {
       name: "username",
-      label: "邮箱",
+      label: "账号",
       type: FieldType.Text, // 类型限定为 'email'
       required: true,
-      validate: RegEx.emailRegEx, // 使用键名
+      validate: RegEx.usernameRegEx, // 使用键名
     },
     {
       name: "password",
@@ -25,9 +25,13 @@ export default function Login() {
 
   // 提交表单的函数
   const handleSubmit = async (data: { [key: string]: string }) => {
-    await setTimeout(() => {
-      console.log(data);
-    }, 3000);
+    return new Promise<void>((resolve) => {
+      setTimeout(() => {
+        // 模拟请求成功
+        console.log("Form submitted successfully with data:", data);
+        resolve();
+      }, 2000); // 模拟2秒的延迟
+    });
     // 在这里处理表单提交（如调用 API 登录等）
   };
 
