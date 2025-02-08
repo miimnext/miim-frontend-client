@@ -1,27 +1,33 @@
 import Form from "@/app/components/utils/Form"; // 导入 Form 组件
+import { ModalEnum } from "@/enum/ModalEnum";
+import { openPersistentModal } from "@/store/modalSlice";
+import { RegEx } from "@/utils/regex";
+import { useDispatch } from "react-redux";
+import { FieldType } from "@/app/components/utils/Form/types";
 export default function Login() {
+  const dispatch = useDispatch();
   const fields = [
     {
-      name: "email",
+      name: "username",
       label: "邮箱",
-      type: "email" as "email", // 类型限定为 'email'
+      type: FieldType.Text, // 类型限定为 'email'
       required: true,
-      validate: (value: string) =>
-        !/\S+@\S+\.\S+/.test(value) ? "Email is invalid" : null,
+      validate: RegEx.emailRegEx, // 使用键名
     },
     {
       name: "password",
       label: "密码",
-      type: "password" as "password", // 类型限定为 'password'
+      type: FieldType.Password, // 类型限定为 'password'
       required: true,
-      validate: (value: string) =>
-        value.length < 6 ? "Password must be at least 6 characters" : null,
+      validate: RegEx.passwordRegEx, // 使用键名
     },
   ];
 
   // 提交表单的函数
-  const handleSubmit = (data: { [key: string]: string }) => {
-    console.log("Form submitted:", data);
+  const handleSubmit = async (data: { [key: string]: string }) => {
+    await setTimeout(() => {
+      console.log(data);
+    }, 3000);
     // 在这里处理表单提交（如调用 API 登录等）
   };
 
@@ -32,12 +38,15 @@ export default function Login() {
       </h2>
       <Form fields={fields} onSubmit={handleSubmit} />
       <div className="mt-4 text-center">
-        <p className="text-sm text-gray-600">
+        <div className="text-sm text-gray-600">
           没有账户？{" "}
-          <a href="/signup" className="text-blue-600 hover:underline">
+          <div
+            className="text-blue-600 hover:underline cursor-pointer"
+            onClick={() => dispatch(openPersistentModal(ModalEnum.SignupModal))}
+          >
             注册
-          </a>
-        </p>
+          </div>
+        </div>
       </div>
     </div>
   );

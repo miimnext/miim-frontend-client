@@ -1,5 +1,6 @@
-:root {
+  /* System 主题（自定义） */
+  [data-theme="system"] {
     --primary-1: #ff8c00;
     --background-1: #f4f4f4;
     --text-1: #333;
-}
+  }

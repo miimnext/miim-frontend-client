@@ -5,4 +5,3 @@ export enum Locale {
 }
 
 // The locales array should only contain valid enum values
-export const locales: Locale[] = [Locale.en, Locale.zh];

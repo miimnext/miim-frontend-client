@@ -1,18 +1,21 @@
 import React from "react";
 import ButtonLoading from "./ButtonLoading";
+
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "danger";
   size?: "sm" | "md" | "lg";
-  isLoading?: boolean;
-  isDisabled?: boolean; // 可以通过这个属性手动设置禁用状态
+  loading?: boolean;
+  disabled?: boolean; // 可以通过这个属性手动设置禁用状态
+  fullWidth?: boolean; // 新增属性，用于控制是否宽度 100%
 }
 
 const Button: React.FC<ButtonProps> = ({
   children,
   variant = "primary",
   size = "md",
-  isLoading = false,
-  isDisabled = false,
+  loading = false,
+  disabled = false,
+  fullWidth = false, // 默认不为 100% 宽度
   className,
   ...props
 }) => {
@@ -41,22 +44,20 @@ const Button: React.FC<ButtonProps> = ({
   }
 
   // 判断是否为加载中
-  const loadingStyles = isLoading ? "opacity-50 cursor-not-allowed" : "";
+  const loadingStyles = loading ? "opacity-50 cursor-not-allowed" : "";
 
   // 判断禁用样式
   const disabledStyles =
-    isDisabled || isLoading ? "opacity-30 cursor-not-allowed" : "";
+    disabled || loading ? "opacity-30 cursor-not-allowed" : "";
 
   // 按钮的最终类名
-  const buttonClasses = `${baseStyles} ${variantStyles} ${sizeStyles} ${disabledStyles} ${loadingStyles} ${className}`;
+  const buttonClasses = `${baseStyles} ${variantStyles} ${sizeStyles} ${disabledStyles} ${loadingStyles} ${
+    fullWidth ? "w-full" : ""
+  } ${className}`;
 
   return (
-    <button
-      className={buttonClasses}
-      disabled={isDisabled || isLoading}
-      {...props}
-    >
-      {isLoading ? <ButtonLoading /> : children}
+    <button className={buttonClasses} disabled={disabled || loading} {...props}>
+      {loading ? <ButtonLoading /> : children}
     </button>
   );
 };

@@ -1,128 +1,88 @@
 import React, { useState } from "react";
+import FormField from "./FormField";
+import { FormData, FormErrors, Field } from "./types";
+import { validateField, validateForm } from "./validate";
+import Button from "../../Button";
 
-// 表单字段的类型定义
-interface Field {
-    name: string;
-    label: string;
-    type: "text" | "email" | "password" | "textarea";
-    placeholder?: string;
-    required?: boolean;
-    validate?: (value: string) => string | null; // 可选的自定义验证函数
-}
-
-// 表单数据的类型
-interface FormData {
-    [key: string]: string;
-}
-
-// 错误信息的类型
-interface FormErrors {
-    [key: string]: string;
-}
-
-// 表单组件的 props 类型
 interface FormProps {
-    fields: Field[];
-    onSubmit: (data: FormData) => void;
+  fields: Field[];
+  onSubmit: (data: FormData) => Promise<void>; // 确保 onSubmit 返回 Promise
 }
 
 const Form: React.FC<FormProps> = ({ fields, onSubmit }) => {
-    const [formData, setFormData] = useState<FormData>(
-        fields.reduce((acc, field) => {
-            acc[field.name] = "";
-            return acc;
-        }, {} as FormData)
-    );
-    const [errors, setErrors] = useState<FormErrors>({});
-    const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState<FormData>(
+    fields.reduce((acc, field) => {
+      acc[field.name] = "";
+      return acc;
+    }, {} as FormData)
+  );
 
-    // 更新表单字段的值
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // 校验表单字段
-    const validate = (): FormErrors => {
-        const newErrors: FormErrors = {};
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
 
-        fields.forEach((field) => {
-            const value = formData[field.name];
-            // 如果字段是必填的，检查它是否为空
-            if (field.required && !value) {
-                newErrors[field.name] = `${field.label} is required`;
-            }
-            // 如果有自定义验证函数，执行它
-            if (field.validate) {
-                const error = field.validate(value);
-                if (error) {
-                    newErrors[field.name] = error;
-                }
-            }
-        });
+    // 对当前字段进行验证
+    const newErrors = validateField(name, value, fields, errors);
+    setErrors(newErrors);
+  };
 
-        return newErrors;
-    };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true); // 提交时设置 loading 状态为 true
 
-    // 提交表单
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsSubmitting(true);
+    // 校验所有字段
+    const validationErrors = validateForm(formData, fields);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      setIsSubmitting(false); // 校验失败时，关闭 loading 状态
+    } else {
+      try {
+        // 调用传入的异步 onSubmit 函数
+        await onSubmit(formData);
+        console.log(12312123123);
 
-        const validationErrors = validate();
-        if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
-            setIsSubmitting(false);
-        } else {
-            onSubmit(formData); // 执行传入的 onSubmit 函数
-            setIsSubmitting(false);
-            setErrors({});
-        }
-    };
+        // 请求完成后关闭 loading 状态
+        setIsSubmitting(false);
+        setErrors({});
+      } catch (error) {
+        console.error("提交失败:", error);
+        setIsSubmitting(false); // 如果请求失败，关闭 loading 状态
+      }
+    }
+  };
 
-    return (
-        <form onSubmit={handleSubmit} className="space-y-4">
-            {fields.map((field) => (
-                <div key={field.name}>
-                    <label htmlFor={field.name} className="block text-sm font-semibold">
-                        {field.label}
-                    </label>
-                    {field.type === "textarea" ? (
-                        <textarea
-                            id={field.name}
-                            name={field.name}
-                            value={formData[field.name]}
-                            onChange={handleChange}
-                            placeholder={field.placeholder}
-                            className="w-full px-4 py-2 border rounded-md"
-                        />
-                    ) : (
-                        <input
-                            id={field.name}
-                            name={field.name}
-                            type={field.type}
-                            value={formData[field.name]}
-                            onChange={handleChange}
-                            placeholder={field.placeholder}
-                            className="w-full px-4 py-2 border rounded-md"
-                        />
-                    )}
-                    {errors[field.name] && (
-                        <p className="text-red-500 text-xs mt-1">{errors[field.name]}</p>
-                    )}
-                </div>
-            ))}
-            <div>
-                <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200"
-                >
-                    {isSubmitting ? "Submitting..." : "Submit"}
-                </button>
-            </div>
-        </form>
-    );
+  const isFormValid = Object.keys(formData).every(
+    (key) => !!formData[key] && !errors[key]
+  );
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {fields.map((field) => (
+        <FormField
+          key={field.name}
+          field={field}
+          value={formData[field.name]}
+          onChange={handleChange}
+          error={errors[field.name]}
+        />
+      ))}
+      <div className="flex justify-center">
+        <Button
+          type="submit"
+          disabled={!isFormValid || isSubmitting}
+          loading={isSubmitting}
+          fullWidth
+        >
+          {isSubmitting ? "Submitting..." : "Submit"}
+        </Button>
+      </div>
+    </form>
+  );
 };
 
 export default Form;

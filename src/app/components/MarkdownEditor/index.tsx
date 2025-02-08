@@ -8,9 +8,6 @@ export default function MarkdownEditor() {
   // 存储用户输入的Markdown文本
   const [markdown, setMarkdown] = useState<string>("");
 
-  // 控制暗黑模式的开关
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
-
   // 使用useRef获取对DOM元素的引用
   const editorRef = useRef<HTMLTextAreaElement>(null); // 获取文本编辑区域的引用
   const previewRef = useRef<HTMLDivElement>(null); // 获取预览区域的引用
@@ -23,12 +20,6 @@ export default function MarkdownEditor() {
     },
     [] // 该回调不依赖任何外部状态
   );
-
-  // 切换暗黑模式
-  const toggleDarkMode = useCallback(() => {
-    setIsDarkMode((prev) => !prev); // 取反当前的暗黑模式状态
-  }, []);
-
   // 插入Markdown文本（如加粗、斜体等）的函数
   const insertText = useCallback(
     (before: string, after: string, moveToNewLine = true) => {
@@ -99,20 +90,17 @@ export default function MarkdownEditor() {
 
   return (
     <div
-      className={`${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'
-        } flex flex-col h-screen shadow-lg`}
+      className="bg-white text-gray-900 flex flex-col h-screen shadow-lg p-4 "
       ref={containerRef} // 将容器元素的引用传递给containerRef
     >
       <MarkdownToolbar
         insertText={insertText} // 将insertText函数传递给MarkdownToolbar
-        toggleDarkMode={toggleDarkMode} // 将toggleDarkMode函数传递给MarkdownToolbar
-        isDarkMode={isDarkMode} // 将当前暗黑模式状态传递给MarkdownToolbar
       />
-      <div className="flex flex-col md:flex-row h-full">
+      <div className="flex flex-col md:flex-row h-full shadow-lg ">
         <textarea
           ref={editorRef} // 将文本编辑器的引用传递给editorRef
           id="editor"
-          className="w-full md:w-1/2 p-4 bg-transparent border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full  p-4 rounded-md resize-none outline-none bg-gray-50"
           value={markdown} // 将当前的markdown状态值传递给textarea
           onChange={handleInput} // 在输入框内容变化时调用handleInput
           placeholder="输入Markdown..."
@@ -124,7 +112,7 @@ export default function MarkdownEditor() {
         <div
           ref={previewRef} // 将预览区域的引用传递给previewRef
           id="preview"
-          className="w-full md:w-1/2 h-full overflow-auto border border-gray-300 rounded-md p-4 bg-gray-50"
+          className="w-full  h-full overflow-auto  rounded-md p-4 bg-gray-50"
         />
       </div>
     </div>
