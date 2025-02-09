@@ -1,31 +1,65 @@
-// src/hooks/useForm.ts
-import { useState } from 'react';
+"use client";
+// hooks/useForm.ts
+import { useState } from "react";
 
-export interface FormValues {
-    [key: string]: string;  // 表单的字段和值
+interface FormValues {
+  [key: string]: string;
 }
 
-interface FormContextType<T extends FormValues> {
-    values: T;  // 存储表单的所有值
-    setValue: (name: keyof T, value: string) => void;  // 设置某个字段的值
-    getValues: () => T;  // 获取所有表单值
-    reset: () => void;  // 重置表单
+interface FormErrors {
+  [key: string]: string;
 }
 
-/**
- * 自定义 Hook 用来管理表单的值和状态
- */
-export function useForm<T extends FormValues>(defaultValues: T = {} as T): FormContextType<T> {
-    const [values, setValues] = useState<T>(defaultValues);
-
-    const setValue = (name: keyof T, value: string) => {
-        setValues((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const getValues = () => values;
-
-    const reset = () => setValues(defaultValues);
-
-    return { values, setValue, getValues, reset };
+interface UseFormProps {
+  initialValues: FormValues;
+  validate?: (values: FormValues) => FormErrors | Promise<FormErrors>;
+  onSubmit: (values: FormValues) => void | Promise<void>;
 }
 
+export const useForm = ({
+  initialValues,
+  validate,
+  onSubmit,
+}: UseFormProps) => {
+  const [values, setValues] = useState<FormValues>(initialValues);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setValues({
+      ...values,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const validationErrors = validate ? await validate(values) : {};
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length === 0) {
+      await onSubmit(values);
+    }
+
+    setIsSubmitting(false);
+  };
+
+  const resetForm = () => {
+    setValues(initialValues);
+    setErrors({});
+  };
+
+  return {
+    values,
+    errors,
+    isSubmitting,
+    handleChange,
+    handleSubmit,
+    resetForm,
+  };
+};

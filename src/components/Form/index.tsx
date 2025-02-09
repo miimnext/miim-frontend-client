@@ -1,46 +1,38 @@
-// src/components/Form.tsx
-import React, { createContext, useContext, ReactNode } from 'react';
-import { useForm, FormValues } from '@/hooks/useForm';
+"use client";
+import React, { useState } from "react";
+import FormContext from "./FormContext";
 
-const FormContext = createContext<any>(null);
-
-interface FormProps<T extends FormValues> {
-    children: ReactNode;
-    defaultValues?: T;
-    onSubmit?: (values: T) => void;
+interface FormProps {
+  onSubmit: (formData: { [key: string]: string }) => void;
+  children: React.ReactNode;
 }
 
-/**
- * Form 组件，提供表单上下文并处理提交
- */
-const Form = <T extends FormValues>({ children, defaultValues, onSubmit }: FormProps<T>) => {
-    const form = useForm(defaultValues || ({} as T));
+const Form: React.FC<FormProps> = ({ onSubmit, children }) => {
+  const [formData, setFormData] = useState<{ [key: string]: string }>({});
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        onSubmit?.(form.getValues());
-    };
+  const updateFormData = (name: string, value: string) => {
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
 
-    return (
-        <FormContext.Provider value={form}>
-            <form onSubmit={handleSubmit} className="space-y-4">
-                {children}
-            </form>
-        </FormContext.Provider>
-    );
-}
+  return (
+    <FormContext.Provider value={{ formData, updateFormData }}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmit(formData); // Pass form data to onSubmit
+        }}
+        className="space-y-4"
+      >
+        {children}
+        <button
+          type="submit"
+          className="bg-blue-500 text-white py-2 px-4 rounded"
+        >
+          Submit
+        </button>
+      </form>
+    </FormContext.Provider>
+  );
+};
 
-/**
- * 使用表单上下文获取表单状态
- */
-function useFormContext<T extends FormValues>() {
-    const context = useContext(FormContext);
-    if (!context) {
-        throw new Error('useFormContext 必须在 Form 组件内部使用');
-    }
-    return context as { values: T; setValue: (name: keyof T, value: any) => void };
-}
-
-// 默认导出 Form 组件，命名导出 useFormContext
 export default Form;
-export { useFormContext };

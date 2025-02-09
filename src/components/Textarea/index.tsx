@@ -1,32 +1,27 @@
+// TextArea.tsx
 import React from "react";
 
-interface TextareaProps {
-  name: string;
+export interface TextAreaProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onBlur: () => void;
+  name: string;
   placeholder?: string;
-  className?: string;
-  ariaInvalid?: boolean;
 }
 
-const Textarea: React.FC<TextareaProps> = ({
-  name,
+export const TextArea: React.FC<TextAreaProps> = ({
   value,
   onChange,
+  onBlur,
+  name,
   placeholder,
-  className = "",
-  ariaInvalid = false,
-}) => {
-  return (
-    <textarea
-      name={name}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      className={`w-full px-4 py-2 border rounded-md ${className}`}
-      aria-invalid={ariaInvalid}
-    />
-  );
-};
-
-export default Textarea;
+}) => (
+  <textarea
+    name={name}
+    value={value}
+    onChange={onChange}
+    onBlur={onBlur}
+    placeholder={placeholder}
+    className="form-textarea"
+  />
+);

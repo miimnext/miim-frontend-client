@@ -1,26 +1,52 @@
-"use client"
+"use client";
+// App.tsx
+import React from "react";
+import { Form } from "@/components";
+import { FormItem } from "@/components";
+import { Input } from "@/components"; // Example Input component
 
-import React from 'react';
-import { Form, FormItem, Input } from '@/components';
+const App = () => {
+  const handleSubmit = (formData: { [key: string]: string }) => {
+    console.log("Form Submitted: ", formData);
+  };
 
-export default function App() {
-    const handleSubmit = (values: any) => {
-        console.log('Form submitted:', values);
-    };
-    const [username, setUsername] = React.useState('');
+  return (
+    <div>
+      <Form onSubmit={handleSubmit}>
+        <FormItem
+          label="Username"
+          name="username"
+          rules={[{ required: true, message: "Username is required" }]}
+        >
+          <Input />
+        </FormItem>
+        <FormItem
+          label="Username"
+          name="username"
+          rules={[{ required: true, message: "Username is required" }]}
+        >
+          <div>123</div>
+        </FormItem>
+        <FormItem
+          label="Username"
+          name="username"
+          rules={[{ required: true, message: "Username is required" }]}
+        >
+          <select name="" id=""></select>
+        </FormItem>
+        <FormItem
+          label="Password"
+          name="password"
+          rules={[{ required: true, message: "Password is required" }]}
+        >
+          <Input />
+        </FormItem>
+      </Form>
+      <div>
+        <Input />
+      </div>
+    </div>
+  );
+};
 
-
-
-    return (
-        <div className="p-6">
-            <Form defaultValues={{ username: '' }} onSubmit={handleSubmit}>
-                <FormItem name="username" label="Username">
-                    <Input name='123' type="text" /> {/* 直接传递控件 */}
-                </FormItem>
-                <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md">
-                    Submit
-                </button>
-            </Form>
-        </div>
-    );
-}
+export default App;
