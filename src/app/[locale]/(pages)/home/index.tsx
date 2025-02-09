@@ -1,5 +1,5 @@
 import componentsMaps from "@/app/[locale]/(pages)/miim/components";
-import ThemeSwitcher from "@/app/components/utils/ThemeSwitcher";
+import ThemeSwitcher from "@/app/[locale]/(layout)/ThemeSwitcher";
 import { Link } from "@/i18n/routing";
 export default function Home() {
   return (

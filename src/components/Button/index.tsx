@@ -51,9 +51,8 @@ const Button: React.FC<ButtonProps> = ({
     disabled || loading ? "opacity-30 cursor-not-allowed" : "";
 
   // 按钮的最终类名
-  const buttonClasses = `${baseStyles} ${variantStyles} ${sizeStyles} ${disabledStyles} ${loadingStyles} ${
-    fullWidth ? "w-full" : ""
-  } ${className}`;
+  const buttonClasses = `${baseStyles} ${variantStyles} ${sizeStyles} ${disabledStyles} ${loadingStyles} ${fullWidth ? "w-full" : ""
+    } ${className}`;
 
   return (
     <button className={buttonClasses} disabled={disabled || loading} {...props}>

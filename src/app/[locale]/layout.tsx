@@ -1,9 +1,9 @@
-import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer";
+import Header from "./(layout)/Header";
+import Footer from "./(layout)/Footer";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import Providers from "../providers";
-import Modal from "@/app/components/utils/Modal";
+import Modal from "@/components/utils/Modal";
 import PwaServiceWorker from "../PwaServiceWorker";
 import { NextIntlClientProvider } from "next-intl";
 import "@/styles/global.css";
@@ -31,11 +31,6 @@ export default async function Layout({
     <html lang={locale} data-theme={theme}>
       <head>
         <link rel="manifest" href="/manifest.json" />
-        <link
-          id="theme-stylesheet"
-          rel="stylesheet"
-          href={`/styles/${theme}.css`}
-        />
       </head>
       <body>
         <NextIntlClientProvider messages={messages}>

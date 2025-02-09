@@ -1,9 +1,9 @@
-import Form from "@/app/components/utils/Form"; // 导入 Form 组件
+import Form from "@/components/utils/Form"; // 导入 Form 组件
 import { ModalEnum } from "@/enum/ModalEnum";
 import { openPersistentModal } from "@/store/modalSlice";
 import { RegEx } from "@/utils/regex";
 import { useDispatch } from "react-redux";
-import { FieldType } from "@/app/components/utils/Form/types";
+import { FieldType } from "@/components/utils/Form/types";
 export default function Login() {
   const dispatch = useDispatch();
   const fields = [

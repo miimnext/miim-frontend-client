@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import Loading from "@/app/components/Loading";
+import Loading from "@/components/Loading";
 type InfiniteScrollProps = {
   onLoad: () => void; // 加载更多数据的函数
   isLoading: boolean; // 是否正在加载中

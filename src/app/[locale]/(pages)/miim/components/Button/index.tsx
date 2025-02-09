@@ -1,4 +1,4 @@
-import Button from "@/app/components/Button";
+import Button from "@/components/Button";
 
 export default function Example() {
   return (
@@ -7,10 +7,10 @@ export default function Example() {
       <Button variant="secondary" size="sm" className="mb-2">
         Secondary
       </Button>
-      <Button variant="danger" size="lg" isLoading className="mb-2">
+      <Button variant="danger" size="lg" loading className="mb-2">
         Loading
       </Button>
-      <Button variant="primary" size="md" isDisabled className="mb-2">
+      <Button variant="primary" size="md" disabled className="mb-2">
         Disabled
       </Button>
     </>

@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
-import PostList from "@/app/components/PostList";
+import PostList from "@/app/[locale]/components/PostList";
 import CommonApi from "@/api/Common";
 import { Post } from "@/types/post";
-import InfiniteScroll from "@/app/components/utils/InfiniteScroll";
+import InfiniteScroll from "@/components/utils/InfiniteScroll";
 import useDebounce from "@/hooks/useDebounce"; // 引入 useDebounce
 export default function List() {
   const [posts, setPosts] = useState<Post[]>([]);

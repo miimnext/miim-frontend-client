@@ -1,7 +1,7 @@
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import React from "react";
-import LanguageSwitcher from "../utils/LanguageSwitcher"; // 引入 LanguageSwitcher
+import LanguageSwitcher from "../LanguageSwitcher"; // 引入 LanguageSwitcher
 
 import { FaHome, FaPen } from "react-icons/fa";
 
