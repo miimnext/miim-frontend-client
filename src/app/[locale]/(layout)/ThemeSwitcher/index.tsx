@@ -17,7 +17,7 @@ export default function ThemeSwitcher() {
   };
 
   return (
-    <div className="flex gap-4 p-4 justify-center mt-5">
+    <div className="flex gap-4 p-4 justify-center ">
       <button
         onClick={() => toggleTheme(Theme.Light)}
         className="px-4 py-2 bg-blue-400 text-white font-semibold rounded-lg shadow-md hover:bg-blue-500 transition-all duration-300"

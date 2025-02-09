@@ -4,9 +4,11 @@ import React from "react";
 import LanguageSwitcher from "../LanguageSwitcher"; // 引入 LanguageSwitcher
 
 import { FaHome, FaPen } from "react-icons/fa";
+import ThemeSwitcher from "../ThemeSwitcher";
 
 const navLinks = [
   { href: "/", label: "首页", icon: <FaHome /> },
+  { href: "/miim", label: "UI", icon: <FaHome /> },
   { href: "/createPost", label: "Post", icon: <FaPen /> },
 ];
 export default React.memo(function Header() {
@@ -23,6 +25,7 @@ export default React.memo(function Header() {
           <div className="text-lg  mr-8">{t("hello")}</div>
         </div>
         <LanguageSwitcher /> {/* 语言切换组件 */}
+        <ThemeSwitcher />
         <nav className="flex items-center">
           {navLinks.map(({ href, label, icon }) => (
             <Link

@@ -90,7 +90,7 @@ export default function MarkdownEditor() {
 
   return (
     <div
-      className="bg-white text-gray-900 flex flex-col h-screen shadow-lg p-4 "
+      className="bg-white text-gray-900 flex flex-col h-screen"
       ref={containerRef} // 将容器元素的引用传递给containerRef
     >
       <MarkdownToolbar

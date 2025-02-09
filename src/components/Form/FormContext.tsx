@@ -1,9 +1,18 @@
 "use client";
 import { createContext, useContext } from "react";
 
+interface Rule {
+  required?: boolean;
+  message?: string;
+  pattern?: RegExp;
+  minLength?: number;
+  maxLength?: number;
+}
+
 interface FormContextType {
-  formData: { [key: string]: string };
+  formData: { [key: string]: string | string[] };
   updateFormData: (name: string, value: string) => void;
+  rules: { [key: string]: Rule[] };  // ✅ 新增 rules
 }
 
 const FormContext = createContext<FormContextType | undefined>(undefined);
