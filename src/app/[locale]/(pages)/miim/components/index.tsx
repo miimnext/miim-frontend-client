@@ -5,6 +5,8 @@ import Modal from "./Modal";
 import Form from "./Form";
 import Menu from "./Menu";
 import InfiniteScroll from "./InfiniteScroll";
+import Tabs from "./Tabs";
+import Notification from "./Notification";
 
 const componentsMaps = {
   Select,
@@ -14,6 +16,8 @@ const componentsMaps = {
   Form,
   Menu,
   InfiniteScroll,
+  Tabs,
+  Notification,
 };
 
 export default componentsMaps;

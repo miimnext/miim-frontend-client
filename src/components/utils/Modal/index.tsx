@@ -34,10 +34,9 @@ export default function ModalWrapper() {
           className={styles.modalBackdrop}
           onClick={() => dispatch(closePersistentModal())} // 点击背景关闭持久化模态框
         >
-          <div onClick={(e) => e.stopPropagation()} >
+          <div onClick={(e) => e.stopPropagation()}>
             {SelectedModal && <SelectedModal /> /* 渲染选中的持久化模态框 */}
           </div>
-
         </div>
       )}
       {/* 渲染普通模态框 */}
@@ -53,13 +52,17 @@ export default function ModalWrapper() {
                 className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full"
                 onClick={(e) => e.stopPropagation()} // 阻止点击内容区域关闭模态框
               >
-                <h2 className="text-xl font-semibold text-center text-gray-700 mb-4">{modal.title}</h2>
+                <h2 className="text-xl font-semibold text-center text-gray-700 mb-4">
+                  {modal.title}
+                </h2>
                 <p className="text-gray-600 mb-6">{modal.content}</p>
 
                 <div className="flex justify-center gap-4">
                   <button
                     onClick={() =>
-                      dispatch(openModal({ title: "弹窗 4", content: "内容 2" }))
+                      dispatch(
+                        openModal({ title: "弹窗 4", content: "内容 2" })
+                      )
                     }
                     className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300"
                   >
@@ -78,7 +81,6 @@ export default function ModalWrapper() {
           ))}
         </>
       )}
-
     </>
   );
 }

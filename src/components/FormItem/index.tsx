@@ -6,7 +6,9 @@ interface FieldProps {
   value: string | string[];
   error: string | null; // error should be a string or null
   className?: string;
-  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+  onChange: (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => void;
 }
 
 interface FormItemProps {
@@ -16,7 +18,12 @@ interface FormItemProps {
   children: ReactElement<FieldProps>;
 }
 
-const FormItem: React.FC<FormItemProps> = ({ label, name, children, className }) => {
+const FormItem: React.FC<FormItemProps> = ({
+  label,
+  name,
+  children,
+  className,
+}) => {
   const { formData, updateFormData, rules } = useFormContext();
   const [error, setError] = React.useState<string | null>(null);
 
@@ -44,16 +51,21 @@ const FormItem: React.FC<FormItemProps> = ({ label, name, children, className })
     return true;
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const value = e.target.value;
     updateFormData(name, value);
     validate(value);
   };
 
   return (
-    <div className={`"form-item mb-4 " ${className}`} >
+    <div className={`"form-item mb-4 " ${className}`}>
       {label && (
-        <label htmlFor={name} className="block text-sm font-semibold text-gray-700">
+        <label
+          htmlFor={name}
+          className="block text-sm font-semibold text-gray-700"
+        >
           {label}
         </label>
       )}

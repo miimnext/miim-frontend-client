@@ -9,9 +9,5 @@ interface ProvidersProps {
 }
 
 export default function Providers({ children }: ProvidersProps) {
-  return (
-    <Provider store={store}>
-      {children}
-    </Provider>
-  );
+  return <Provider store={store}>{children}</Provider>;
 }

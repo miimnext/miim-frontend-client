@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useImperativeHandle,
   forwardRef,
+  useCallback,
 } from "react";
 import FormContext from "./FormContext";
 
@@ -42,30 +43,33 @@ const Form = forwardRef<FormRef, FormProps>(
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    // 校验字段数据
-    const validateFormData = (name: string, value: string): string | null => {
-      const fieldRules = rules[name] || [];
-      let errorMessage = null;
+    // 将 validateFormData 包裹在 useCallback 中
+    const validateFormData = useCallback(
+      (name: string, value: string): string | null => {
+        const fieldRules = rules[name] || [];
+        let errorMessage = null;
 
-      for (const rule of fieldRules) {
-        if (rule.required && !value) {
-          errorMessage = rule.message || "This field is required";
+        for (const rule of fieldRules) {
+          if (rule.required && !value) {
+            errorMessage = rule.message || "This field is required";
+          }
+          if (rule.minLength && value.length < rule.minLength) {
+            errorMessage = `Minimum length is ${rule.minLength}`;
+          }
+          if (rule.pattern && !rule.pattern.test(value)) {
+            errorMessage = rule.message || "Invalid format";
+          }
         }
-        if (rule.minLength && value.length < rule.minLength) {
-          errorMessage = `Minimum length is ${rule.minLength}`;
-        }
-        if (rule.pattern && !rule.pattern.test(value)) {
-          errorMessage = rule.message || "Invalid format";
-        }
-      }
 
-      // 设置错误信息
-      setErrors((prev) => ({ ...prev, [name]: errorMessage }));
-      return errorMessage;
-    };
+        // 设置错误信息
+        setErrors((prev) => ({ ...prev, [name]: errorMessage }));
+        return errorMessage;
+      },
+      [rules]
+    ); // 依赖于 rules，因为它控制了每个字段的校验规则
 
     // 校验整个表单
-    const validateForm = () => {
+    const validateForm = useCallback(() => {
       let hasError = false;
       Object.keys(rules).forEach((name) => {
         const error = validateFormData(name, (formData[name] as string) || "");
@@ -75,7 +79,7 @@ const Form = forwardRef<FormRef, FormProps>(
       setIsValid(!hasError); // 设置表单有效性状态
       onValidityChange?.(!hasError); // 通知外部表单的有效性
       return !hasError;
-    };
+    }, [formData, rules, validateFormData, onValidityChange]); // 添加 validateFormData 到依赖项
 
     // 提交表单
     const handleSubmit = (e: React.FormEvent) => {
@@ -96,7 +100,7 @@ const Form = forwardRef<FormRef, FormProps>(
       // Reset errors whenever rules or formData changes
       setErrors({});
       validateForm();
-    }, [formData, rules]);
+    }, [formData, validateForm]);
 
     return (
       <FormContext.Provider value={{ formData, updateFormData, rules }}>

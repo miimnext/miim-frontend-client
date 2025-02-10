@@ -12,7 +12,7 @@ interface Rule {
 interface FormContextType {
   formData: { [key: string]: string | string[] };
   updateFormData: (name: string, value: string) => void;
-  rules: { [key: string]: Rule[] };  // ✅ 新增 rules
+  rules: { [key: string]: Rule[] }; // ✅ 新增 rules
 }
 
 const FormContext = createContext<FormContextType | undefined>(undefined);

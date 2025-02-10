@@ -1,62 +1,62 @@
 /* CommentSection.module.scss */
 .container {
-    background-color: #f3f4f6; /* light gray background */
-    padding: 16px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f3f4f6; /* light gray background */
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .title {
-    font-size: 1.125rem; /* 18px */
-    font-weight: 600;
-    margin-bottom: 8px;
+  font-size: 1.125rem; /* 18px */
+  font-weight: 600;
+  margin-bottom: 8px;
 }
 
 .commentList {
-    list-style-type: none;
-    padding: 0;
-    margin-bottom: 16px;
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 16px;
 }
 
 .commentItem {
-    background-color: #ffffff; /* white background */
-    padding: 8px;
-    border-radius: 4px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  background-color: #ffffff; /* white background */
+  padding: 8px;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .commentContent {
-    font-size: 0.875rem; /* 14px */
-    color: #2d2d2d; /* dark gray */
+  font-size: 0.875rem; /* 14px */
+  color: #2d2d2d; /* dark gray */
 }
 
 .timestamp {
-    font-size: 0.75rem; /* 12px */
-    color: #6b7280; /* light gray */
+  font-size: 0.75rem; /* 12px */
+  color: #6b7280; /* light gray */
 }
 
 .inputContainer {
-    display: flex;
-    gap: 8px;
+  display: flex;
+  gap: 8px;
 }
 
 .inputField {
-    flex: 1;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
 .submitButton {
-    background-color: #3b82f6; /* blue */
-    color: white;
-    padding: 8px 16px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+  background-color: #3b82f6; /* blue */
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 
-    &:hover {
-        background-color: #2563eb; /* dark blue on hover */
-    }
+  &:hover {
+    background-color: #2563eb; /* dark blue on hover */
+  }
 }
