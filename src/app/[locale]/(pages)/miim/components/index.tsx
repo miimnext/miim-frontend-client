@@ -1,10 +1,19 @@
-import dynamic from "next/dynamic";
+import Select from "./Select";
+import Button from "./Button";
+import Upload from "./Upload";
+import Modal from "./Modal";
+import Form from "./Form";
+import Menu from "./Menu";
+import InfiniteScroll from "./InfiniteScroll";
+
 const componentsMaps = {
-  InfiniteScroll: dynamic(() => import("./InfiniteScroll")),
-  Button: dynamic(() => import("./Button")),
-  Upload: dynamic(() => import("./Upload")),
-  Modal: dynamic(() => import("./Modal")),
-  Form: dynamic(() => import("./Form")),
-  Menu: dynamic(() => import("./Menu")),
+  Select,
+  Button,
+  Upload,
+  Modal,
+  Form,
+  Menu,
+  InfiniteScroll,
 };
+
 export default componentsMaps;

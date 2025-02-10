@@ -1,5 +1,6 @@
-import React, { ChangeEvent, useState, useEffect, useRef } from "react";
-
+"use client";
+import React, { ChangeEvent, useState, useRef, useMemo } from "react";
+import useOutsideClick from "@/hooks/useOutsideClick";
 interface SelectProps {
   name?: string;
   value?: string | string[];
@@ -12,81 +13,63 @@ interface SelectProps {
 
 const Select: React.FC<SelectProps> = ({
   name,
-  value,
+  value: propValue,
   options,
-  onChange = () => { },
+  onChange,
   multiple = false,
   className = "",
   placeholder = "Select an option",
 }) => {
-  const [isOpen, setIsOpen] = useState(false); // Control dropdown visibility
+  const [isOpen, setIsOpen] = useState(false);
+  const [value, setValue] = useState<string | string[]>(propValue || []); // 管理内部值
   const selectRef = useRef<HTMLDivElement>(null);
+  useOutsideClick(selectRef, () => setIsOpen(false));
+  // 计算显示值
+  const displayValue = useMemo(() => {
+    if (Array.isArray(value)) {
+      return value
+        .map((val) => options.find((opt) => opt.value === val)?.label)
+        .join(", ");
+    }
+    return options.find((opt) => opt.value === value)?.label;
+  }, [value, options]);
 
-  // Handle changes in the select element
+  // 处理选中值
   const handleChange = (selectedValue: string) => {
     let newValue: string | string[];
     if (multiple) {
       const currentValues = Array.isArray(value) ? value : [];
       newValue = currentValues.includes(selectedValue)
-        ? currentValues.filter((v) => v !== selectedValue) // Deselect if already selected
-        : [...currentValues, selectedValue]; // Add to selection
+        ? currentValues.filter((v) => v !== selectedValue) // 取消选中
+        : [...currentValues, selectedValue]; // 选中
     } else {
       newValue = selectedValue;
-      setIsOpen(false); // Close dropdown for single select
+      setIsOpen(false); // 单选时关闭下拉菜单
     }
-
-    onChange({
-      target: {
-        name,
-        value: newValue,
-      },
-    } as ChangeEvent<HTMLSelectElement>);
-  };
-
-  // Close dropdown when clicking outside
-  const handleOutsideClick = (e: MouseEvent) => {
-    if (selectRef.current && !selectRef.current.contains(e.target as Node)) {
-      setIsOpen(false);
+    setValue(newValue); // 更新内部的值
+    // 如果有 onChange 回调，将更新的值传递给父组件
+    if (onChange) {
+      onChange({
+        target: {
+          name: name || "",
+          value: newValue,
+        } as unknown as HTMLSelectElement,
+      } as ChangeEvent<HTMLSelectElement>);
     }
-  };
-
-  // Toggle dropdown visibility
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
-  // Add event listener for outside clicks
-  useEffect(() => {
-    document.addEventListener("click", handleOutsideClick);
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
-    };
-  }, []);
-
-  // Determine the displayed value(s)
-  const getDisplayValue = () => {
-    if (multiple && Array.isArray(value)) {
-      return value
-        .map((val) => options.find((opt) => opt.value === val)?.label)
-        .join(", ");
-    }
-    return options.find((opt) => opt.value === value)?.label || placeholder;
   };
 
   return (
     <div className={`relative ${className}`} ref={selectRef}>
-      {/* Custom select input */}
+      {/* 选择框 */}
       <div
-        className="p-2 mt-1 rounded-md bg-white transition border border-gray-300  focus:ring-blue-500 w-full cursor-pointer flex items-center justify-between"
-        onClick={toggleDropdown}
-        role="button"
-        tabIndex={0}
-        aria-expanded={isOpen}
-        aria-haspopup="listbox"
+        className="p-2 mt-1 rounded-md bg-white border border-gray-300 w-full cursor-pointer flex items-center justify-between"
+        onClick={() => setIsOpen(!isOpen)}
       >
-        <span className="truncate">{getDisplayValue()}</span>
+        <span className="truncate">{displayValue || placeholder}</span>
         <svg
-          className={`w-4 h-4 ml-2 transition-transform ${isOpen ? "rotate-180" : ""}`}
+          className={`w-4 h-4 ml-2 transition-transform ${
+            isOpen ? "rotate-180" : ""
+          }`}
           viewBox="0 0 20 20"
           fill="currentColor"
         >
@@ -98,26 +81,19 @@ const Select: React.FC<SelectProps> = ({
         </svg>
       </div>
 
-      {/* Dropdown menu */}
+      {/* 下拉菜单 */}
       {isOpen && (
-        <div
-          className="absolute left-0 top-full mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto"
-          role="listbox"
-        >
+        <div className="absolute left-0 top-full mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
           {options.map((option) => (
             <div
               key={option.value}
-              className={`px-4 py-2 cursor-pointer hover:bg-gray-100 ${(multiple && Array.isArray(value) && value.includes(option.value)) ||
+              className={`px-4 py-2 cursor-pointer hover:bg-gray-100 ${
+                (Array.isArray(value) && value.includes(option.value)) ||
                 (!multiple && value === option.value)
-                ? "bg-blue-50"
-                : ""
-                }`}
+                  ? "bg-blue-50"
+                  : ""
+              }`}
               onClick={() => handleChange(option.value)}
-              role="option"
-              aria-selected={
-                (multiple && Array.isArray(value) && value.includes(option.value)) ||
-                (!multiple && value === option.value)
-              }
             >
               {option.label}
             </div>

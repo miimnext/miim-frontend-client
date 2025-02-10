@@ -6,10 +6,8 @@ import Input from "@/components/Input";
 import { TextArea } from "@/components/Textarea";
 import Select from "@/components/Select";
 import { FormRef } from "@/components/Form";
-import Upload from "@/components/Upload";
 
 const App = () => {
-
   const formRef = useRef<FormRef>(null);
   const [isFormValid, setIsFormValid] = useState<boolean>(false); // State for form validity
 
@@ -17,17 +15,10 @@ const App = () => {
     username: "",
     password: "",
     description: "",
-    sex: '1',
-    sex2: ['1', '2',
-      '3'
-    ]
-
+    sex: "1",
+    sex2: ["1", "2", "3"],
   };
-  const options = [
-    { value: "male", label: "男" },
-    { value: "female", label: "女" },
-    { value: "other", label: "其他" },
-  ]
+
   // ✅ 规则统一定义在 Form 里
   const formRules = {
     username: [{ required: true, message: "Username is required" }],
@@ -41,10 +32,15 @@ const App = () => {
     console.log("Form Submitted: ", data);
   };
 
-
   return (
     <div className="p-4">
-      <Form onSubmit={handleSubmit} form={formData} rules={formRules} ref={formRef} onValidityChange={setIsFormValid}>
+      <Form
+        onSubmit={handleSubmit}
+        form={formData}
+        rules={formRules}
+        ref={formRef}
+        onValidityChange={setIsFormValid}
+      >
         <FormItem label="Username" name="username">
           <Input />
         </FormItem>
@@ -62,7 +58,8 @@ const App = () => {
               { label: "1", value: "1" },
               { label: "2", value: "2" },
               { label: "3", value: "3" },
-            ]} />
+            ]}
+          />
         </FormItem>
         <FormItem label="多选" name="sex2">
           <Select
@@ -71,16 +68,17 @@ const App = () => {
               { label: "Editor", value: "2" },
               { label: "Viewer", value: "3" },
             ]}
-            multiple={true} />
+            multiple={true}
+          />
         </FormItem>
 
         <FormItem label="" name="submit" className="flex justify-center ">
-          <Button disabled={!isFormValid} className="w-full">123</Button>
+          <Button disabled={!isFormValid} className="w-full">
+            123
+          </Button>
         </FormItem>
 
-        <div>
-
-        </div>
+        <div></div>
       </Form>
     </div>
   );

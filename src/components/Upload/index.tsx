@@ -3,11 +3,21 @@ import Image from "next/image";
 import axios from "axios";
 import Button from "../Button";
 
+// Define types for success response and error
+interface UploadSuccessResponse {
+  success: boolean;
+  data?: string;
+}
+
+interface UploadError {
+  message: string;
+}
+
 interface UploadProps {
   uploadUrl: string;
   onUploadStart?: () => void;
-  onUploadSuccess?: (data: { success: boolean; data?: string }) => void;
-  onUploadError?: (error: string) => void;
+  onUploadSuccess?: (data: UploadSuccessResponse) => void;
+  onUploadError?: (error: UploadError) => void;
 }
 
 const Upload: React.FC<UploadProps> = ({
@@ -56,7 +66,7 @@ const Upload: React.FC<UploadProps> = ({
     onUploadStart?.();
 
     try {
-      const response = await axios.post<{ success: boolean; data?: string }>(
+      const response = await axios.post<UploadSuccessResponse>(
         uploadUrl,
         formData,
         {
@@ -83,7 +93,7 @@ const Upload: React.FC<UploadProps> = ({
           ? err.response.data.message
           : "Upload failed.";
       setError(errorMessage);
-      onUploadError?.(errorMessage);
+      onUploadError?.({ message: errorMessage });
     }
   };
 
