@@ -2,7 +2,7 @@ import React from "react";
 import ButtonLoading from "./ButtonLoading";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "danger";
+  variant?: "primary" | "warn" | "danger";
   size?: "sm" | "md" | "lg";
   loading?: boolean;
   disabled?: boolean; // 可以通过这个属性手动设置禁用状态
@@ -21,16 +21,16 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   // 基础样式
   const baseStyles =
-    "rounded-lg font-medium transition duration-300 flex items-center justify-center";
+    "rounded-lg font-medium text-text-1  flex items-center justify-center shadow-lg  hover:opacity-80 transition-all active:scale-95";
 
   // 按钮类型样式
   let variantStyles = "";
   if (variant === "primary") {
-    variantStyles = "bg-blue-500 text-white hover:bg-blue-600";
-  } else if (variant === "secondary") {
-    variantStyles = "bg-gray-500 text-white hover:bg-gray-600";
+    variantStyles = "bg-button-bg-1 hover:bg-primary-1";
+  } else if (variant === "warn") {
+    variantStyles = "bg-warn-1 hover:bg-warn-1";
   } else if (variant === "danger") {
-    variantStyles = "bg-red-500 text-white hover:bg-red-600";
+    variantStyles = "bg-danger-1 hover:bg-danger-1";
   }
 
   // 按钮大小样式
@@ -44,11 +44,11 @@ const Button: React.FC<ButtonProps> = ({
   }
 
   // 判断是否为加载中
-  const loadingStyles = loading ? "opacity-50 cursor-not-allowed" : "";
-
+  const loadingStyles = loading ? "cursor-not-allowed active:scale-100" : "";
   // 判断禁用样式
-  const disabledStyles =
-    disabled || loading ? "opacity-30 cursor-not-allowed" : "";
+  const disabledStyles = disabled
+    ? "opacity-60 cursor-not-allowed  active:scale-100"
+    : "";
 
   // 按钮的最终类名
   const buttonClasses = `${baseStyles} ${variantStyles} ${sizeStyles} ${disabledStyles} ${loadingStyles} ${

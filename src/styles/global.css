@@ -5,7 +5,7 @@
 @import './theme/dark.css';
 @import './theme/light.css';
 @import './theme/system.css';
-
+@import './var.css';
 
 * {
     margin: 0;
@@ -13,6 +13,9 @@
 }
 
 body {
-    background: var(--primary-1);
+    background: var(--background-1);
     color: var(--text-1);
+}
+html{
+    font-size: clamp(14px, 1vw, 18px); 
 }

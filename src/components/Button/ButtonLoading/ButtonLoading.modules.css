@@ -1,106 +1,23 @@
-.pl {
-  width: 60px;  
-  height: 60px;
-  display: block;
-  margin: auto;
+
+
+.loader {
+  border: 3px solid;
+  border-left-color: transparent;
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+ 
+  animation: spin89345 1s linear infinite;
 }
 
-.pl__ring {
-  animation: ringA 2s ease-in-out infinite;
-}
 
-.pl__ring--a {
-  stroke: #3498db;
-}
 
-.pl__ring--b {
-  animation-name: ringB;
-  stroke: #f39c12;
-}
+@keyframes spin89345 {
+  0% {
+    transform: rotate(0deg);
+  }
 
-.pl__ring--c {
-  animation-name: ringC;
-  stroke: #e74c3c;
-}
-
-.pl__ring--d {
-  animation-name: ringD;
-  stroke: #2ecc71;
-}
-
-/* Animations */
-@keyframes ringA {
-  0%, 100% {
-    stroke-dasharray: 0 660;
-    stroke-dashoffset: -330;
-  }
-  25% {
-    stroke-dasharray: 60 600;
-    stroke-dashoffset: -595;
-  }
-  50% {
-    stroke-dasharray: 120 540;
-    stroke-dashoffset: -660;
-  }
-  75% {
-    stroke-dasharray: 180 480;
-    stroke-dashoffset: -825;
-  }
-}
-
-@keyframes ringB {
-  0%, 100% {
-    stroke-dasharray: 0 220;
-    stroke-dashoffset: -110;
-  }
-  25% {
-    stroke-dasharray: 20 200;
-    stroke-dashoffset: -195;
-  }
-  50% {
-    stroke-dasharray: 40 180;
-    stroke-dashoffset: -220;
-  }
-  75% {
-    stroke-dasharray: 60 160;
-    stroke-dashoffset: -250;
-  }
-}
-
-@keyframes ringC {
-  0%, 100% {
-    stroke-dasharray: 0 440;
-    stroke-dashoffset: 0;
-  }
-  25% {
-    stroke-dasharray: 60 380;
-    stroke-dashoffset: -180;
-  }
-  50% {
-    stroke-dasharray: 120 320;
-    stroke-dashoffset: -220;
-  }
-  75% {
-    stroke-dasharray: 180 260;
-    stroke-dashoffset: -260;
-  }
-}
-
-@keyframes ringD {
-  0%, 100% {
-    stroke-dasharray: 0 440;
-    stroke-dashoffset: 0;
-  }
-  25% {
-    stroke-dasharray: 60 380;
-    stroke-dashoffset: -180;
-  }
-  50% {
-    stroke-dasharray: 120 320;
-    stroke-dashoffset: -220;
-  }
-  75% {
-    stroke-dasharray: 180 260;
-    stroke-dashoffset: -260;
+  100% {
+    transform: rotate(360deg);
   }
 }

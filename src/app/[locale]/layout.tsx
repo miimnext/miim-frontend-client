@@ -1,5 +1,5 @@
 import Header from "./(layout)/Header";
-import Footer from "./(layout)/Footer";
+// import Footer from "./(layout)/Footer";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import Providers from "../providers";
@@ -36,9 +36,7 @@ export default async function Layout({
         <NextIntlClientProvider messages={messages}>
           <Providers>
             <Header />
-            {/* <Loading /> */}
-            {children}
-            <Footer />
+            <main>{children}</main>
             <Modal />
           </Providers>
         </NextIntlClientProvider>

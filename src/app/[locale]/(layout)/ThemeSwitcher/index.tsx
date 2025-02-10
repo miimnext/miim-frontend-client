@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components";
 import { Theme } from "@/enum/common";
 import { setCookiesTheme } from "@/utils/cookies";
 export default function ThemeSwitcher() {
@@ -17,27 +18,10 @@ export default function ThemeSwitcher() {
   };
 
   return (
-    <div className="flex gap-4 p-4 justify-center ">
-      <button
-        onClick={() => toggleTheme(Theme.Light)}
-        className="px-4 py-2 bg-blue-400 text-white font-semibold rounded-lg shadow-md hover:bg-blue-500 transition-all duration-300"
-      >
-        🌞 Light Mode
-      </button>
-
-      <button
-        onClick={() => toggleTheme(Theme.Dark)}
-        className="px-4 py-2 bg-gray-800 text-white font-semibold rounded-lg shadow-md hover:bg-gray-900 transition-all duration-300"
-      >
-        🌜 Dark Mode
-      </button>
-
-      <button
-        onClick={() => toggleTheme(Theme.System)}
-        className="px-4 py-2 font-semibold rounded-lg shadow-md transition-all duration-300"
-      >
-        🔄 System Mode
-      </button>
+    <div className="flex gap-4  justify-center ">
+      <Button onClick={() => toggleTheme(Theme.Light)}>🌞 Light Mode</Button>
+      <Button onClick={() => toggleTheme(Theme.Dark)}>🌜 Dark Mode</Button>
+      <Button onClick={() => toggleTheme(Theme.System)}>🔄 System Mode</Button>
     </div>
   );
 }

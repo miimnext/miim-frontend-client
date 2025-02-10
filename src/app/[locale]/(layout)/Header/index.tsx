@@ -5,6 +5,7 @@ import LanguageSwitcher from "../LanguageSwitcher"; // 引入 LanguageSwitcher
 
 import { FaHome, FaPen } from "react-icons/fa";
 import ThemeSwitcher from "../ThemeSwitcher";
+import { Button } from "@/components";
 
 const navLinks = [
   { href: "/", label: "首页", icon: <FaHome /> },
@@ -15,8 +16,8 @@ export default React.memo(function Header() {
   const t = useTranslations();
 
   return (
-    <header className=" shadow-md py-4 px-8">
-      <div className="flex justify-between items-center">
+    <header className="shadow-md  sticky top-0 h-[--header-height]">
+      <div className="flex justify-between items-center  bg-background-1  h-full">
         <div className="flex items-center">
           <Link
             href="/"
@@ -31,10 +32,12 @@ export default React.memo(function Header() {
             <Link
               key={href}
               href={href}
-              className="flex items-center ml-6 text-lg text-gray-800 hover:bg-gray-100 py-2 px-4 rounded-md transition-all duration-200 hover:translate-y-[-3px]"
+              className="flex items-center text-lg text-text-1 hover:bg-gray-100  mx-2 rounded-md "
             >
-              {icon}
-              {label}
+              <Button>
+                {icon}
+                {label}
+              </Button>
             </Link>
           ))}
         </nav>

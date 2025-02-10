@@ -4,10 +4,9 @@ import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation"; // 使用正确的导入
 import { Locale } from "@/enum/locales";
 import React from "react";
+import Button from "@/components/Button";
 
 // 按钮的公共样式
-const buttonStyles =
-  "px-4 py-2 rounded-md text-gray-800 bg-gray-200 hover:bg-gray-300 transition duration-200";
 
 export default React.memo(function LanguageSwitcher() {
   const router = useRouter();
@@ -30,12 +29,8 @@ export default React.memo(function LanguageSwitcher() {
 
   return (
     <div className="flex items-center space-x-4">
-      <button onClick={() => changeLocale(Locale.zh)} className={buttonStyles}>
-        中文
-      </button>
-      <button onClick={() => changeLocale(Locale.en)} className={buttonStyles}>
-        English
-      </button>
+      <Button onClick={() => changeLocale(Locale.zh)}>中文</Button>
+      <Button onClick={() => changeLocale(Locale.en)}>English</Button>
     </div>
   );
 });
