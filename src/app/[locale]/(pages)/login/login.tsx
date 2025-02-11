@@ -2,35 +2,45 @@ import React, { useState, useRef } from "react";
 import { Button, FormItem, Input } from "@/components";
 import Form, { FormRef } from "@/components/Form";
 import { ModalEnum } from "@/enum/ModalEnum";
-import { openPersistentModal } from "@/store/modalSlice";
+import { openPersistentModal, closePersistentModal } from "@/store/modalSlice";
 import { useDispatch } from "react-redux";
+import UserApi, { LoginInterface } from "@/api/User";
+import { useLoading } from "@/hooks/useLoading";
+import { handlerUserLogin } from "@/store/authSlice";
+import { setToken } from "@/utils/cookies";
 
 export default function Login() {
   const dispatch = useDispatch();
-  const formRef = useRef<FormRef>(null);
-  const [isFormValid, setIsFormValid] = useState<boolean>(false); // State for form validity
+  const formRef = useRef<FormRef>(null); // Ref to form for validation
+  const [isFormValid, setIsFormValid] = useState(false); // State to track form validity
+  const { startLoading, stopLoading } = useLoading(); // Loading hook
 
-  const formData = {
+  // Initial form data
+  const initialFormData: LoginInterface = {
     username: "",
     password: "",
   };
 
+  // Form validation rules
   const formRules = {
     username: [{ required: true, message: "Username is required" }],
     password: [
       { required: true, message: "Password is required" },
-      { minLength: 6, message: "Must be at least 6 characters" },
+      { minLength: 6, message: "Password must be at least 6 characters" },
     ],
   };
-
-  // Submit form function
-  const handleSubmit = async (data: { [key: string]: string | string[] }) => {
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        console.log("Form submitted successfully with data:", data);
-        resolve();
-      }, 2000); // Simulate 2 seconds delay
-    });
+  // Handle form submission
+  const handleSubmit = async (payload: LoginInterface) => {
+    startLoading();
+    const { token, data } = await UserApi.login(payload);
+    if (token) {
+      setToken(token);
+      dispatch(handlerUserLogin({ token, user: data }));
+      closePersistentModal();
+      stopLoading();
+    } else {
+      console.error("Login failed: user data is null");
+    }
   };
 
   return (
@@ -38,22 +48,24 @@ export default function Login() {
       <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">
         登录账户
       </h2>
-      <Form
-        form={formData}
+      <Form // Pass the LoginInterface type here
+        form={initialFormData}
         onSubmit={handleSubmit}
         ref={formRef}
         rules={formRules}
-        onValidityChange={setIsFormValid} // Pass the callback
+        onValidityChange={setIsFormValid} // Pass the callback to track form validity
       >
         <FormItem label="用户名" name="username">
-          <Input></Input>
+          <Input />
         </FormItem>
         <FormItem label="密码" name="password">
-          <Input type="password"></Input>
+          <Input type="password" />
         </FormItem>
-        <FormItem label="" name="">
+        <FormItem label="" name="" className="flex justify-center">
           {/* Disable the button if the form is invalid */}
-          <Button disabled={!isFormValid}>登录</Button>
+          <Button disabled={!isFormValid} className="w-full">
+            登录
+          </Button>
         </FormItem>
         <div>{`Form valid: ${isFormValid ? "Yes" : "No"}`}</div>
       </Form>
@@ -61,12 +73,12 @@ export default function Login() {
       <div className="mt-4 text-center">
         <div className="text-sm text-gray-600">
           没有账户？{" "}
-          <div
+          <span
             className="text-blue-600 hover:underline cursor-pointer"
             onClick={() => dispatch(openPersistentModal(ModalEnum.SignupModal))}
           >
             注册
-          </div>
+          </span>
         </div>
       </div>
     </div>

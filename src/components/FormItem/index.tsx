@@ -60,7 +60,7 @@ const FormItem: React.FC<FormItemProps> = ({
   };
 
   return (
-    <div className={`"form-item mb-4 " ${className}`}>
+    <div className={`form-item mb-4 ${className ? className : ""}`}>
       {label && (
         <label
           htmlFor={name}

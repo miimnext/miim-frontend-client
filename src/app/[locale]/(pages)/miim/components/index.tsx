@@ -4,9 +4,10 @@ import Upload from "./Upload";
 import Modal from "./Modal";
 import Form from "./Form";
 import Menu from "./Menu";
-import InfiniteScroll from "./InfiniteScroll";
+import List from "./List";
 import Tabs from "./Tabs";
 import Notification from "./Notification";
+import VirtualScroller from "./VirtualScroller";
 
 const componentsMaps = {
   Select,
@@ -15,9 +16,10 @@ const componentsMaps = {
   Modal,
   Form,
   Menu,
-  InfiniteScroll,
+  List,
   Tabs,
   Notification,
+  VirtualScroller,
 };
 
 export default componentsMaps;

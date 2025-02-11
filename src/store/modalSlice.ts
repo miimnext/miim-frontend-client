@@ -23,8 +23,6 @@ export const modalSlice = createSlice({
 
     // 关闭普通模态框（通过索引）
     closeModal: (state, action: PayloadAction<number>) => {
-      console.log(123123123);
-
       state.modalList.splice(action.payload, 1); // 通过索引移除 modalList 中的模态框
     },
 

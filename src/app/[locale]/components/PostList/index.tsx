@@ -1,12 +1,14 @@
 import { Link } from "@/i18n/routing";
 import Image from "next/image";
 import { Post } from "@/types/post";
+import { Button } from "@/components";
 
 type PostListProps = {
   posts: Post[];
+  handlerDelete: (id: number) => void;
 };
 
-export default function PostList({ posts }: PostListProps) {
+export default function PostList({ posts, handlerDelete }: PostListProps) {
   return (
     <ul className="list-none p-0 m-0">
       {posts.map((post) => (
@@ -36,6 +38,7 @@ export default function PostList({ posts }: PostListProps) {
               {post.title}
             </Link>
           </div>
+          <Button onClick={() => handlerDelete(post.id)}>删除</Button>
         </li>
       ))}
     </ul>

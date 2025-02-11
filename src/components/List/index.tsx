@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 import Loading from "@/components/Loading";
-type InfiniteScrollProps = {
+type ListProps = {
   onLoad: () => void; // 加载更多数据的函数
   isLoading: boolean; // 是否正在加载中
   hasMore: boolean; // 是否还有更多数据
   children: React.ReactNode; // 要包裹的子元素
 };
 
-const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
+const List: React.FC<ListProps> = ({
   onLoad,
   isLoading,
   hasMore,
@@ -59,4 +59,4 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
   );
 };
 
-export default InfiniteScroll;
+export default List;

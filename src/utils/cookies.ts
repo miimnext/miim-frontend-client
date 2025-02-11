@@ -1,17 +1,22 @@
-// src/utils/cookies.ts
 import Cookies from "js-cookie";
-
-// 获取主题，默认值为 "system"
+const tokeyKey = "SSSID";
+// 获取主题色
 export const getCookiesTheme = (): string => {
-  return Cookies.get("theme") || "system"; // 如果 cookie 中没有主题，返回 "system"
+  return Cookies.get("theme") || "system";
 };
 
-// 设置主题到 Cookie 中
+// 设置主题色
 export const setCookiesTheme = (theme: string): void => {
-  Cookies.set("theme", theme, { expires: 365 }); // 设置主题并将其存储 365 天
+  Cookies.set("theme", theme, { expires: 365 });
 };
 
-// 删除主题 Cookie
-export const removeCookiesTheme = (): void => {
-  Cookies.remove("theme");
+export const getToken = () => {
+  return Cookies.get(tokeyKey);
+};
+export const setToken = (token: string) => {
+  return Cookies.set(tokeyKey, token);
+};
+
+export const removeToken = () => {
+  return Cookies.remove(tokeyKey);
 };

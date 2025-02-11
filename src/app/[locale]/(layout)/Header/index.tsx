@@ -1,8 +1,11 @@
+"use client";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import React from "react";
 import LanguageSwitcher from "../LanguageSwitcher"; // 引入 LanguageSwitcher
-
+import { openPersistentModal } from "@/store/modalSlice";
+import { ModalEnum } from "@/enum/ModalEnum";
+import { useDispatch } from "react-redux";
 import { FaHome, FaPen } from "react-icons/fa";
 import ThemeSwitcher from "../ThemeSwitcher";
 import { Button } from "@/components";
@@ -14,7 +17,7 @@ const navLinks = [
 ];
 export default React.memo(function Header() {
   const t = useTranslations();
-
+  const dispatch = useDispatch();
   return (
     <header className="shadow-md  sticky top-0 h-[--header-height]">
       <div className="flex justify-between items-center  bg-background-1  h-full">
@@ -40,6 +43,16 @@ export default React.memo(function Header() {
               </Button>
             </Link>
           ))}
+          <Button
+            onClick={() => dispatch(openPersistentModal(ModalEnum.LoginModal))}
+          >
+            login
+          </Button>
+          <Button
+            onClick={() => dispatch(openPersistentModal(ModalEnum.SignupModal))}
+          >
+            sign up
+          </Button>
         </nav>
       </div>
     </header>
