@@ -14,7 +14,7 @@ const mockData: Data[] = Array.from({ length: 1000000 }, (_, index) => ({
   description: `This is the description for item ${index + 1}`,
 }));
 
-const renderItem = (item: Data, index: number) => (
+const renderItem = (item: Data) => (
   <div
     style={{
       display: "flex",

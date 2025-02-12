@@ -43,8 +43,6 @@ export const modalSlice = createSlice({
     closePersistentModal: (state) => {
       state.persistentModal = null; // 移除持久化模态框
       // 可选：从 URL 中删除模态框参数
-      console.log(123123);
-
       const searchParams = new URLSearchParams(window.location.search);
       searchParams.delete("modal");
       const pathname = window.location.pathname;

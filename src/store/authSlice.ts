@@ -1,16 +1,15 @@
-import { getToken } from "@/utils/cookies";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AuthState {
-  token: string | null;
-  user: object | null;
-  isLogin: boolean;
+  token?: string | null;
+  user?: object | null;
+  isLogin?: boolean;
 }
 
 const initialState: AuthState = {
   token: null,
   user: null,
-  isLogin: false
+  isLogin: false,
 };
 
 const authSlice = createSlice({
@@ -30,14 +29,13 @@ const authSlice = createSlice({
       state.user = null;
       state.isLogin = false;
     },
-    initializeAuth: (state) => {
-      const token = getToken(); // 获取 token
+    initializeAuth: (state, action: PayloadAction<string | undefined>) => {
+      const token = action.payload;
       if (token) {
         state.token = token;
         state.isLogin = true;
-        // user 信息可以通过 API 请求获取
       }
-    }
+    },
   },
 });
 

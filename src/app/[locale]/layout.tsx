@@ -1,12 +1,9 @@
-import Header from "./(layout)/Header";
-import { notFound } from "next/navigation";
-import { cookies } from "next/headers";
-import { routing } from "@/i18n/routing";
 import { NextIntlClientProvider } from "next-intl";
+import Header from "./(layout)/Header";
 import Providers from "../providers";
-import InitializeApp from "../initializeApp";
-import { getMessages } from "next-intl/server";
-import { Locale } from "@/enum/locales";
+import { initFuc } from "../initializeApp";
+import Modal from "@/components/utils/Modal";
+import PwaServiceWorker from "../initializeApp/PwaServiceWorker";
 import "@/styles/global.css";
 export default async function Layout({
   children,
@@ -15,30 +12,20 @@ export default async function Layout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
-
-  // init.1 设置语言
-  const { locale } = await params;
-  if (!routing.locales.includes(locale as Locale)) {
-    notFound(); // 语言无效时返回 404
-  }
-  const messages = await getMessages();
-
-  //init.2 获取 cookie 中的主题
-  const cookieStore = await cookies();
-  const theme = cookieStore.get("theme")?.value || "system";
+  // 初始化设置
+  const { settting, token } = await initFuc(params);
   return (
-    <html lang={locale} data-theme={theme}>
+    <html lang={settting.locale} data-theme={settting.theme}>
       <head>
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body>
-        <NextIntlClientProvider messages={messages}>
-          <Providers>
+        <NextIntlClientProvider messages={settting.messages}>
+          <Providers token={token}>
             <Header />
             <main>{children}</main>
-
-            { /* init.3 初始化应用 */}
-            <InitializeApp />
+            <Modal />
+            <PwaServiceWorker />
           </Providers>
         </NextIntlClientProvider>
       </body>

@@ -19,7 +19,6 @@ const VirtualScroller = <T,>({
   data,
   itemHeight,
   renderItem,
-  bufferSize = 5,
 }: VirtualScrollerProps<T>) => {
   const [visibleItems, setVisibleItems] = useState<T[]>([]); // 当前可见项
   const [scrollPosition, setScrollPosition] = useState<ScrollPosition>({

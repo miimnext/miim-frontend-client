@@ -1,7 +1,5 @@
-"use client"; // 这是客户端组件标记
-
+"use client";
 import { useEffect } from "react";
-
 export default function PwaServiceWorker() {
   useEffect(() => {
     // 仅在生产环境注册 Service Worker，开发环境禁用

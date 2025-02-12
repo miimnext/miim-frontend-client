@@ -22,7 +22,6 @@ const Button: React.FC<ButtonProps> = ({
   // 基础样式
   const baseStyles =
     "rounded-lg font-medium text-text-1  flex items-center justify-center shadow-lg  hover:opacity-80 transition-all active:scale-95";
-
   // 按钮类型样式
   let variantStyles = "";
   if (variant === "primary") {
