@@ -20,47 +20,50 @@ export function useLoading() {
 
     // Cleanup on unmount
     return () => {
-      // Ensure proper cleanup only when the loading count is zero
-      if (loadingRoot) {
-        loadingRoot.unmount();
-      }
-      if (loadingContainer) {
-        document.body.removeChild(loadingContainer);
-      }
-      loadingContainer = null;
-      loadingRoot = null;
-      loadingCount = 0; // Reset count
+      setTimeout(() => {
+        if (loadingRoot) {
+          loadingRoot.unmount();
+          loadingRoot = null;
+        }
+        if (loadingContainer) {
+          document.body.removeChild(loadingContainer);
+          loadingContainer = null;
+        }
+        loadingCount = 0;
+      }, 0);
     };
   }, []);
 
   // Start loading
   const startLoading = useCallback(() => {
-    // If the root doesn't exist, create it
     if (loadingCount === 0 && !loadingRoot && loadingContainer) {
-      loadingRoot = ReactDOM.createRoot(loadingContainer); // Create root instance
+      loadingRoot = ReactDOM.createRoot(loadingContainer);
     }
-
-    // Render loading component if the root is available
     if (loadingRoot) {
-      loadingRoot.render(<GlobalLoading />); // Render loading component
+      loadingRoot.render(<GlobalLoading />);
     }
-
-    loadingCount++; // Increment count
+    loadingCount++;
   }, []);
+
   // Debounced close loading
   const debouncedCloseLoading = useDebounce(() => {
     if (loadingCount === 0 && loadingRoot) {
-      loadingRoot.unmount(); // Unmount loading component
-      loadingRoot = null; // Reset the root
+      queueMicrotask(() => {
+        if (loadingRoot) {
+          loadingRoot.unmount();
+          loadingRoot = null;
+        }
+      });
     }
   }, CLOSE_DELAY);
+
   // Stop loading
   const stopLoading = useCallback(() => {
-    loadingCount = Math.max(loadingCount - 1, 0); // Decrement count, ensure >= 0
+    loadingCount = Math.max(loadingCount - 1, 0);
     if (loadingCount === 0) {
-      debouncedCloseLoading(); // Call debounced close loading
+      debouncedCloseLoading();
     }
-  }, [debouncedCloseLoading]); // Include debouncedCloseLoading in the dependency array
+  }, [debouncedCloseLoading]);
 
   return { startLoading, stopLoading };
 }

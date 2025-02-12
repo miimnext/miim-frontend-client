@@ -1,16 +1,13 @@
 import Header from "./(layout)/Header";
-// import Footer from "./(layout)/Footer";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
-import Providers from "../providers";
-import Modal from "@/components/utils/Modal";
-import PwaServiceWorker from "../PwaServiceWorker";
-import { NextIntlClientProvider } from "next-intl";
-import "@/styles/global.css";
 import { routing } from "@/i18n/routing";
+import { NextIntlClientProvider } from "next-intl";
+import Providers from "../providers";
+import InitializeApp from "../initializeApp";
 import { getMessages } from "next-intl/server";
 import { Locale } from "@/enum/locales";
-// import Loading from "../components/Loading";
+import "@/styles/global.css";
 export default async function Layout({
   children,
   params,
@@ -18,15 +15,17 @@ export default async function Layout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
-  const { locale } = await params; // **先解构 params**
 
+  // init.1 设置语言
+  const { locale } = await params;
   if (!routing.locales.includes(locale as Locale)) {
     notFound(); // 语言无效时返回 404
   }
-
-  const cookieStore = await cookies(); // **这里不需要 await**
-  const theme = cookieStore.get("theme")?.value || "system";
   const messages = await getMessages();
+
+  //init.2 获取 cookie 中的主题
+  const cookieStore = await cookies();
+  const theme = cookieStore.get("theme")?.value || "system";
   return (
     <html lang={locale} data-theme={theme}>
       <head>
@@ -37,10 +36,11 @@ export default async function Layout({
           <Providers>
             <Header />
             <main>{children}</main>
-            <Modal />
+
+            { /* init.3 初始化应用 */}
+            <InitializeApp />
           </Providers>
         </NextIntlClientProvider>
-        <PwaServiceWorker></PwaServiceWorker>
       </body>
     </html>
   );

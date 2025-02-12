@@ -36,7 +36,7 @@ export default function Login() {
     if (token) {
       setToken(token);
       dispatch(handlerUserLogin({ token, user: data }));
-      closePersistentModal();
+      dispatch(closePersistentModal());
       stopLoading();
     } else {
       console.error("Login failed: user data is null");

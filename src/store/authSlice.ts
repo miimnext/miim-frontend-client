@@ -1,14 +1,16 @@
-// store/authSlice.ts
+import { getToken } from "@/utils/cookies";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AuthState {
   token: string | null;
   user: object | null;
+  isLogin: boolean;
 }
 
 const initialState: AuthState = {
   token: null,
   user: null,
+  isLogin: false
 };
 
 const authSlice = createSlice({
@@ -21,14 +23,24 @@ const authSlice = createSlice({
     ) => {
       state.token = action.payload.token;
       state.user = action.payload.user;
+      state.isLogin = true;
     },
     logout: (state) => {
       state.token = null;
       state.user = null;
+      state.isLogin = false;
     },
+    initializeAuth: (state) => {
+      const token = getToken(); // 获取 token
+      if (token) {
+        state.token = token;
+        state.isLogin = true;
+        // user 信息可以通过 API 请求获取
+      }
+    }
   },
 });
 
-export const { handlerUserLogin, logout } = authSlice.actions;
+export const { handlerUserLogin, logout, initializeAuth } = authSlice.actions;
 
 export default authSlice.reducer;

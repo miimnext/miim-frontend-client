@@ -5,10 +5,11 @@ import React from "react";
 import LanguageSwitcher from "../LanguageSwitcher"; // 引入 LanguageSwitcher
 import { openPersistentModal } from "@/store/modalSlice";
 import { ModalEnum } from "@/enum/ModalEnum";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaHome, FaPen } from "react-icons/fa";
 import ThemeSwitcher from "../ThemeSwitcher";
 import { Button } from "@/components";
+import { RootState } from "@/store";
 
 const navLinks = [
   { href: "/", label: "首页", icon: <FaHome /> },
@@ -17,6 +18,7 @@ const navLinks = [
 ];
 export default React.memo(function Header() {
   const t = useTranslations();
+  const isLogin = useSelector((state: RootState) => state.auth.isLogin);
   const dispatch = useDispatch();
   return (
     <header className="shadow-md  sticky top-0 h-[--header-height]">
@@ -43,16 +45,20 @@ export default React.memo(function Header() {
               </Button>
             </Link>
           ))}
-          <Button
-            onClick={() => dispatch(openPersistentModal(ModalEnum.LoginModal))}
-          >
-            login
-          </Button>
-          <Button
-            onClick={() => dispatch(openPersistentModal(ModalEnum.SignupModal))}
-          >
-            sign up
-          </Button>
+          {!isLogin && (
+            <>
+              <Button
+                onClick={() => dispatch(openPersistentModal(ModalEnum.LoginModal))}
+              >
+                login
+              </Button>
+              <Button
+                onClick={() => dispatch(openPersistentModal(ModalEnum.SignupModal))}
+              >
+                sign up
+              </Button>
+            </>
+          )}
         </nav>
       </div>
     </header>
