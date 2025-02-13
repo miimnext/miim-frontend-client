@@ -17,6 +17,9 @@ const UserApi = {
   login(data: LoginInterface): Promise<ApiResponse<null>> {
     return request.post(`/login`, data);
   },
+  userinfo(): Promise<ApiResponse<null>> {
+    return request.get(`/userinfo`);
+  },
 };
 
 export default UserApi;

@@ -6,11 +6,12 @@ import { openPersistentModal, closePersistentModal } from "@/store/modalSlice";
 import { useDispatch } from "react-redux";
 import UserApi, { LoginInterface } from "@/api/User";
 import { useLoading } from "@/hooks/useLoading";
-import { handlerUserLogin } from "@/store/authSlice";
 import { setToken } from "@/utils/cookies";
+import { initializeAuth, initUserInfo } from "@/store/authSlice";
+import { AppDispatch } from "@/store";
 
 export default function Login() {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const formRef = useRef<FormRef>(null); // Ref to form for validation
   const [isFormValid, setIsFormValid] = useState(false); // State to track form validity
   const { startLoading, stopLoading } = useLoading(); // Loading hook
@@ -32,14 +33,14 @@ export default function Login() {
   // Handle form submission
   const handleSubmit = async (payload: LoginInterface) => {
     startLoading();
-    const { token, data } = await UserApi.login(payload);
-    if (token) {
-      setToken(token);
-      dispatch(handlerUserLogin({ token, user: data }));
+    const { data } = await UserApi.login(payload);
+
+    if (data.token) {
+      setToken(data.token);
+      dispatch(initializeAuth(data.token));
+      dispatch(initUserInfo());
       dispatch(closePersistentModal());
       stopLoading();
-    } else {
-      console.error("Login failed: user data is null");
     }
   };
 

@@ -21,6 +21,7 @@ export default function ModalWrapper() {
 
   // Avoid dispatching during render, use useEffect instead
   useEffect(() => {
+    console.log(1111111);
     dispatch(initializePersistentModal());
   }, [dispatch]);
 

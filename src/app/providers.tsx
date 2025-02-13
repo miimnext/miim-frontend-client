@@ -3,7 +3,7 @@
 import { ReactNode, useEffect } from "react";
 import { Provider } from "react-redux";
 import { store } from "@/store"; // 引入 Redux Store
-import { initializeAuth } from "@/store/authSlice";
+import { initializeAuth, initUserInfo } from "@/store/authSlice";
 import { connectWebSocket } from "@/utils/websocket";
 import { usePathname } from "@/i18n/routing";
 import { openPersistentModal } from "@/store/modalSlice";
@@ -14,9 +14,13 @@ interface ProvidersProps {
 }
 export default function Providers({ children, token }: ProvidersProps) {
   connectWebSocket();
+
   const pathname = usePathname();
   useEffect(() => {
     store.dispatch(initializeAuth(token));
+    if (token) {
+      store.dispatch(initUserInfo());
+    }
     if (pathname == "/chat") {
       openPersistentModal(ModalEnum.LoginModal);
     }

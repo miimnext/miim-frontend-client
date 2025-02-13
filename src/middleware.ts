@@ -6,6 +6,7 @@ const intlMiddleware = createMiddleware(routing);
 
 export function middleware(request: NextRequest) {
   const response = intlMiddleware(request); // 保留 next-intl 的路由匹配
+
   const url = request.nextUrl.clone();
   const pathname = url.pathname.replace(/^\/(zh|en)/, "") || "/";
   const protectedRoutes = ["/chat", "/profile"];

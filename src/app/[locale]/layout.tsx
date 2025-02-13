@@ -1,9 +1,7 @@
 import { NextIntlClientProvider } from "next-intl";
 import Header from "./(layout)/Header";
 import Providers from "../providers";
-import { initFuc } from "../initializeApp";
-import Modal from "@/components/utils/Modal";
-import PwaServiceWorker from "../initializeApp/PwaServiceWorker";
+import InitializeApp, { initFuc } from "../initializeApp";
 import "@/styles/global.css";
 export default async function Layout({
   children,
@@ -22,10 +20,11 @@ export default async function Layout({
       <body>
         <NextIntlClientProvider messages={settting.messages}>
           <Providers token={token}>
+            <InitializeApp></InitializeApp>
             <Header />
             <main>{children}</main>
-            <Modal />
-            <PwaServiceWorker />
+            {/* <Modal /> */}
+            {/* <PwaServiceWorker /> */}
           </Providers>
         </NextIntlClientProvider>
       </body>

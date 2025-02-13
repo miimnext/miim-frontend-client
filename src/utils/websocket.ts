@@ -1,20 +1,13 @@
-export interface ChatMessageInterface {
-  type?: string; // 消息类型: 'chat', 'system', 'notification'
-  user?: string; // 发送者
-  message?: string; // 消息内容
-  sendTime: number;
-  action?: string;
-  content?: string;
-  status?: "PENDING" | "SENT" | "FAILED"; // 消息状态
-}
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 let socket: WebSocket | null = null;
 let messageCallbacks: Array<{
   type: string;
-  callback: (message: ChatMessageInterface) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  callback: (message: any) => void;
 }> = []; // 存储消息类型和对应的回调函数
 
-let messageQueue: ChatMessageInterface[] = []; // 消息队列，用于存储待发送的消息
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let messageQueue: any = []; // 消息队列，用于存储待发送的消息
 
 // 连接状态
 export enum WebSocketStatus {
@@ -34,14 +27,15 @@ export const getWebSocketStatus = (): WebSocketStatus => {
 // 连接 WebSocket
 export const connectWebSocket = (): void => {
   if (!socket || socket.readyState === WebSocket.CLOSED) {
-    socket = new WebSocket("ws://localhost:8081/ws");
+    socket = new WebSocket("ws://localhost:8082/ws?user_id=10001");
 
     socket.onopen = () => {
       currentStatus = WebSocketStatus.OPEN;
       console.log("WebSocket 连接成功");
 
       // 连接成功后，发送所有缓存的消息
-      messageQueue.forEach((message) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      messageQueue.forEach((message: any) => {
         message.status = "SENT"; // 更新状态为已发送
         socket!.send(JSON.stringify(message));
       });
@@ -50,7 +44,7 @@ export const connectWebSocket = (): void => {
 
     socket.onmessage = (event: MessageEvent) => {
       console.log("收到消息:", event.data);
-      const chatMessage: ChatMessageInterface = JSON.parse(event.data);
+      const chatMessage = JSON.parse(event.data);
       // 通知所有的回调函数（根据类型过滤）
       messageCallbacks.forEach((entry) => {
         if (entry.type === chatMessage.type) {
@@ -74,27 +68,12 @@ export const connectWebSocket = (): void => {
 };
 
 // 发送聊天消息
-export const sendMessage = ({
-  type,
-  user,
-  message,
-  action,
-  content,
-}: {
-  action?: string;
-  content?: string;
-  type?: string;
-  user?: string;
-  message?: string;
-}): void => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const sendMessage = (msg: any): void => {
   const sendTime = new Date().getTime();
-  const chatMessage: ChatMessageInterface = {
-    type,
-    user,
-    message,
+  const chatMessage = {
+    ...msg,
     sendTime,
-    action,
-    content,
     status: "PENDING", // 初始状态设置为 PENDING
   };
 
@@ -112,7 +91,7 @@ export const sendMessage = ({
 // 订阅 WebSocket 消息（指定类型）
 export const subscribeToMessages = (
   type: string,
-  callback: (message: ChatMessageInterface) => void
+  callback: (message: any) => void
 ): void => {
   // 如果该类型的回调已存在，避免重复注册
   if (
@@ -127,7 +106,7 @@ export const subscribeToMessages = (
 // 取消订阅 WebSocket 消息（指定类型）
 export const unsubscribeFromMessages = (
   type: string,
-  callback: (message: ChatMessageInterface) => void
+  callback: (message: any) => void
 ): void => {
   messageCallbacks = messageCallbacks.filter(
     (entry) => !(entry.type === type && entry.callback === callback) // 移除指定类型和回调的订阅

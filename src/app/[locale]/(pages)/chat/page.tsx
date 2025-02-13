@@ -13,11 +13,6 @@ const Chat = () => {
   const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
-    sendMessage({
-      action: "subscribe",
-      content: "chat",
-    });
-
     const handleNewMessage = (msg: ChatMessageInterface): void => {
       setMessages((prev) => [msg, ...prev]); // Update message list
     };
@@ -29,9 +24,9 @@ const Chat = () => {
     };
   }, []);
 
-  const handleSendMessage = (type: string): void => {
+  const handleSendMessage = (): void => {
     if (message.trim()) {
-      const msg = { type, user: "Anonymous", message }; // Default user name as 'Anonymous'
+      const msg = { type: "private", content: message, receiver_id: "10001" }; // Default user name as 'Anonymous'
       sendMessage(msg); // Send message with type
       setMessage(""); // Clear input box
     }
