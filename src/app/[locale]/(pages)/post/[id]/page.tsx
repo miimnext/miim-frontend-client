@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { notFound } from "next/navigation";
 import CommentSection from "@/components/CommentSection";
 import CommonApi from "@/api/Common";
@@ -23,7 +24,7 @@ export default async function PostPage({
   };
 
   // ✅ `await` 文章数据
-  const post = await getPostByID(id);
+  const post: any = await getPostByID(id);
 
   // 如果没有找到文章，跳转到 404 页面
   if (!post) {

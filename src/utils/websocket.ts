@@ -1,3 +1,4 @@
+import { User } from "@/types/user";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 let socket: WebSocket | null = null;
 let messageCallbacks: Array<{
@@ -25,9 +26,12 @@ export const getWebSocketStatus = (): WebSocketStatus => {
 };
 
 // 连接 WebSocket
-export const connectWebSocket = (): void => {
+
+export const connectWebSocket = (user: User): void => {
   if (!socket || socket.readyState === WebSocket.CLOSED) {
-    socket = new WebSocket("ws://localhost:8082/ws?user_id=10001");
+    console.log(user, 123123123);
+
+    socket = new WebSocket("ws://localhost:8082/ws?user_id=" + user.id);
 
     socket.onopen = () => {
       currentStatus = WebSocketStatus.OPEN;

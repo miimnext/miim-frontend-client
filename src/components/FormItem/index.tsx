@@ -71,7 +71,7 @@ const FormItem: React.FC<FormItemProps> = ({
       )}
       {React.cloneElement(children, {
         name,
-        value: formData[name] || "",
+        value: (formData[name] as string | string[]) || "",
         onChange: handleChange,
         error: error, // Pass error message directly (string or null)
         className: `${children.props.className}`, // Apply red border if there's an error

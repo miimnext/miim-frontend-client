@@ -1,19 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useEffect, useState } from "react";
 import {
   sendMessage,
   subscribeToMessages,
   unsubscribeFromMessages,
-  ChatMessageInterface,
 } from "@/utils/websocket";
 import { Button } from "@/components";
 
 const Chat = () => {
-  const [messages, setMessages] = useState<ChatMessageInterface[]>([]);
+  const [messages, setMessages] = useState<any[]>([]);
   const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
-    const handleNewMessage = (msg: ChatMessageInterface): void => {
+    const handleNewMessage = (msg: any): void => {
       setMessages((prev) => [msg, ...prev]); // Update message list
     };
 
@@ -71,10 +71,7 @@ const Chat = () => {
           className="flex-1 p-4 text-lg border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-          <Button
-            onClick={() => handleSendMessage("chat")}
-            className="bg-blue-500 "
-          >
+          <Button onClick={() => handleSendMessage()} className="bg-blue-500 ">
             发送聊天
           </Button>
           {/* <Button

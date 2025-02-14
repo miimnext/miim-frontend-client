@@ -6,20 +6,19 @@ import { openPersistentModal, closePersistentModal } from "@/store/modalSlice";
 import { useDispatch } from "react-redux";
 import UserApi, { LoginInterface } from "@/api/User";
 import { useLoading } from "@/hooks/useLoading";
-import { setToken } from "@/utils/cookies";
-import { initializeAuth, initUserInfo } from "@/store/authSlice";
-import { AppDispatch } from "@/store";
 
+import { AppDispatch } from "@/store";
+import UserInit from "@/hooks/useUserInit";
+// import useUserInit from "@/hooks/useUserInit";
 export default function Login() {
   const dispatch: AppDispatch = useDispatch();
   const formRef = useRef<FormRef>(null); // Ref to form for validation
   const [isFormValid, setIsFormValid] = useState(false); // State to track form validity
   const { startLoading, stopLoading } = useLoading(); // Loading hook
-
   // Initial form data
   const initialFormData: LoginInterface = {
-    username: "",
-    password: "",
+    username: "admin",
+    password: "123456",
   };
 
   // Form validation rules
@@ -33,15 +32,13 @@ export default function Login() {
   // Handle form submission
   const handleSubmit = async (payload: LoginInterface) => {
     startLoading();
-    const { data } = await UserApi.login(payload);
-
-    if (data.token) {
-      setToken(data.token);
-      dispatch(initializeAuth(data.token));
-      dispatch(initUserInfo());
-      dispatch(closePersistentModal());
-      stopLoading();
-    }
+    await UserApi.login(payload).then((res) => {
+      if (res.data.token) {
+        UserInit(res.data.token);
+        dispatch(closePersistentModal());
+        stopLoading();
+      }
+    });
   };
 
   return (
@@ -49,12 +46,12 @@ export default function Login() {
       <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">
         登录账户
       </h2>
-      <Form // Pass the LoginInterface type here
+      <Form
         form={initialFormData}
         onSubmit={handleSubmit}
         ref={formRef}
         rules={formRules}
-        onValidityChange={setIsFormValid} // Pass the callback to track form validity
+        onValidityChange={setIsFormValid}
       >
         <FormItem label="用户名" name="username">
           <Input />
@@ -63,14 +60,13 @@ export default function Login() {
           <Input type="password" />
         </FormItem>
         <FormItem label="" name="" className="flex justify-center">
-          {/* Disable the button if the form is invalid */}
           <Button disabled={!isFormValid} className="w-full">
             登录
           </Button>
         </FormItem>
         <div>{`Form valid: ${isFormValid ? "Yes" : "No"}`}</div>
       </Form>
-
+      {/* <Button onClick={() => handleSubmit()}>登录</Button> */}
       <div className="mt-4 text-center">
         <div className="text-sm text-gray-600">
           没有账户？{" "}

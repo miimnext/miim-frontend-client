@@ -21,11 +21,13 @@ export async function initFuc(params: Params) {
     token,
   };
 }
-export default function InitializeApp() {
+const InitializeApp = () => {
   return (
     <>
       <Modal />
       <PwaServiceWorker />
     </>
   );
-}
+};
+
+export default InitializeApp;
