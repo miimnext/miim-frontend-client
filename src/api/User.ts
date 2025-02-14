@@ -2,6 +2,7 @@
 import request from "@/utils/request";
 import { Post } from "@/types/post";
 import { ApiResponse } from "./type";
+import { User } from "@/types/user";
 // types/api.ts
 export interface LoginInterface {
   [key: string]: string;
@@ -10,14 +11,14 @@ export interface LoginInterface {
 }
 const UserApi = {
   // 创建文章
-  register(data: Post): Promise<ApiResponse<null>> {
+  register(data: LoginInterface): Promise<ApiResponse<{ token: string }>> {
     return request.post("/register", data);
   },
   // 删除
-  login(data: LoginInterface): Promise<ApiResponse<null>> {
+  login(data: LoginInterface): Promise<ApiResponse<{ token: string }>> {
     return request.post(`/login`, data);
   },
-  userinfo(): Promise<ApiResponse<null>> {
+  userinfo(): Promise<ApiResponse<User>> {
     return request.get(`/userinfo`);
   },
 };

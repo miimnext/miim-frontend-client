@@ -9,8 +9,6 @@ export interface ApiListResponse<T> {
 export interface ApiResponse<T> {
   status: number;
   message: string;
-  data: {
-    data: T;
-    token?: string;
-  };
+  data: T
+
 }

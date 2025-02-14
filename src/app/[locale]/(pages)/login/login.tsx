@@ -33,7 +33,9 @@ export default function Login() {
   const handleSubmit = async (payload: LoginInterface) => {
     startLoading();
     await UserApi.login(payload).then((res) => {
-      if (res.data.token) {
+      console.log(res);
+
+      if (res.data) {
         UserInit(res.data.token);
         dispatch(closePersistentModal());
         stopLoading();

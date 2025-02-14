@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "@/types/user";
+import { connectWebSocket } from "@/utils/websocket";
 interface AuthState {
   token?: string | null;
   user?: User | null;
@@ -29,10 +30,11 @@ const authSlice = createSlice({
       }
     },
     initializeUserinfo: (state, action: PayloadAction<{ data: User }>) => {
-      console.log(123123);
+      console.log(action.payload);
 
       localStorage.setItem("user", JSON.stringify(action.payload.data));
       state.user = action.payload.data;
+      connectWebSocket(action.payload.data);
     },
   },
 });

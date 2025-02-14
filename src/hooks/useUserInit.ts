@@ -7,7 +7,10 @@ const UserInit = async (token: string | undefined) => {
     setToken(token);
     store.dispatch(initializeAuth(token));
     await UserApi.userinfo().then((res) => {
-      if (res.data) {
+      console.log(res);
+
+
+      if (res) {
         store.dispatch(initializeUserinfo({ data: res.data }));
       }
     });

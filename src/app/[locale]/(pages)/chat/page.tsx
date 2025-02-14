@@ -11,22 +11,23 @@ import { Button } from "@/components";
 const Chat = () => {
   const [messages, setMessages] = useState<any[]>([]);
   const [message, setMessage] = useState<string>("");
+  const [receiverID, setReceiverID] = useState<string>("");
 
   useEffect(() => {
     const handleNewMessage = (msg: any): void => {
       setMessages((prev) => [msg, ...prev]); // Update message list
     };
 
-    subscribeToMessages("chat", handleNewMessage);
+    subscribeToMessages("private", handleNewMessage);
 
     return () => {
-      unsubscribeFromMessages("chat", () => {});
+      unsubscribeFromMessages("private", () => { });
     };
   }, []);
 
   const handleSendMessage = (): void => {
     if (message.trim()) {
-      const msg = { type: "private", content: message, receiver_id: "10001" }; // Default user name as 'Anonymous'
+      const msg = { type: "private", content: message, receiver_id: receiverID }; // Default user name as 'Anonymous'
       sendMessage(msg); // Send message with type
       setMessage(""); // Clear input box
     }
@@ -34,18 +35,26 @@ const Chat = () => {
 
   return (
     <div className="flex flex-col h-[--main-height] bg-white p-8">
+      <div className="mt-6 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+        <input
+          type="text"
+          value={receiverID}
+          onChange={(e) => setReceiverID(e.target.value)}
+          placeholder="对方id"
+          className="flex-1 p-4 text-lg border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
       {/* Chat history */}
       <ul className="mt-6 p-0 flex-1 max-h-[70vh] overflow-y-auto space-y-4">
         {messages.map((msg, index) => (
           <li
             key={index}
-            className={`p-4 rounded-md shadow-md space-y-2 ${
-              msg.type === "chat"
-                ? "bg-blue-50 border-l-4 border-blue-500"
-                : msg.type === "system"
-                  ? "bg-gray-50 border-l-4 border-gray-500"
-                  : "bg-green-50 border-l-4 border-green-500"
-            }`}
+            className={`p-4 rounded-md shadow-md space-y-2 ${msg.type === "chat"
+              ? "bg-blue-50 border-l-4 border-blue-500"
+              : msg.type === "system"
+                ? "bg-gray-50 border-l-4 border-gray-500"
+                : "bg-green-50 border-l-4 border-green-500"
+              }`}
           >
             <div className="flex items-center space-x-2">
               <span className="font-bold text-lg text-gray-700">
@@ -56,7 +65,7 @@ const Chat = () => {
                 {new Date(msg.sendTime).toLocaleString()}
               </span>
             </div>
-            <p className="text-lg text-gray-700">{msg.message}</p>
+            <p className="text-lg text-gray-700">{msg.content}</p>
           </li>
         ))}
       </ul>

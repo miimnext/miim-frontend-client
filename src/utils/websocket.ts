@@ -27,11 +27,9 @@ export const getWebSocketStatus = (): WebSocketStatus => {
 
 // 连接 WebSocket
 
-export const connectWebSocket = (user: User): void => {
+export const connectWebSocket = ({ id }: User): void => {
   if (!socket || socket.readyState === WebSocket.CLOSED) {
-    console.log(user, 123123123);
-
-    socket = new WebSocket("ws://localhost:8082/ws?user_id=" + user.id);
+    socket = new WebSocket("ws://localhost:8082/ws?user_id=" + id);
 
     socket.onopen = () => {
       currentStatus = WebSocketStatus.OPEN;

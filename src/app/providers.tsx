@@ -15,15 +15,9 @@ interface ProvidersProps {
 export default function Providers({ children, token }: ProvidersProps) {
   const pathname = usePathname();
   // eslint-disable-next-line react-hooks/exhaustive-deps
+
   useEffect(() => {
-    const initialize = async () => {
-      await UserInit(token);
-      const user = store.getState().auth.user;
-      if (user) {
-        connectWebSocket(user);
-      }
-    };
-    initialize();
+    UserInit(token);
   }, [token]);
   useEffect(() => {
     if (pathname == "/chat") {
