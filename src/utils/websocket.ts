@@ -30,11 +30,8 @@ export const getWebSocketStatus = (): WebSocketStatus => {
 export const connectWebSocket = ({ id }: User): void => {
   if (!socket || socket.readyState === WebSocket.CLOSED) {
     socket = new WebSocket("ws://localhost:8082/ws?user_id=" + id);
-
     socket.onopen = () => {
       currentStatus = WebSocketStatus.OPEN;
-      console.log("WebSocket 连接成功");
-
       // 连接成功后，发送所有缓存的消息
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       messageQueue.forEach((message: any) => {
@@ -89,7 +86,6 @@ export const sendMessage = (msg: any): void => {
     console.log("WebSocket 未连接，消息已缓存");
   }
 };
-
 // 订阅 WebSocket 消息（指定类型）
 export const subscribeToMessages = (
   type: string,
@@ -104,7 +100,6 @@ export const subscribeToMessages = (
     messageCallbacks.push({ type, callback });
   }
 };
-
 // 取消订阅 WebSocket 消息（指定类型）
 export const unsubscribeFromMessages = (
   type: string,
