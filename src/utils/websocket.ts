@@ -43,6 +43,10 @@ export const connectWebSocket = ({ id }: User): void => {
 
     socket.onmessage = (event: MessageEvent) => {
       console.log("收到消息:", event.data);
+      if (event.data.Type === "conversations") {
+        return localStorage.setItem("conversations", event.data.Conversations);
+      }
+
       const chatMessage = JSON.parse(event.data);
       // 通知所有的回调函数（根据类型过滤）
       messageCallbacks.forEach((entry) => {

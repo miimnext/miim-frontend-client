@@ -17,6 +17,8 @@ const ChatList = ({ setSelectedChat }: ChatListProps) => {
     { receiverId: "789789", name: "用户C" },
   ]);
 
+  console.log(localStorage.getItem("conversations"));
+
   // Track the selected chat
   const [selectedChat, setSelectedChatState] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false); // Modal visibility state
@@ -33,7 +35,8 @@ const ChatList = ({ setSelectedChat }: ChatListProps) => {
         user_id: String(user_id),
         receiver_id: receiverId,
       });
-      if (res.code !== 200) {
+
+      if (res.data.code !== 200) {
         return alert(res.message);
       } else {
         const newChat = {
