@@ -13,6 +13,7 @@ const withPWAModified = withPWA({
 });
 
 // 组合插件（先处理国际化，再处理 PWA）
-const nextConfig: NextConfig = {};
-
+const nextConfig: NextConfig = {
+  reactStrictMode: false,
+};
 export default withNextIntl(withPWAModified(nextConfig));

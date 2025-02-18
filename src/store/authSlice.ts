@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "@/types/user";
-import { connectWebSocket } from "@/utils/websocket";
+import { connectWebSocket, closeWebSocket } from "@/utils/websocket";
+import { removeToken } from "@/utils/cookies";
+
 interface AuthState {
   token?: string | null;
-  user?: User;
+  user: User;
   isLogin: boolean;
 }
 
@@ -21,6 +23,8 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
+      removeToken();
+      closeWebSocket();
       state.token = null;
       state.user = {
         id: "",
@@ -38,7 +42,7 @@ const authSlice = createSlice({
     initializeUserinfo: (state, action: PayloadAction<{ data: User }>) => {
       localStorage.setItem("user", JSON.stringify(action.payload.data));
       state.user = action.payload.data;
-      connectWebSocket(action.payload.data);
+      connectWebSocket(action.payload.data.id);
     },
   },
 });

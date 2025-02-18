@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { getToken } from "./cookies";
-
+import { store } from "@/store";
+import { logout } from "@/store/authSlice";
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.example.com";
 
 const request = axios.create({
@@ -24,7 +25,10 @@ request.interceptors.request.use(
 );
 request.interceptors.response.use(
   <T>(response: AxiosResponse<T>) => {
-    console.log("Response received:", response);
+    const responseData = response.data as { data: { code: number } };
+    if (responseData.data.code == 401) {
+      return store.dispatch(logout());
+    }
     return response.data; // 直接返回 response.data
   },
   (error) => {

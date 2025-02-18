@@ -5,16 +5,15 @@ import ChatMain from "./components/ChatMain";
 import ChatList from "./components/ChatList";
 
 const Chat = () => {
-  const [selectedChat, setSelectedChat] = useState<string | null>(null);
+  const [conversation_id, setConversation_id] = useState<string | null>(null);
   const [isChatListOpen, setIsChatListOpen] = useState(false);
-
   const toggleChatList = () => setIsChatListOpen((prev) => !prev);
 
   return (
     <div className="flex h-[--main-height] bg-gray-50">
       {/* 会话列表（PC端） */}
       <div className="hidden lg:block w-[300px] bg-white p-4 shadow-lg rounded-lg">
-        <ChatList setSelectedChat={setSelectedChat} />
+        <ChatList selectChat={setConversation_id} />
       </div>
 
       {/* 移动端弹出层按钮 */}
@@ -33,15 +32,15 @@ const Chat = () => {
             onClick={toggleChatList}
           />
           <div className="lg:hidden fixed top-0 left-0 bg-white w-[300px] h-full p-4 shadow-lg rounded-lg z-20">
-            <ChatList setSelectedChat={setSelectedChat} />
+            <ChatList selectChat={setConversation_id} />
           </div>
         </>
       )}
 
       {/* 右侧会话内容 */}
       <div className="flex-1 h-[--main-height]">
-        {selectedChat ? (
-          <ChatMain receiverId={selectedChat} />
+        {conversation_id ? (
+          <ChatMain conversation_id={conversation_id} />
         ) : (
           <div className="flex items-center flex-1 justify-center h-[--main-height]">
             <div className="text-center text-gray-500 p-8 bg-white rounded-lg shadow-lg w-full max-w-[600px]">

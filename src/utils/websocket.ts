@@ -1,14 +1,8 @@
-import { User } from "@/types/user";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 let socket: WebSocket | null = null;
-let messageCallbacks: Array<{
-  type: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  callback: (message: any) => void;
-}> = []; // 存储消息类型和对应的回调函数
+let messageCallbacks: Map<string, Array<(message: any) => void>> = new Map(); // 使用 Map 来存储消息类型和回调函数
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let messageQueue: any = []; // 消息队列，用于存储待发送的消息
+let messageQueue: any[] = []; // 消息队列，用于存储待发送的消息
 
 // 连接状态
 export enum WebSocketStatus {
@@ -26,53 +20,66 @@ export const getWebSocketStatus = (): WebSocketStatus => {
 };
 
 // 连接 WebSocket
-
-export const connectWebSocket = ({ id }: User): void => {
+export const connectWebSocket = (id: string): void => {
   if (!socket || socket.readyState === WebSocket.CLOSED) {
     socket = new WebSocket("ws://localhost:8082/ws?user_id=" + id);
+    currentStatus = WebSocketStatus.CONNECTING;
+
     socket.onopen = () => {
       currentStatus = WebSocketStatus.OPEN;
-      // 连接成功后，发送所有缓存的消息
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      console.log("WebSocket 连接成功");
+      // 发送缓存消息
       messageQueue.forEach((message: any) => {
-        message.status = "SENT"; // 更新状态为已发送
+        message.status = "SENT";
         socket!.send(JSON.stringify(message));
       });
-      messageQueue = []; // 清空消息队列
+      messageQueue = [];
     };
 
     socket.onmessage = (event: MessageEvent) => {
       console.log("收到消息:", event.data);
-      if (event.data.Type === "conversations") {
-        return localStorage.setItem("conversations", event.data.Conversations);
+
+      if (event.data === "ping") {
+        handlePing();
+        return;
       }
 
       const chatMessage = JSON.parse(event.data);
-      // 通知所有的回调函数（根据类型过滤）
-      messageCallbacks.forEach((entry) => {
-        if (entry.type === chatMessage.type) {
-          entry.callback(chatMessage); // 只调用匹配类型的回调
-        }
-      });
+      const callbacks = messageCallbacks.get(chatMessage.type);
+      if (callbacks) {
+        callbacks.forEach((callback) => callback(chatMessage));
+      }
     };
 
     socket.onerror = (error: Event) => {
       currentStatus = WebSocketStatus.CLOSED;
       console.error("WebSocket 发生错误:", error);
+      reconnectWebSocket(id);
     };
 
     socket.onclose = () => {
       currentStatus = WebSocketStatus.CLOSED;
       console.log("WebSocket 连接关闭");
-      // 如果需要的话，重新连接
-      // connectWebSocket();
+      reconnectWebSocket(id);
     };
   }
 };
 
+// 处理 ping 消息
+const handlePing = (): void => {
+  console.log("收到服务器心跳响应");
+  if (socket) {
+    socket.send("pong");
+  }
+};
+
 // 发送聊天消息
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const sendMessage = (msg: any): void => {
+  if (!msg.type) {
+    console.error("消息缺少类型");
+    return;
+  }
+
   const sendTime = new Date().getTime();
   const chatMessage = {
     ...msg,
@@ -90,33 +97,65 @@ export const sendMessage = (msg: any): void => {
     console.log("WebSocket 未连接，消息已缓存");
   }
 };
+
 // 订阅 WebSocket 消息（指定类型）
 export const subscribeToMessages = (
   type: string,
   callback: (message: any) => void
 ): void => {
-  // 如果该类型的回调已存在，避免重复注册
-  if (
-    !messageCallbacks.some(
-      (entry) => entry.type === type && entry.callback === callback
-    )
-  ) {
-    messageCallbacks.push({ type, callback });
+  if (!messageCallbacks.has(type)) {
+    messageCallbacks.set(type, []);
+  }
+
+  const callbacks = messageCallbacks.get(type);
+  if (callbacks && !callbacks.includes(callback)) {
+    callbacks.push(callback);
   }
 };
+
 // 取消订阅 WebSocket 消息（指定类型）
 export const unsubscribeFromMessages = (
   type: string,
   callback: (message: any) => void
 ): void => {
-  messageCallbacks = messageCallbacks.filter(
-    (entry) => !(entry.type === type && entry.callback === callback) // 移除指定类型和回调的订阅
-  );
+  const callbacks = messageCallbacks.get(type);
+  if (callbacks) {
+    messageCallbacks.set(
+      type,
+      callbacks.filter((cb) => cb !== callback)
+    );
+  }
 };
 
 // 关闭 WebSocket 连接
 export const closeWebSocket = (): void => {
   if (socket) {
     socket.close();
+    socket = null;
+    currentStatus = WebSocketStatus.CLOSED;
   }
+};
+
+// 重连 WebSocket
+const reconnectWebSocket = (id: string): void => {
+  console.log("尝试重连 WebSocket...");
+  let retryCount = 0;
+
+  const attemptReconnect = () => {
+    if (retryCount >= 5) {
+      console.log("达到最大重试次数，停止重连");
+      return;
+    }
+
+    retryCount++;
+    setTimeout(
+      () => {
+        console.log(`重连第 ${retryCount} 次...`);
+        connectWebSocket(id);
+      },
+      Math.pow(2, retryCount) * 1000
+    ); // 使用指数退避，延迟增长
+  };
+
+  attemptReconnect();
 };
