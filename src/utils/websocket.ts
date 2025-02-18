@@ -39,7 +39,7 @@ export const connectWebSocket = (id: string): void => {
     socket.onmessage = (event: MessageEvent) => {
       console.log("收到消息:", event.data);
 
-      if (event.data === "ping") {
+      if (event.data === "ping" || event.data === "pong") {
         handlePing();
         return;
       }
