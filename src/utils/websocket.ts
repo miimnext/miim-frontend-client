@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 let socket: WebSocket | null = null;
-let messageCallbacks: Map<string, Array<(message: any) => void>> = new Map(); // 使用 Map 来存储消息类型和回调函数
-
+let retryCount = 0;
+const messageCallbacks: Map<string, Array<(message: any) => void>> = new Map(); // 使用 Map 来存储消息类型和回调函数
 let messageQueue: any[] = []; // 消息队列，用于存储待发送的消息
-
 // 连接状态
 export enum WebSocketStatus {
   CLOSED = "CLOSED",
@@ -18,13 +17,11 @@ let currentStatus: WebSocketStatus = WebSocketStatus.CLOSED;
 export const getWebSocketStatus = (): WebSocketStatus => {
   return currentStatus;
 };
-
 // 连接 WebSocket
 export const connectWebSocket = (id: string): void => {
   if (!socket || socket.readyState === WebSocket.CLOSED) {
     socket = new WebSocket("ws://localhost:8082/ws?user_id=" + id);
     currentStatus = WebSocketStatus.CONNECTING;
-
     socket.onopen = () => {
       currentStatus = WebSocketStatus.OPEN;
       console.log("WebSocket 连接成功");
@@ -35,17 +32,13 @@ export const connectWebSocket = (id: string): void => {
       });
       messageQueue = [];
     };
-
     socket.onmessage = (event: MessageEvent) => {
-      console.log("收到消息:", event.data);
-
-      if (event.data === "ping" || event.data === "pong") {
+      if (event.data === "ping") {
         handlePing();
         return;
       }
-
       const chatMessage = JSON.parse(event.data);
-      const callbacks = messageCallbacks.get(chatMessage.type);
+      const callbacks = messageCallbacks.get(chatMessage.message_type);
       if (callbacks) {
         callbacks.forEach((callback) => callback(chatMessage));
       }
@@ -67,7 +60,6 @@ export const connectWebSocket = (id: string): void => {
 
 // 处理 ping 消息
 const handlePing = (): void => {
-  console.log("收到服务器心跳响应");
   if (socket) {
     socket.send("pong");
   }
@@ -139,7 +131,6 @@ export const closeWebSocket = (): void => {
 // 重连 WebSocket
 const reconnectWebSocket = (id: string): void => {
   console.log("尝试重连 WebSocket...");
-  let retryCount = 0;
 
   const attemptReconnect = () => {
     if (retryCount >= 5) {

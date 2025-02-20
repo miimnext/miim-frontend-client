@@ -71,7 +71,7 @@ const ChatList = ({ selectChat }: ChatListProps) => {
   };
 
   return (
-    <div className="space-y-4">
+    <>
       {/* Tab 切换按钮 */}
       <div className="flex justify-between items-center">
         <div className="flex space-x-4">
@@ -158,7 +158,7 @@ const ChatList = ({ selectChat }: ChatListProps) => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
