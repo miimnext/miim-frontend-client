@@ -16,7 +16,7 @@ export default React.memo(function Header() {
 
   const navLinks = [
     { href: "/", label: t("home"), icon: <FaHome /> },
-    { href: "/chat", label: "chat", icon: <FaHome /> },
+    { href: "/chat", label: "chat", icon: <FaHome />, needLogin: true },
   ];
   const dispatch = useDispatch();
   const isLogin = useSelector((state: RootState) => state.auth.isLogin);
@@ -28,10 +28,11 @@ export default React.memo(function Header() {
     <header className="shadow-md sticky top-0 h-[--header-height]">
       <div className="flex justify-between items-center bg-background-1 h-full px-4 sm:px-8">
         <div className="flex items-center">
-          {navLinks.map(({ href, label, icon }) => (
+          {navLinks.map(({ href, label, icon, needLogin }) => (
             <Link
               key={href}
               href={href}
+              needLogin={needLogin}
               className="flex items-center text-text-1 hover:bg-gray-100 mx-2 rounded-md"
             >
               <Button>

@@ -1,0 +1,9 @@
+/* System 主题（自定义） */
+[data-theme="system"] {
+  --primary-1: #5486e2;
+  --background-1: #5486e2;
+  --text-1: #f1f1f1;
+  --button-bg-1: #739ae2;
+  --warn-1: #ffc069;
+  --danger-1: #ff2414;
+}

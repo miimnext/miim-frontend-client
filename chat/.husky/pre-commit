@@ -1,0 +1,11 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# 执行 ESLint 检查
+# npm run lint
+
+# 执行 Prettier 格式化
+# npm run prettier -- --check .
+
+# 如果你希望格式化代码并自动提交，可以使用以下命令
+# npm run prettier -- --write .
