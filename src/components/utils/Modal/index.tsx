@@ -1,46 +1,15 @@
 "use client";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import {
-  openModal,
-  closeModal,
-  closePersistentModal,
-  initializePersistentModal,
-} from "@/store/modalSlice";
-import { useEffect } from "react";
-import styles from "./Modal.module.scss";
-import ModalMaps from "./ModalMaps";
+import { openModal, closeModal } from "@/store/modalSlice";
 import React from "react";
 
 export default function ModalWrapper() {
   const dispatch = useDispatch();
   const modalList = useSelector((state: RootState) => state.modal.modalList);
-  const persistentModal = useSelector(
-    (state: RootState) => state.modal.persistentModal
-  );
-
-  // Avoid dispatching during render, use useEffect instead
-  useEffect(() => {
-    console.log(1111111);
-    dispatch(initializePersistentModal());
-  }, [dispatch]);
-
-  const SelectedModal = persistentModal ? ModalMaps[persistentModal] : null;
 
   return (
     <>
-      {/* Render persistent modal */}
-      {persistentModal && (
-        <div
-          className={styles.modalBackdrop}
-          onClick={() => dispatch(closePersistentModal())}
-        >
-          <div onClick={(e) => e.stopPropagation()}>
-            {SelectedModal && <SelectedModal />}
-          </div>
-        </div>
-      )}
-
       {/* Render regular modals */}
       {modalList.length > 0 &&
         modalList.map((modal, index) => (

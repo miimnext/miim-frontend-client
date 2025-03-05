@@ -1,99 +1,138 @@
 "use client";
 import { useDispatch, useSelector } from "react-redux";
-import { FaHome, FaBars, FaTimes } from "react-icons/fa";
-import { useState } from "react";
-import { openPersistentModal } from "@/store/modalSlice";
-import { ModalEnum } from "@/enum/ModalEnum";
+import {
+  FaHome,
+  FaPenNib,
+  FaFortAwesomeAlt,
+  FaCaretDown,
+} from "react-icons/fa";
 import { RootState } from "@/store";
 import { Button } from "@/components";
-import Link from "@/components/Link";
+import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "../LanguageSwitcher";
-import React from "react";
-
-export default React.memo(function Header() {
-  const t = useTranslations();
-
-  const navLinks = [
-    { href: "/", label: t("home"), icon: <FaHome /> },
-    { href: "/chat", label: "chat", icon: <FaHome />, needLogin: true },
-  ];
+import { useRouter } from "@/i18n/routing";
+import { useCallback, useRef, useState } from "react";
+import useOutsideClick from "@/hooks/useOutsideClick";
+import { logout } from "@/store/authSlice";
+const AuthNav = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const isLogin = useSelector((state: RootState) => state.auth.isLogin);
-  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!isMobileMenuOpen);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 控制下拉菜单的显示
+  const dropdownRef = useRef<HTMLDivElement>(null); // 用于检测点击外部
+  // 未登录时的导航项
+  const GuestNav = [
+    {
+      label: "signin",
+      path: "/signin",
+      icon: null,
+    },
+    {
+      label: "sign up",
+      path: "/signup",
+      icon: null,
+    },
+  ];
+
+  // 登录后的导航项
+  const UserNav = [
+    {
+      label: "create",
+      path: "/createPost",
+      icon: <FaPenNib />,
+    },
+    {
+      label: "profile",
+      path: "/profile",
+      icon: null,
+    },
+    {
+      label: "settings",
+      path: "/settings",
+      icon: null,
+    },
+    {
+      label: "logout",
+      path: "/logout",
+      icon: null,
+    },
+  ];
+  useOutsideClick(dropdownRef, () => setIsDropdownOpen(false));
+  // 处理导航点击
+  const handleNavigate = useCallback(
+    (path: string) => {
+      if (path !== "/logout") {
+        router.push(path, { scroll: false });
+      } else {
+        dispatch(logout());
+      }
+      setIsDropdownOpen(false); // 导航后关闭下拉菜单
+    },
+    [router, dispatch]
+  );
+  // 渲染导航按钮
+  const renderNavButtons = (
+    navItems: { label: string; path: string; icon: React.ReactNode | null }[]
+  ) => {
+    return navItems.map(({ label, path, icon }) => (
+      <Button key={path} onClick={() => handleNavigate(path)}>
+        {icon && icon} {label}
+      </Button>
+    ));
   };
   return (
-    <header className="shadow-md sticky top-0 h-[--header-height]">
+    <div className="relative flex gap-4" ref={dropdownRef}>
+      {isLogin ? (
+        <>
+          <Button
+            onClick={() => setIsDropdownOpen((prev) => !prev)}
+            className="gap-2 h-full"
+          >
+            <FaFortAwesomeAlt />
+            <FaCaretDown />
+          </Button>
+          {isDropdownOpen && (
+            <div className="absolute right-0 mt-4 w-48 bg-gray-200 border border-gray-100 rounded-lg shadow-lg">
+              {UserNav.map(({ label, path, icon }) => (
+                <div
+                  key={path}
+                  className="px-4 py-2 hover:bg-gray-300 cursor-pointer flex  items-center gap-3"
+                  onClick={() => handleNavigate(path)}
+                >
+                  {icon && icon} {label}
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      ) : (
+        renderNavButtons(GuestNav)
+      )}
+    </div>
+  );
+};
+
+export default function Header() {
+  const t = useTranslations();
+
+  return (
+    <header className="shadow-md sticky top-0 h-[--header-height] z-[100]">
       <div className="flex justify-between items-center bg-background-1 h-full px-4 sm:px-8">
         <div className="flex items-center">
-          {navLinks.map(({ href, label, icon, needLogin }) => (
-            <Link
-              key={href}
-              href={href}
-              needLogin={needLogin}
-              className="flex items-center text-text-1 hover:bg-gray-100 mx-2 rounded-md"
-            >
-              <Button>
-                {icon}
-                {label}
-              </Button>
-            </Link>
-          ))}
+          <Link key={"/"} href={"/"}>
+            <Button>
+              <FaHome />
+              {t("home")}
+            </Button>
+          </Link>
         </div>
-        <LanguageSwitcher /> {/* 语言切换组件 */}
-        {/* Mobile Menu Toggle */}
-        <div className="sm:hidden">
-          <Button onClick={toggleMobileMenu} className="text-xl">
-            {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
-          </Button>
+        <div className="flex gap-10">
+          <LanguageSwitcher />
+          {/* Desktop Navigation */}
+          <AuthNav></AuthNav>
         </div>
-        {/* Desktop Navigation */}
-        <nav className="hidden sm:flex items-center">
-          {!isLogin && (
-            <>
-              <Button
-                onClick={() =>
-                  dispatch(openPersistentModal(ModalEnum.LoginModal))
-                }
-              >
-                login
-              </Button>
-              <Button
-                onClick={() =>
-                  dispatch(openPersistentModal(ModalEnum.SignupModal))
-                }
-              >
-                sign up
-              </Button>
-            </>
-          )}
-        </nav>
-        {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
-          <nav className="absolute top-full left-0 w-full bg-background-1 p-4 sm:hidden">
-            {!isLogin && (
-              <>
-                <Button
-                  onClick={() =>
-                    dispatch(openPersistentModal(ModalEnum.LoginModal))
-                  }
-                >
-                  login
-                </Button>
-                <Button
-                  onClick={() =>
-                    dispatch(openPersistentModal(ModalEnum.SignupModal))
-                  }
-                >
-                  sign up
-                </Button>
-              </>
-            )}
-          </nav>
-        )}
       </div>
     </header>
   );
-});
+}

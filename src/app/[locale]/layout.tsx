@@ -3,11 +3,14 @@ import Header from "./(layout)/Header";
 import Providers from "../providers";
 import InitializeApp, { initFuc } from "../initializeApp";
 import "@/styles/global.css";
+import Sidebar from "./(layout)/Sidebar";
 export default async function Layout({
   children,
+  modal,
   params,
 }: {
   children: React.ReactNode;
+  modal: React.ReactNode;
   params: { locale: string };
 }) {
   // 初始化设置
@@ -22,9 +25,11 @@ export default async function Layout({
           <Providers token={token}>
             <InitializeApp></InitializeApp>
             <Header />
-            <main>{children}</main>
-            {/* <Modal /> */}
-            {/* <PwaServiceWorker /> */}
+            <main className="flex">
+              <Sidebar></Sidebar>
+              <div className="flex-1">{children}</div>
+            </main>
+            {modal}
           </Providers>
         </NextIntlClientProvider>
       </body>

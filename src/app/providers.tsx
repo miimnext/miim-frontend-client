@@ -1,25 +1,22 @@
 "use client";
-
-import { ReactNode, useEffect } from "react";
 import { Provider } from "react-redux";
-import { store } from "@/store"; // 引入 Redux Store
-import { usePathname } from "@/i18n/routing";
-import { openPersistentModal } from "@/store/modalSlice";
-import { ModalEnum } from "@/enum/ModalEnum";
-import UserInit from "@/hooks/useUserInit";
+import { createStore } from "@/store";
+import { ReactNode, useEffect } from "react";
+import { getUserInfo } from "@/store/authSlice";
 interface ProvidersProps {
   children: ReactNode;
-  token: string | undefined;
+  token?: string;
 }
-export default function Providers({ children, token }: ProvidersProps) {
-  const pathname = usePathname();
+const Providers = ({ children, token }: ProvidersProps) => {
+  const store = createStore({
+    auth: { token: token || null, user: null, isLogin: Boolean(token) }, // ✅ 初始状态直接设置好
+  });
   useEffect(() => {
-    UserInit(token);
-  }, [token]);
-  useEffect(() => {
-    if (pathname == "/chat") {
-      openPersistentModal(ModalEnum.LoginModal);
+    if (token) {
+      store.dispatch(getUserInfo());
     }
-  }, [pathname]);
+  }, [store, token]);
   return <Provider store={store}>{children}</Provider>;
-}
+};
+
+export default Providers;

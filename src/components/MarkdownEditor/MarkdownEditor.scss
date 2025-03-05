@@ -1,0 +1,39 @@
+.editor-toolbar.fullscreen {
+  z-index: 200;
+  height: var(--header-height);
+  background: var(--background-1);
+}
+
+.EasyMDEContainer .CodeMirror-fullscreen {
+  top: var(--header-height);
+}
+.editor-preview-side {
+  top: var(--header-height);
+  border: none;
+  border-left: 1px solid #ccc;
+}
+.EasyMDEContainer .CodeMirror-fullscreen {
+  border: none;
+  background: var(--background-1);
+}
+.CodeMirror .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word) {
+  background: none;
+}
+.CodeMirror-lines {
+  padding: 0;
+}
+.CodeMirror {
+  background: var(--background-1);
+  color: var(--Text-1);
+}
+.editor-preview {
+  background: var(--background-1);
+}
+.CodeMirror pre.CodeMirror-line,
+.CodeMirror pre.CodeMirror-line-like {
+  padding: 0;
+}
+.editor-toolbar button.active,
+.editor-toolbar button:hover {
+  background: none;
+}

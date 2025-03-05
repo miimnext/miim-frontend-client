@@ -11,10 +11,10 @@ type PostListProps = {
 export default function PostList({ posts, handlerDelete }: PostListProps) {
   return (
     <ul className="list-none p-0 m-0">
-      {posts.map((post) => (
+      {posts?.map((post) => (
         <li
           key={post.id}
-          className="flex items-center bg-white p-4 rounded-lg shadow-sm mb-4 gap-4"
+          className="flex items-center  p-4 rounded-lg shadow-sm mb-4 gap-4"
         >
           <div>{post.id}</div>
           <Image
@@ -24,9 +24,6 @@ export default function PostList({ posts, handlerDelete }: PostListProps) {
             height={72}
             priority={true} // Remove if not critical
             className="rounded-lg object-cover"
-            onError={(e) => {
-              e.currentTarget.src = "/images/post1.png"; // Fallback image
-            }}
           />
           <div className="flex-1 pl-4">
             <Link

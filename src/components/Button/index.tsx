@@ -1,6 +1,5 @@
 import React from "react";
 import ButtonLoading from "./ButtonLoading";
-
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "warn" | "danger";
   size?: "sm" | "md" | "lg";

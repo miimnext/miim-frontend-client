@@ -11,6 +11,7 @@ export function middleware(request: NextRequest) {
   const pathname = url.pathname.replace(/^\/(zh|en)/, "") || "/";
   const protectedRoutes = ["/chat", "/profile"];
   const token = request.cookies.get("SSSID")?.value;
+
   if (protectedRoutes.some((route) => pathname.startsWith(route))) {
     if (!token) {
       return NextResponse.redirect(new URL("/", url));

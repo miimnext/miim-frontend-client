@@ -2,9 +2,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
 @import "./theme/dark.css";
 @import "./theme/light.css";
-@import "./theme/system.css";
 @import "./var.css";
 
 * {
@@ -18,7 +20,45 @@ body {
 }
 
 html {
-  font-size: clamp(14px, 1vw, 18px);
+  font-size: clamp(14px, 1vw, 16px);
+}
+/* 恢复默认标题大小 */
+h1 {
+  font-size: 2.25rem; /* text-4xl */
+  font-weight: 700; /* font-bold */
+}
+h2 {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 600; /* font-semibold */
+}
+h3 {
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: 600; /* font-semibold */
+}
+h4 {
+  font-size: 1.25rem; /* text-xl */
+  font-weight: 500; /* font-medium */
+}
+h5 {
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 500; /* font-medium */
+}
+h6 {
+  font-size: 1rem; /* text-base */
+  font-weight: 500; /* font-medium */
+}
+/* In your global CSS or tailwind styles */
+ul, ol {
+  list-style-type: disc; /* Set default list-style for ul */
+  padding-left: 1.5rem;  /* Add padding for indented lists */
+}
+
+ol {
+  list-style-type: decimal; /* Set decimal numbers for ol */
+}
+
+li {
+  margin-bottom: 0.5rem; /* Add some space between list items */
 }
 
 @keyframes slideUp {

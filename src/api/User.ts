@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// api/CommonApi.ts
 import request from "@/utils/request";
 import { ApiResponse } from "./type";
 import { User } from "@/types/user";
@@ -25,6 +23,7 @@ const UserApi = {
   },
   CreateConversation(
     data: CreateConversationInterface
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<ApiResponse<any>> {
     return request.post(`/createConversation`, data);
   },

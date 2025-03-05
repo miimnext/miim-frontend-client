@@ -5,6 +5,7 @@ import ConversationsApi from "@/api/Chat";
 import UserApi from "@/api/User";
 import { Button } from "@/components";
 import { RootState } from "@/store";
+import { User } from "@/types/user";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -19,17 +20,17 @@ const ChatList = ({ selectChat }: ChatListProps) => {
   const [selectedChat, setSelectedChatState] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [receiverId, setReceiverId] = useState(""); // 目标用户ID输入框
-  const user_id = useSelector((state: RootState) => state.auth.user.id);
+  const userInfo = useSelector((state: RootState) => state.auth.user) as User;
 
   useEffect(() => {
-    if (user_id) {
+    if (userInfo.id) {
       async function fetchChats() {
         const res = await ConversationsApi.getConversations();
         setChats(res.data);
       }
       fetchChats();
     }
-  }, [user_id]);
+  }, [userInfo.id]);
 
   useEffect(() => {
     if (activeTab === "contacts") {
@@ -48,7 +49,7 @@ const ChatList = ({ selectChat }: ChatListProps) => {
   const handleAddChat = async () => {
     if (receiverId) {
       const res = await UserApi.CreateConversation({
-        user_id: String(user_id),
+        user_id: String(userInfo.id),
         receiver_id: receiverId,
       });
 

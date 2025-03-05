@@ -1,9 +1,0 @@
-/* 默认主题（Dark） */
-[data-theme="dark"] {
-  --primary-1: #333;
-  --background-1: #222;
-  --text-1: #fff;
-  --button-bg-1: #565151;
-  --warn-1: #ffc069;
-  --danger-1: #ff2414;
-}

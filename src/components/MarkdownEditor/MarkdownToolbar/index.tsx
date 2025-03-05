@@ -55,16 +55,16 @@ const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({ insertText }) => {
   ];
 
   return (
-    <div className="flex justify-around items-center mb-4  p-2 bg-gray-200 rounded-md shadow-md">
+    <div className="flex justify-around items-center  p-2 bg-gray-200  shadow-md">
       {toolbarButtons.map((button, index) => (
         <button
           key={index}
-          className={`relative group p-2 rounded-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100 hover:bg-gray-200 text-black }`}
+          className="relative group p-2 rounded-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100 hover:bg-gray-200 text-black dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
           onClick={button.action}
           aria-label={button.tooltip}
         >
           {button.label}
-          <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full text-xs text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full text-xs text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200 dark:text-gray-300">
             {button.tooltip}
           </span>
         </button>

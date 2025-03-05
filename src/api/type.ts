@@ -7,8 +7,20 @@ export interface ApiListResponse<T> {
 }
 
 export interface ApiResponse<T> {
-  status: number;
+  code: number;
   message: string;
-  data: T
+  data: T;
+}
 
+export interface optionsType {
+  id: number;
+  name: string;
+}
+
+export interface createPostParams {
+  content: string;
+  title: string;
+  category_ids: number[];
+  tag_ids: number[];
+  author_id: number;
 }

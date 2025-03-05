@@ -1,20 +1,23 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import UserApi from "@/api/User";
 import { User } from "@/types/user";
-import { connectWebSocket, closeWebSocket } from "@/utils/websocket";
-import { removeToken } from "@/utils/cookies";
+import { setToken, removeToken } from "@/utils/cookies";
 
-interface AuthState {
-  token?: string | null;
-  user: User;
+// Async thunk to fetch user info
+export const getUserInfo = createAsyncThunk("auth/getUserInfo", async () => {
+  const response = await UserApi.userinfo();
+  return response.data;
+});
+
+export interface AuthState {
+  token: string | null;
+  user: User | null;
   isLogin: boolean;
 }
 
 const initialState: AuthState = {
   token: null,
-  user: {
-    id: "",
-    username: "",
-  },
+  user: null,
   isLogin: false,
 };
 
@@ -24,28 +27,25 @@ const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       removeToken();
-      closeWebSocket();
       state.token = null;
-      state.user = {
-        id: "",
-        username: "",
-      };
+      state.user = null;
       state.isLogin = false;
     },
-    initializeAuth: (state, action: PayloadAction<string | undefined>) => {
+    initializeAuth: (state, action: PayloadAction<string>) => {
       const token = action.payload;
       if (token) {
+        setToken(token);
         state.token = token;
         state.isLogin = true;
       }
     },
-    initializeUserinfo: (state, action: PayloadAction<{ data: User }>) => {
-      localStorage.setItem("user", JSON.stringify(action.payload.data));
-      state.user = action.payload.data;
-      connectWebSocket(action.payload.data.id);
-    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getUserInfo.fulfilled, (state, action) => {
+      state.user = action.payload;
+    });
   },
 });
 
-export const { logout, initializeAuth, initializeUserinfo } = authSlice.actions;
+export const { logout, initializeAuth } = authSlice.actions;
 export default authSlice.reducer;

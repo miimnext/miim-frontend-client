@@ -9,8 +9,8 @@ export async function initFuc(params: Params) {
   const { locale } = await params;
   const messages = await getMessages();
   const cookieStore = await cookies();
-  const theme = cookieStore.get("theme")?.value || "system";
-  const token = cookieStore.get("SSSID")?.value;
+  const theme = cookieStore.get("theme")?.value || "dark";
+  const token = cookieStore.get("SSSID")?.value || "";
   const settting = {
     locale,
     theme,

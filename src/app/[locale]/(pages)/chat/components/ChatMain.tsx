@@ -10,6 +10,7 @@ import { Button } from "@/components";
 import ConversationsApi from "@/api/Chat";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
+import { User } from "@/types/user";
 
 const ChatMain = React.memo(
   ({ conversation_id }: { conversation_id: string }) => {
@@ -17,7 +18,7 @@ const ChatMain = React.memo(
     const [message, setMessage] = useState<string>("");
     const [showNewMessageTip, setShowNewMessageTip] = useState(false);
     const chatListRef = useRef<HTMLUListElement | null>(null);
-    const user_id = useSelector((state: RootState) => state.auth.user.id);
+    const userInfo = useSelector((state: RootState) => state.auth.user) as User;
 
     // 组件挂载时加载聊天记录
     useEffect(() => {
@@ -64,7 +65,7 @@ const ChatMain = React.memo(
           content: message,
           conversation_id,
           created_at: Date.now(),
-          sender_id: user_id,
+          sender_id: userInfo.id,
         };
         sendMessage(msg);
         setMessage("");
@@ -120,14 +121,14 @@ const ChatMain = React.memo(
                   <li
                     key={index}
                     className={`p-4 rounded-md shadow-md space-y-2 max-w-[75%] ${
-                      msg.sender_id == user_id
+                      msg.sender_id == userInfo.id
                         ? "ml-auto text-right bg-blue-100"
                         : "mr-auto text-left bg-gray-100"
                     }`}
                   >
                     <div
                       className={`flex items-center ${
-                        msg.sender_id == user_id
+                        msg.sender_id == userInfo.id
                           ? "justify-end"
                           : "justify-start"
                       } space-x-2`}

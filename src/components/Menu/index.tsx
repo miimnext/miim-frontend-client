@@ -9,7 +9,6 @@ interface CollapsibleMenuProps {
 
 const Menu: React.FC<CollapsibleMenuProps> = ({ menuItems }) => {
   const pathname = usePathname();
-
   const isActive = (path: string) => pathname === path;
 
   return (

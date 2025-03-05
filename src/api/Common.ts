@@ -1,12 +1,15 @@
 // api/CommonApi.ts
 import request from "@/utils/request";
 import { Post } from "@/types/post";
-import { ApiListResponse, ApiResponse } from "./type";
+import { ApiListResponse, ApiResponse, optionsType } from "./type";
 // types/api.ts
+export interface PostParams {
+  content: string;
+}
 
 const CommonApi = {
   // 创建文章
-  createPost(data: Post): Promise<ApiResponse<null>> {
+  createPost(data: PostParams): Promise<ApiResponse<null>> {
     return request.post("/posts", data);
   },
   // 删除
@@ -25,6 +28,13 @@ const CommonApi = {
   // 通过 ID 获取文章
   getPostByID(id: string): Promise<ApiResponse<Post>> {
     return request.get(`/posts/${id}`);
+  },
+  // 通过 ID 获取文章
+  GetTags(): Promise<ApiResponse<optionsType[]>> {
+    return request.get(`/tags`);
+  },
+  GetCategorys(): Promise<ApiResponse<optionsType[]>> {
+    return request.get(`/categorys`);
   },
 };
 

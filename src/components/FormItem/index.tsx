@@ -15,6 +15,7 @@ interface FormItemProps {
   label?: string;
   name: string;
   className?: string;
+  customize?: boolean;
   children: ReactElement<FieldProps>;
 }
 
@@ -23,6 +24,7 @@ const FormItem: React.FC<FormItemProps> = ({
   name,
   children,
   className,
+  customize,
 }) => {
   const { formData, updateFormData, rules } = useFormContext();
   const [error, setError] = React.useState<string | null>(null);
@@ -54,7 +56,9 @@ const FormItem: React.FC<FormItemProps> = ({
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    const value = e.target.value;
+    const value = customize
+      ? (e as unknown as string)
+      : (e.target.value as string);
     updateFormData(name, value);
     validate(value);
   };

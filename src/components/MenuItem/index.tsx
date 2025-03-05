@@ -36,7 +36,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
     <div className="space-y-1">
       <div
         className={`flex items-center justify-between px-3 py-2 cursor-pointer rounded-md transition-all  ${
-          active ? "text-text-1" : "text-gray-700"
+          active ? "text-text-1" : "text-text-1"
         }`}
         onClick={toggleMenu}
       >
@@ -46,9 +46,9 @@ const MenuItem: React.FC<MenuItemProps> = ({
         {subMenu && (
           <button className="ml-2">
             {isOpen ? (
-              <FaChevronUp className="w-4 h-4 text-gray-600" />
+              <FaChevronUp className="w-4 h-4 " />
             ) : (
-              <FaChevronDown className="w-4 h-4 text-gray-600" />
+              <FaChevronDown className="w-4 h-4 " />
             )}
           </button>
         )}
