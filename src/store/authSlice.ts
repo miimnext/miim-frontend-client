@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import UserApi from "@/api/User";
 import { User } from "@/types/user";
 import { setToken, removeToken } from "@/utils/cookies";
+
 // Async thunk to fetch user info
 export const getUserInfo = createAsyncThunk<User, void>(
   "auth/getUserInfo",
@@ -16,6 +17,7 @@ export const getUserInfo = createAsyncThunk<User, void>(
     }
   }
 );
+
 export interface AuthState {
   token: string | null;
   user: User | null;
@@ -60,4 +62,5 @@ const authSlice = createSlice({
 });
 
 export const { logout, initializeAuth } = authSlice.actions;
+
 export default authSlice.reducer;

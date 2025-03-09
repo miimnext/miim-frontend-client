@@ -10,6 +10,7 @@ import { getUserInfo, initializeAuth } from "@/store/authSlice";
 import { AppDispatch } from "@/store";
 import { useDispatch } from "react-redux";
 import useToast from "@/hooks/useToast";
+import { UnknownAction } from "@reduxjs/toolkit";
 
 export default function Login() {
   const router = useRouter();
@@ -36,7 +37,7 @@ export default function Login() {
     await UserApi.register(payload).then((res) => {
       if (res.code == 200) {
         dispatch(initializeAuth(res.data.token));
-        dispatch(getUserInfo());
+        dispatch(getUserInfo() as unknown as UnknownAction);
         hanndleClose();
         stopLoading();
       } else {

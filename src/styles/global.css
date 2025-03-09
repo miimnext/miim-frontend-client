@@ -92,3 +92,40 @@ li {
 .animate-slideDown {
   animation: slideDown 0.5s ease-out forwards;
 }
+
+
+
+/* styles/globals.css */
+
+/* 进入动画 */
+@keyframes modalEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 退出动画 */
+@keyframes modalExit {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* 应用动画 */
+.modal-enter {
+  animation: modalEnter 0.5s ease-out forwards;
+}
+
+.modal-exit {
+  animation: modalExit 0.5s ease-in forwards;
+}

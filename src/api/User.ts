@@ -7,10 +7,6 @@ export interface LoginInterface {
   username: string;
   password: string;
 }
-export interface CreateConversationInterface {
-  user_id: string;
-  receiver_id: string;
-}
 const UserApi = {
   register(data: LoginInterface): Promise<ApiResponse<{ token: string }>> {
     return request.post("/register", data);
@@ -20,12 +16,6 @@ const UserApi = {
   },
   userinfo(): Promise<ApiResponse<User>> {
     return request.get(`/userinfo`);
-  },
-  CreateConversation(
-    data: CreateConversationInterface
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ): Promise<ApiResponse<any>> {
-    return request.post(`/createConversation`, data);
   },
 };
 

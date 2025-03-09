@@ -1,15 +1,11 @@
 import { notFound } from "next/navigation";
 // import CommentSection from "@/components/CommentSection";
-
 import Image from "next/image";
 import CommonApi from "@/api/Common";
 import ReactMarkdown from "react-markdown";
+import React from "react";
 // 获取单篇文章
-export default async function PostPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
 
   // ✅ API 查询文章
@@ -25,12 +21,10 @@ export default async function PostPage({
 
   // ✅ `await` 文章数据
   const post = await getPostByID(id);
-
   // 如果没有找到文章，跳转到 404 页面
   if (!post) {
     notFound(); // ✅ 触发 Next.js 内置的 404 处理
   }
-
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 shadow">
       <h1 className="text-3xl font-bold text-gray-900 mb-4">{post.title}</h1>
@@ -60,4 +54,6 @@ export default async function PostPage({
       <div className="mt-10">{/* <CommentSection /> */}</div>
     </div>
   );
-}
+};
+
+export default React.memo(PostPage);

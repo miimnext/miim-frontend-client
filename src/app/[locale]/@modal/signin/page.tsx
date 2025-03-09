@@ -1,14 +1,15 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button, FormItem, Input } from "@/components";
 import Form, { FormRef } from "@/components/Form";
 import UserApi, { LoginInterface } from "@/api/User";
 import { useLoading } from "@/hooks/useLoading";
 import { useRouter } from "@/i18n/routing";
 import Modal from "@/components/Modal"; // Import your modal component
-import { getUserInfo } from "@/store/authSlice";
+
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/store"; // Import the AppDispatch type
+import { getUserInfo, initializeAuth } from "@/store/authSlice";
 import { UnknownAction } from "@reduxjs/toolkit";
 
 export default function Login() {
@@ -21,6 +22,8 @@ export default function Login() {
     password: "123456",
   };
   const dispatch = useDispatch<AppDispatch>(); // Type the dispatch function
+  const [isVisible, setIsVisible] = useState(false); // State to control animation visibility
+  const [isExiting, setIsExiting] = useState(false); // State to control the exit animation
 
   // Form validation rules
   const formRules = {
@@ -30,28 +33,45 @@ export default function Login() {
       { minLength: 6, message: "Password must be at least 6 characters" },
     ],
   };
+
   // Handle form submission
   const handleSubmit = async (payload: LoginInterface) => {
     startLoading();
     await UserApi.login(payload).then((res) => {
       if (res.code == 200) {
+        dispatch(initializeAuth(res.data.token));
         dispatch(getUserInfo() as unknown as UnknownAction);
         stopLoading();
-        hanndleClose();
+        handleClose();
       }
     });
   };
-  const hanndleClose = () => {
-    if (window.history.length > 2) {
-      router.back();
-    } else {
-      router.replace("/");
-      window.location.href = "/";
-    }
+
+  // Handle modal close with animation
+  const handleClose = () => {
+    setIsExiting(true); // Trigger the exit animation
+    setTimeout(() => {
+      if (window.history.length > 2) {
+        router.back();
+      } else {
+        router.replace("/");
+        window.location.href = "/";
+      }
+    }, 200); // Wait for the exit animation to finish
   };
+
+  // Set modal visibility after component mounts for animation
+  useEffect(() => {
+    setIsVisible(true); // Trigger the entry animation when the modal is mounted
+  }, []);
+
   return (
-    <Modal onClose={hanndleClose}>
-      <div className="bg-white p-8 rounded-lg shadow-lg w-[500px] mx-auto">
+    <Modal onClose={handleClose}>
+      <div
+        className={`bg-white p-8 rounded-lg shadow-lg w-[500px] mx-auto ${
+          isExiting ? "modal-exit" : isVisible ? "modal-enter" : ""
+        }`}
+      >
         <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">
           登录账户
         </h2>

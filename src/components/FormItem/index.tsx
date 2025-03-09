@@ -64,7 +64,7 @@ const FormItem: React.FC<FormItemProps> = ({
   };
 
   return (
-    <div className={`form-item mb-4 ${className ? className : ""}`}>
+    <div className={`form-item mb-4${className ? className : ""}`}>
       {label && (
         <label
           htmlFor={name}
@@ -78,7 +78,7 @@ const FormItem: React.FC<FormItemProps> = ({
         value: (formData[name] as string | string[]) || "",
         onChange: handleChange,
         error: error, // Pass error message directly (string or null)
-        className: `${children.props.className}`, // Apply red border if there's an error
+        className: `  w-full  ${children.props.className}`, // Apply red border if there's an error
       })}
       {error && <div className="text-red-500 text-xs mt-1">{error}</div>}
     </div>

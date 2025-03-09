@@ -25,19 +25,16 @@ const Providers = ({ children, token, theme }: ProvidersProps) => {
   useEffect(() => {
     // 默认启用浏览器的滚动恢复行为
     window.history.scrollRestoration = "auto";
-
     // 处理 beforeunload 事件，在页面刷新时控制滚动行为
     const handleBeforeUnload = () => {
       window.history.scrollRestoration = "manual"; // 禁用浏览器的滚动恢复行为
     };
-
     window.addEventListener("beforeunload", handleBeforeUnload);
-
     // 在组件卸载时清除事件监听器
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, []); // 空的依赖数组，确保只在组件挂载时执行一次
+  }, []);
 
   return <Provider store={store}>{children}</Provider>;
 };
