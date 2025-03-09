@@ -6,9 +6,10 @@ import UserApi, { LoginInterface } from "@/api/User";
 import { useLoading } from "@/hooks/useLoading";
 import { useRouter } from "@/i18n/routing";
 import Modal from "@/components/Modal"; // Import your modal component
-import { getUserInfo, initializeAuth } from "@/store/authSlice";
+import { getUserInfo } from "@/store/authSlice";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/store"; // Import the AppDispatch type
+import { UnknownAction } from "@reduxjs/toolkit";
 
 export default function Login() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function Login() {
     username: "admin",
     password: "123456",
   };
-  const dispatch: AppDispatch = useDispatch(); // Type the dispatch function
+  const dispatch = useDispatch<AppDispatch>(); // Type the dispatch function
 
   // Form validation rules
   const formRules = {
@@ -34,8 +35,7 @@ export default function Login() {
     startLoading();
     await UserApi.login(payload).then((res) => {
       if (res.code == 200) {
-        dispatch(initializeAuth(res.data.token));
-        dispatch(getUserInfo());
+        dispatch(getUserInfo() as unknown as UnknownAction);
         stopLoading();
         hanndleClose();
       }

@@ -1,52 +1,39 @@
 "use client";
 import { useState, useCallback } from "react";
 import InfiniteScroll from "@/components/InfiniteScroll";
-import { Post } from "@/types/post";
 import useDebounce from "@/hooks/useDebounce";
 import CommonApi from "@/api/Common";
-import { useLoading } from "@/hooks/useLoading";
 import PostList from "../PostList";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "@/store";
+import { addPosts, setPage, setHasMore } from "@/store/postSlice";
+import React from "react";
 
-interface PostMainProps {
-  initialPosts: Post[];
-}
-
-const PostMain: React.FC<PostMainProps> = ({ initialPosts }) => {
-  const [posts, setPosts] = useState<Post[]>(initialPosts);
-  const [page, setPage] = useState(2); // 服务器端已加载第1页，从2开始
+const PostMain: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  // 从 Redux 中获取帖子数据、当前页、hasMore 状态
+  const posts = useSelector((state: RootState) => state.post.posts);
+  const page = useSelector((state: RootState) => state.post.page);
+  const hasMore = useSelector((state: RootState) => state.post.hasMore);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(initialPosts.length >= 10);
-  const { startLoading, stopLoading } = useLoading();
   const page_size = 10;
-
   // 加载帖子列表
   const loadPosts = useCallback(async () => {
     if (isLoading || !hasMore) return;
     setIsLoading(true);
-
     try {
       const res = await CommonApi.getPostList({ page, page_size });
       const newPosts = res?.data?.list || [];
-
-      setHasMore(newPosts.length >= page_size);
-      setPosts((prev) => [...prev, ...newPosts]);
-      setPage((prev) => prev + 1);
+      // 更新 hasMore 和 page
+      dispatch(setHasMore(newPosts.length >= page_size));
+      dispatch(addPosts(newPosts)); // 向 Redux 中添加更多帖子
+      dispatch(setPage(page + 1)); // 增加当前页
     } finally {
       setIsLoading(false);
     }
-  }, [isLoading, hasMore, page, page_size]);
+  }, [isLoading, hasMore, page, page_size, dispatch]);
 
   const debouncedLoadMorePosts = useDebounce(loadPosts, 300);
-
-  // 删除帖子
-  const handlerDelete = (id: number) => {
-    startLoading();
-    CommonApi.DeletePost(id)
-      .then(() => {
-        setPosts((prev) => prev.filter((post) => post.id !== id));
-      })
-      .finally(stopLoading);
-  };
 
   return (
     <InfiniteScroll
@@ -54,9 +41,9 @@ const PostMain: React.FC<PostMainProps> = ({ initialPosts }) => {
       isLoading={isLoading}
       hasMore={hasMore}
     >
-      <PostList posts={posts} handlerDelete={handlerDelete} />
+      <PostList posts={posts} />
     </InfiniteScroll>
   );
 };
 
-export default PostMain;
+export default React.memo(PostMain);

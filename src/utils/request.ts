@@ -3,7 +3,6 @@ import { getToken } from "./cookies";
 import { createStore } from "@/store";
 import { logout } from "@/store/authSlice";
 import { useRouter } from "@/i18n/routing"; // 如果需要跳转到登录页
-
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.example.com";
 
 const request = axios.create({
@@ -24,7 +23,7 @@ request.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.error("Request error:", error.message);
+    // console.error("Request error:", error.message);
     return Promise.reject(error);
   }
 );

@@ -5,25 +5,24 @@ import { Button } from "@/components";
 
 type PostListProps = {
   posts: Post[];
-  handlerDelete: (id: number) => void;
 };
 
-export default function PostList({ posts, handlerDelete }: PostListProps) {
+export default function PostList({ posts }: PostListProps) {
   return (
     <ul className="list-none p-0 m-0">
       {posts?.map((post) => (
         <li
           key={post.id}
-          className="flex items-center  p-4 rounded-lg shadow-sm mb-4 gap-4"
+          className="flex items-center p-4  rounded-lg shadow-sm mb-4 gap-4"
         >
           <div>{post.id}</div>
           <Image
-            src={post.image ?? "/images/post1.png"}
+            src={post.image || "/images/post1.png"}
             alt={post.title}
-            width={96}
-            height={72}
-            priority={true} // Remove if not critical
-            className="rounded-lg object-cover"
+            width={101.578}
+            height={80}
+            priority
+            className="h-auto w-[100px]"
           />
           <div className="flex-1 pl-4">
             <Link
@@ -35,7 +34,7 @@ export default function PostList({ posts, handlerDelete }: PostListProps) {
               {post.title}
             </Link>
           </div>
-          <Button onClick={() => handlerDelete(post.id)}>删除</Button>
+          <Button>删除</Button>
         </li>
       ))}
     </ul>

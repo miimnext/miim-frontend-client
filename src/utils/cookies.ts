@@ -4,7 +4,6 @@ const tokeyKey = "SSSID";
 export const getCookiesTheme = (): string => {
   return Cookies.get("theme") || "system";
 };
-
 // 设置主题色
 export const setCookiesTheme = (theme: string): void => {
   Cookies.set("theme", theme, { expires: 365 });
@@ -19,4 +18,14 @@ export const setToken = (token: string) => {
 
 export const removeToken = () => {
   return Cookies.remove(tokeyKey);
+};
+
+export const getRefresh = () => {
+  return Cookies.get("setRefresh");
+};
+export const setRefresh = () => {
+  Cookies.set("setRefresh", "1");
+};
+export const removeRefresh = async () => {
+  await Cookies.set("setRefresh", "0");
 };

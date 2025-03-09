@@ -1,8 +1,9 @@
 import { NextIntlClientProvider } from "next-intl";
+import "@/styles/global.css";
 import Header from "./(layout)/Header";
 import Providers from "../providers";
 import InitializeApp, { initFuc } from "../initializeApp";
-import "@/styles/global.css";
+
 import Sidebar from "./(layout)/Sidebar";
 export default async function Layout({
   children,
@@ -15,6 +16,7 @@ export default async function Layout({
 }) {
   // 初始化设置
   const { settting, token } = await initFuc(params);
+
   return (
     <html lang={settting.locale} data-theme={settting.theme}>
       <head>
@@ -22,7 +24,7 @@ export default async function Layout({
       </head>
       <body>
         <NextIntlClientProvider messages={settting.messages}>
-          <Providers token={token}>
+          <Providers token={token} theme={settting.theme}>
             <InitializeApp></InitializeApp>
             <Header />
             <main className="flex">

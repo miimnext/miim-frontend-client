@@ -2,13 +2,20 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import UserApi from "@/api/User";
 import { User } from "@/types/user";
 import { setToken, removeToken } from "@/utils/cookies";
-
 // Async thunk to fetch user info
-export const getUserInfo = createAsyncThunk("auth/getUserInfo", async () => {
-  const response = await UserApi.userinfo();
-  return response.data;
-});
-
+export const getUserInfo = createAsyncThunk<User, void>(
+  "auth/getUserInfo",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await UserApi.userinfo();
+      return response.data; // return the data here
+    } catch (error) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : String(error)
+      );
+    }
+  }
+);
 export interface AuthState {
   token: string | null;
   user: User | null;
@@ -41,9 +48,14 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getUserInfo.fulfilled, (state, action) => {
-      state.user = action.payload;
-    });
+    builder
+      .addCase(getUserInfo.fulfilled, (state, action) => {
+        state.user = action.payload;
+      })
+      .addCase(getUserInfo.rejected, (state, action) => {
+        // handle error case
+        console.error(action.payload); // log the error
+      });
   },
 });
 

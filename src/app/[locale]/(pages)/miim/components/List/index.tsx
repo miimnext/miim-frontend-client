@@ -5,9 +5,9 @@ import CommonApi from "@/api/Common";
 import { Post } from "@/types/post";
 import List from "@/components/List";
 import useDebounce from "@/hooks/useDebounce"; // 引入 useDebounce
-import { useLoading } from "@/hooks/useLoading";
+// import { useLoading } from "@/hooks/useLoading";
 export default function App() {
-  const { startLoading, stopLoading } = useLoading();
+  // const { startLoading, stopLoading } = useLoading();
   const [posts, setPosts] = useState<Post[]>([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -41,17 +41,17 @@ export default function App() {
   // 对 loadMorePosts 进行防抖处理，延迟 300ms
   const onLoad = useDebounce(loadMorePosts, 300);
 
-  const handlerDelete = (id: number) => {
-    startLoading();
-    CommonApi.DeletePost(id)
-      .then(() => {})
-      .finally(() => {
-        setPosts([]);
-        setPage(1);
-        setHasMore(true);
-        stopLoading();
-      });
-  };
+  // const handlerDelete = (id: number) => {
+  //   startLoading();
+  //   CommonApi.DeletePost(id)
+  //     .then(() => {})
+  //     .finally(() => {
+  //       setPosts([]);
+  //       setPage(1);
+  //       setHasMore(true);
+  //       stopLoading();
+  //     });
+  // };
 
   // 组件卸载时重置状态
   useEffect(() => {
@@ -68,7 +68,7 @@ export default function App() {
       isLoading={isLoading}
       hasMore={hasMore}
     >
-      <PostList posts={posts} handlerDelete={handlerDelete} />
+      <PostList posts={posts} />
     </List>
   );
 }

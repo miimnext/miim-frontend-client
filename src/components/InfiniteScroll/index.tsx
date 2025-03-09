@@ -48,9 +48,9 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
         {isLoading ? (
           <Loading></Loading> // 显示加载中
         ) : hasMore ? (
-          <p>向下滚动以加载更多...</p> // 提示用户向下滚动
+          <p>向下滚动以加载更多</p> // 提示用户向下滚动
         ) : (
-          <p>没有更多数据可以加载。</p> // 提示用户没有更多数据
+          <p>没有更多。</p> // 提示用户没有更多数据
         )}
       </div>
     </div>

@@ -1,20 +1,27 @@
-import { configureStore } from "@reduxjs/toolkit";
+// store/index.ts
+import { configureStore, Store } from "@reduxjs/toolkit";
 import authReducer, { AuthState } from "./authSlice";
 import modalReducer from "./modalSlice";
 import loadingSlice from "./loadingSlice";
+import postSlice from "./postSlice";
+import themeSlice, { ThemeState } from "./themeSlice";
 
-// 🚀 每次请求都创建一个新的 store，避免数据污染
-export const createStore = (preloadedState?: { auth: AuthState }) => {
+export const createStore = (preloadedState?: {
+  auth: AuthState;
+  theme: ThemeState;
+}): Store => {
   return configureStore({
     reducer: {
       auth: authReducer,
       modal: modalReducer,
       loading: loadingSlice,
+      theme: themeSlice,
+      post: postSlice,
     },
-    preloadedState, // ✅ 允许传入初始状态
+    preloadedState,
   });
 };
 
-// ✅ 这里不再导出 `store`，而是导出 `createStore`
+// Infer RootState and AppDispatch types from the store itself
 export type RootState = ReturnType<ReturnType<typeof createStore>["getState"]>;
 export type AppDispatch = ReturnType<typeof createStore>["dispatch"];
