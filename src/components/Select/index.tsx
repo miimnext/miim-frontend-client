@@ -70,7 +70,7 @@ const Select: React.FC<SelectProps> = ({
     <div className={`relative ${className}`} ref={selectRef}>
       {/* Dropdown trigger */}
       <div
-        className="p-2 mt-1 rounded-md bg-white border border-gray-300 w-full cursor-pointer flex items-center justify-between"
+        className="p-2 mt-1 rounded-md  bg-[--background-1] border border-[--button-bg-1]w-full cursor-pointer flex items-center justify-between"
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className="truncate">

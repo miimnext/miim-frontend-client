@@ -27,7 +27,7 @@ export default async function Layout({
           <Providers token={token} theme={settting.theme}>
             <InitializeApp></InitializeApp>
             <Header />
-            <main className="flex">
+            <main className="flex max-w-[--max-w-main] mx-auto">
               <Sidebar></Sidebar>
               <div className="flex-1">{children}</div>
             </main>

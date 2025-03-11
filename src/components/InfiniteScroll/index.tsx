@@ -24,7 +24,7 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
         }
       },
       {
-        rootMargin: "100px", // 在元素进入视口前100px时触发加载
+        rootMargin: "0px", // 在元素进入视口前100px时触发加载
         threshold: 0.5, // 当触发元素的50%可见时触发
       }
     );
@@ -44,13 +44,13 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
   return (
     <div className="w-full pb-100">
       <main className="h-full"> {children}</main>
-      <div ref={triggerRef} className="text-center h-100">
+      <div ref={triggerRef} className="text-center h-[100px]">
         {isLoading ? (
           <Loading></Loading> // 显示加载中
-        ) : hasMore ? (
-          <p>向下滚动以加载更多</p> // 提示用户向下滚动
         ) : (
-          <p>没有更多。</p> // 提示用户没有更多数据
+          !hasMore && (
+            <p>没有更多。</p> // 提示用户没有更多数据
+          )
         )}
       </div>
     </div>

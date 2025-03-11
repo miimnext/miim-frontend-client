@@ -9,9 +9,9 @@ import AuthNav from "./AuthNav";
 export default function Header() {
   const t = useTranslations();
   return (
-    <header className="shadow-md sticky top-0 h-[--header-height] z-[100]">
-      <div className="flex justify-between items-center bg-background-1 h-full px-4 sm:px-8">
-        <div className="flex items-center">
+    <header className="shadow-md sticky top-0 h-[--header-height] z-[100] ">
+      <div className="flex justify-between items-center bg-background-1 h-full  max-w-[--max-w-main] mx-auto px-4">
+        <div className="flex items-center w-[--side-w] ">
           <Link key={"/"} href={"/"}>
             <Button>
               <FaHome />

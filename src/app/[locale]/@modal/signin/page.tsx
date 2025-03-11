@@ -6,12 +6,10 @@ import UserApi, { LoginInterface } from "@/api/User";
 import { useLoading } from "@/hooks/useLoading";
 import { useRouter } from "@/i18n/routing";
 import Modal from "@/components/Modal"; // Import your modal component
-
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/store"; // Import the AppDispatch type
 import { getUserInfo, initializeAuth } from "@/store/authSlice";
 import { UnknownAction } from "@reduxjs/toolkit";
-
 export default function Login() {
   const router = useRouter();
   const formRef = useRef<FormRef>(null); // Ref to form for validation
@@ -43,13 +41,14 @@ export default function Login() {
         dispatch(getUserInfo() as unknown as UnknownAction);
         stopLoading();
         handleClose();
+        location.replace("/");
       }
     });
   };
 
   // Handle modal close with animation
   const handleClose = () => {
-    setIsExiting(true); // Trigger the exit animation
+    setIsExiting(true);
     setTimeout(() => {
       if (window.history.length > 2) {
         router.back();
@@ -57,7 +56,7 @@ export default function Login() {
         router.replace("/");
         window.location.href = "/";
       }
-    }, 200); // Wait for the exit animation to finish
+    }, 200);
   };
 
   // Set modal visibility after component mounts for animation

@@ -78,12 +78,12 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ createPost }) => {
   const formData = {
     content: "",
     title: "",
-    category_ids: [],
+    category_id: null,
     tag_ids: [],
   };
   const formRules = {
     title: [{ required: true, message: "title is required" }],
-    category_ids: [{ required: true, message: "title is required" }],
+    category_id: [{ required: true, message: "title is required" }],
     tag_ids: [{ required: true, message: "title is required" }],
     content: [
       { required: true, message: "Password is required" },
@@ -106,12 +106,8 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ createPost }) => {
           <FormItem label="title" name="title">
             <Input className="w-[200px]"></Input>
           </FormItem>
-          <FormItem label="category" name="category_ids">
-            <Select
-              options={categorys}
-              className="w-[200px]"
-              multiple={true}
-            ></Select>
+          <FormItem label="category" name="category_id">
+            <Select options={categorys} className="w-[200px]"></Select>
           </FormItem>
           <FormItem label="tags" name="tag_ids">
             <Select

@@ -26,24 +26,26 @@ const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
     notFound(); // ✅ 触发 Next.js 内置的 404 处理
   }
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 shadow">
+    <div className="max-w-5xl mx-auto px-4 py-8  ">
       <h1 className="text-3xl font-bold text-gray-900 mb-4">{post.title}</h1>
       <p className="text-gray-500 text-sm mb-6">{post.created_at}</p>
 
       <div className="prose prose-lg dark:prose-invert">
         <ReactMarkdown
           components={{
-            img: ({ src, alt }) => {
+            img: ({ src }) => {
               if (!src) return null; // 避免空 src 时报错
               return (
-                <Image
-                  src={src}
-                  alt={alt || "Image"}
-                  width={200}
-                  height={157.5}
-                  priority={true}
-                  className="rounded-lg object-cover"
-                />
+                <span className="w-[200px]  h-[150px] flex justify-center items-center bg-gray-100 rounded-xl overflow-hidden">
+                  <Image
+                    src={src || "/images/post1.png"}
+                    alt={post.title}
+                    width={200}
+                    height={150}
+                    priority={true}
+                    className="object-cover w-full h-full"
+                  />
+                </span>
               );
             },
           }}

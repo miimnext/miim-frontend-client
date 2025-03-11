@@ -25,9 +25,9 @@ export default function ThemeSwitcher() {
         checked={theme === Theme.Dark}
         onChange={toggleTheme}
       />
-      <div className="w-20 h-10 rounded-full bg-gradient-to-r from-gray-300 to-gray-100 peer-checked:from-gray-600 peer-checked:to-gray-700 transition-all duration-500">
+      <div className="w-20 h-10 rounded-full bg-gradient-to-r from-gray-300 to-gray-100 peer-checked:from-gray-600 peer-checked:to-gray-700 transition-all duration-500 items-center flex">
         <div
-          className={`absolute top-1 left-1  rounded-full h-8 w-8 flex items-center justify-center transition-all duration-500 shadow-md text-lg ${theme === Theme.Dark ? "translate-x-10 bg-gray-600" : "translate-x-0 bg-gray-200"}`}
+          className={`absolute  left-1  rounded-full w-8 flex items-center justify-center transition-all duration-500 shadow-md text-lg ${theme === Theme.Dark ? "translate-x-10 bg-gray-600" : "translate-x-0 bg-gray-200"}`}
         >
           {theme === Theme.Dark ? "🌜" : "🌞"}
         </div>

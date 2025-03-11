@@ -9,8 +9,8 @@ const Input: React.FC<InputProps> = ({ className, error, ...props }) => {
     <input
       {...props}
       className={`
-        p-2 rounded-md outline-none border 
-        ${error ? "border-red-500" : "border-gray-300"}
+        p-2 rounded-md outline-none border  bg-[--background-1]
+        ${error ? "border-red-500" : "border-[--button-bg-1]"}
         disabled:bg-gray-100 disabled:cursor-not-allowed
         ${className}
       `}

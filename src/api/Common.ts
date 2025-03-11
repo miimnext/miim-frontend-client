@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // api/CommonApi.ts
 import request from "@/utils/request";
 import { Post } from "@/types/post";
@@ -18,11 +19,14 @@ const CommonApi = {
   },
 
   // 获取文章列表（支持分页）
-  getPostList(params?: {
-    page?: number;
-    page_size?: number;
-  }): Promise<ApiListResponse<Post[]>> {
-    return request.get("/posts", { params });
+  getPostList(
+    params?: {
+      page?: number;
+      page_size?: number;
+    },
+    headers = {}
+  ): Promise<ApiListResponse<Post[]>> {
+    return request.get("/posts", { params, headers });
   },
 
   // 通过 ID 获取文章
@@ -35,6 +39,13 @@ const CommonApi = {
   },
   GetCategorys(): Promise<ApiResponse<optionsType[]>> {
     return request.get(`/categorys`);
+  },
+  PostReaction(data: {
+    post_id: number;
+    reaction_type: number;
+    user_id: number;
+  }): Promise<ApiResponse<null>> {
+    return request.post(`/posts/reaction`, data);
   },
 };
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
@@ -12,7 +13,7 @@ export default function ModalWrapper() {
     <>
       {/* Render regular modals */}
       {modalList.length > 0 &&
-        modalList.map((modal, index) => (
+        modalList.map((modal: any, index: any) => (
           <div
             key={index}
             className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50"

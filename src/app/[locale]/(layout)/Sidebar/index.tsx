@@ -13,7 +13,7 @@ const Sidebar = () => {
     },
   ];
   return (
-    <div className="w-64 h-full sticky top-[--header-height]  shadow-md">
+    <div className="w-[--side-w] h-full sticky top-[--header-height]  shadow-md">
       <div className="h-[--main-height] overflow-auto">
         <Menu menuItems={routes} />
       </div>

@@ -39,6 +39,7 @@ const authSlice = createSlice({
       state.token = null;
       state.user = null;
       state.isLogin = false;
+      location.replace("/");
     },
     initializeAuth: (state, action: PayloadAction<string>) => {
       const token = action.payload;

@@ -14,9 +14,8 @@ const request = axios.create({
 
 // Request interceptor
 request.interceptors.request.use(
-  (config) => {
+  async (config) => {
     const token = getToken();
-
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }

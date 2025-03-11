@@ -20,7 +20,7 @@ export interface optionsType {
 export interface createPostParams {
   content: string;
   title: string;
-  category_ids: number[];
+  category_id: number;
   tag_ids: number[];
   author_id: number;
 }

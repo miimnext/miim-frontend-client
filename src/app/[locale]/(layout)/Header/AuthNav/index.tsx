@@ -2,7 +2,8 @@ import { useRouter } from "@/i18n/routing";
 import { RootState } from "@/store";
 import { useCallback, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaPenNib, FaFortAwesomeAlt, FaCaretDown } from "react-icons/fa";
+import { FaPenNib, FaCaretDown } from "react-icons/fa";
+import Image from "next/image";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import { logout } from "@/store/authSlice";
 import { Button } from "@/components";
@@ -10,6 +11,7 @@ export default function AuthNav() {
   const router = useRouter();
   const dispatch = useDispatch();
   const isLogin = useSelector((state: RootState) => state.auth.isLogin);
+  const user = useSelector((state: RootState) => state.auth.user);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 控制下拉菜单的显示
   const dropdownRef = useRef<HTMLDivElement>(null); // 用于检测点击外部
   // 未登录时的导航项
@@ -78,13 +80,20 @@ export default function AuthNav() {
         <>
           <Button
             onClick={() => setIsDropdownOpen((prev) => !prev)}
-            className="gap-2 h-full"
+            className="gap-2 w-25 h-[40px]"
           >
-            <FaFortAwesomeAlt />
+            <Image
+              src={(user && user.avatar) || "/images/post1.png"}
+              alt={"123"}
+              width={25}
+              height={25}
+              priority={true}
+              className="object-cover rounded-full"
+            />
             <FaCaretDown />
           </Button>
           {isDropdownOpen && (
-            <div className="absolute right-0 mt-4 w-48 bg-gray-200 border border-gray-100 rounded-lg shadow-lg">
+            <div className="absolute right-0 mt-[--header-height] w-48 bg-background-1 border  rounded-lg shadow-lg">
               {UserNav.map(({ label, path, icon }) => (
                 <div
                   key={path}

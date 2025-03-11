@@ -20,6 +20,9 @@ const withPWAModified = withPWA({
 // Combine the plugins (first next-intl, then next-pwa)
 const nextConfig: NextConfig = {
   reactStrictMode: false, // React Strict Mode disabled (can enable based on preference)
+  images: {
+    domains: ["localhost", "p3-sign.toutiaoimg.com", "cdn.hk01.com"], // Add multiple domains here
+  },
   async rewrites() {
     return [
       {
