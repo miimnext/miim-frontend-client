@@ -1,24 +1,23 @@
-"use client";
-import React from "react";
-import Menu from "@/components/Menu";
-const Sidebar = () => {
+import CommonApi from "@/api/Common";
+import SidebarMenu from "./SidebarMenu";
+
+const Sidebar = async () => {
+  const categorys = await CommonApi.GetCategorys().then((res) => {
+    return res.data.map((item) => ({
+      path: "/categorys/" + item.id,
+      label: item.name,
+    }));
+  });
+
   const routes = [
-    {
-      label: "create",
-      path: "/createPost",
-    },
-    {
-      label: "miim",
-      path: "/miim",
-    },
+    { label: "home", path: "/" },
+    { label: "create", path: "/createPost" },
+    { label: "categorys", path: "/categorys", subMenu: categorys },
+    { label: "tools", path: "/tools" },
+    { label: "miim", path: "/miim" },
   ];
-  return (
-    <div className="w-[--side-w] h-full sticky top-[--header-height]  shadow-md">
-      <div className="h-[--main-height] overflow-auto">
-        <Menu menuItems={routes} />
-      </div>
-    </div>
-  );
+
+  return <SidebarMenu routes={routes} />;
 };
 
 export default Sidebar;

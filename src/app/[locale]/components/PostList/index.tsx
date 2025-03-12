@@ -29,17 +29,17 @@ const PostList = ({ posts }: PostListProps) => {
             />
           </div>
 
-          <div className="flex-1 sm:ml-6 mt-4 sm:mt-0 whitespace-nowrap truncate">
+          <div className="flex-1 sm:ml-6 mt-4 sm:mt-0 ">
             <Link
               href={`/post/${post.id}`}
-              className="text-2xl font-bold text-gray-900 dark:text-gray-100 hover:text-blue-600 transition-all w-full"
-              aria-label={`Read more about ${post.title}`}
+              className="text-2xl font-bold  hover:text-blue-600 "
               prefetch={false}
             >
-              {post.title}
+              <div className=" max-w-full break-all line-clamp-3 sm:line-clamp-2">
+                {post.title}
+              </div>
             </Link>
-
-            <div className="mt-2 text-gray-600 dark:text-gray-400 text-sm flex space-x-6 items-center">
+            <div className="mt-2 text-gray-600 dark:text-gray-400 text-sm flex space-x-6 items-center ">
               <span>
                 {dayjs(post.created_at).format("YYYY-MM-DD HH:mm:ss")}
               </span>
@@ -51,7 +51,7 @@ const PostList = ({ posts }: PostListProps) => {
                 </span>
               </Link>
             </div>
-            <div className="my-2 text-gray-500 dark:text-gray-300 text-sm line-clamp-3  overflow-hidden text-ellipsis whitespace-pre-wrap break-words">
+            <div className="my-2 text-gray-500 dark:text-gray-300 text-sm line-clamp-3 break-all">
               <ReactMarkdown
                 components={{
                   img: () => {

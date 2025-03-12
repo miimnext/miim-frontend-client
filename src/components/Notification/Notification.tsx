@@ -16,13 +16,13 @@ const notificationClass = {
   warning: "bg-yellow-500 text-white",
 };
 
-const Notification: React.FC<NotificationProps> = ({
+const Notification = ({
   id,
   message,
   type = "success",
   duration = 3000,
   onClose,
-}) => {
+}: NotificationProps) => {
   const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {

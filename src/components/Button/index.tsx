@@ -8,7 +8,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   fullWidth?: boolean; // 新增属性，用于控制是否宽度 100%
 }
 
-const Button: React.FC<ButtonProps> = ({
+const Button = ({
   children,
   variant = "primary",
   size = "md",
@@ -17,7 +17,7 @@ const Button: React.FC<ButtonProps> = ({
   fullWidth = false, // 默认不为 100% 宽度
   className,
   ...props
-}) => {
+}: ButtonProps) => {
   // 基础样式
   const baseStyles =
     "rounded-lg font-medium text-text-1  flex items-center justify-center shadow-lg  hover:opacity-80 transition-all active:scale-95";

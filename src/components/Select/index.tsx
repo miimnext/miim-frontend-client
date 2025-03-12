@@ -17,7 +17,7 @@ interface SelectProps {
   placeholder?: string;
 }
 
-const Select: React.FC<SelectProps> = ({
+const Select = ({
   name,
   value: propValue,
   options,
@@ -25,7 +25,7 @@ const Select: React.FC<SelectProps> = ({
   multiple = false,
   className = "",
   placeholder = "Select an option",
-}) => {
+}: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [value, setValue] = useState<string | number | (string | number)[]>(
     propValue || (multiple ? [] : "")

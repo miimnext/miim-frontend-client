@@ -6,12 +6,12 @@ type InfiniteScrollProps = {
   hasMore: boolean; // 是否还有更多数据
   children: React.ReactNode; // 要包裹的子元素
 };
-const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
+const InfiniteScroll = ({
   onLoad,
   isLoading = true,
   hasMore,
   children,
-}) => {
+}: InfiniteScrollProps) => {
   const triggerRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     const observer = new IntersectionObserver(

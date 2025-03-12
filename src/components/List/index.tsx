@@ -7,12 +7,7 @@ type ListProps = {
   children: React.ReactNode; // 要包裹的子元素
 };
 
-const List: React.FC<ListProps> = ({
-  onLoad,
-  isLoading,
-  hasMore,
-  children,
-}) => {
+const List = ({ onLoad, isLoading, hasMore, children }: ListProps) => {
   const triggerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {

@@ -20,12 +20,12 @@ interface UploadProps {
   onUploadError?: (error: UploadError) => void;
 }
 
-const Upload: React.FC<UploadProps> = ({
+const Upload = ({
   uploadUrl,
   onUploadStart,
   onUploadSuccess,
   onUploadError,
-}) => {
+}: UploadProps) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);

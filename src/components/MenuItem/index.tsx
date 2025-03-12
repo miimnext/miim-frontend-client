@@ -1,69 +1,67 @@
 "use client";
 import { Link } from "@/i18n/routing";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
-// Define the MenuItemProps type
 export interface MenuItemProps {
   label: string;
   path: string;
-  subMenu?: MenuItemProps[]; // Recursive type for submenus
+  subMenu?: MenuItemProps[];
   active?: boolean;
+  className?: string;
 }
 
-const MenuItem: React.FC<MenuItemProps> = ({
+const MenuItem = ({
   label,
   path,
   subMenu,
   active,
-}) => {
-  const [isOpen, setIsOpen] = useState(false); // State for showing/hiding submenus
-  const [height, setHeight] = useState(0); // To dynamically set the height for animation
+  className,
+}: MenuItemProps) => {
+  const [isOpen, setIsOpen] = useState(true);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const toggleMenu = () => {
-    setIsOpen((prev) => !prev); // Toggle submenu visibility
+  const toggleMenu = (e: React.MouseEvent) => {
+    e.preventDefault(); // 防止 `Link` 跳转
+    setIsOpen((prev) => !prev);
   };
-
-  useEffect(() => {
-    if (contentRef.current) {
-      // Set the height of the submenu content for the animation
-      setHeight(contentRef.current.scrollHeight); // Get the full height of the submenu
-    }
-  }, [isOpen]);
 
   return (
     <div className="space-y-1">
       <div
-        className={`flex items-center justify-between px-3 py-2 cursor-pointer rounded-md transition-all  ${
-          active ? "text-text-1" : "text-text-1"
-        }`}
-        onClick={toggleMenu}
+        className={`flex items-center justify-between  px-4 py-2 rounded-md transition-all 
+          hover:bg-gray-200 cursor-pointer text-text-1 ${
+            active ? "font-bold" : ""
+          } ${isOpen && subMenu ? "bg-gray-100" : ""} ${className}`}
       >
-        <Link href={path} className="text-lg flex-1">
-          {label}
-        </Link>
-        {subMenu && (
-          <button className="ml-2">
+        {subMenu ? (
+          <p
+            onClick={toggleMenu}
+            className={`cursor-pointer transition-all flex justify-between w-full items-center`}
+          >
+            {label}
             {isOpen ? (
-              <FaChevronUp className="w-4 h-4 " />
+              <FaChevronUp className="w-4 h-4" />
             ) : (
-              <FaChevronDown className="w-4 h-4 " />
+              <FaChevronDown className="w-4 h-4" />
             )}
-          </button>
+          </p>
+        ) : (
+          <Link href={path} className=" flex-1">
+            {label}
+          </Link>
         )}
       </div>
 
-      {/* Render Submenu if exists and open */}
       {subMenu && (
         <div
           ref={contentRef}
-          className="overflow-hidden transition-all duration-300 ease-in-out"
+          className="overflow-hidden transition-all duration-300 ease-in-out  text-md"
           style={{
-            maxHeight: isOpen ? `${height}px` : "0px", // Dynamic height based on content
+            maxHeight: isOpen ? `${contentRef.current?.scrollHeight}px` : "0px",
           }}
         >
-          <div className="pl-4">
+          <div>
             {subMenu.map((item) => (
               <MenuItem
                 key={item.label}
@@ -71,6 +69,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
                 path={item.path}
                 active={active}
                 subMenu={item.subMenu}
+                className="pl-8"
               />
             ))}
           </div>

@@ -10,7 +10,7 @@ export interface TextAreaProps {
   error?: string | null;
 }
 
-export const TextArea: React.FC<TextAreaProps> = ({
+export const TextArea = ({
   value = "",
   onChange = () => {}, // Default empty function
   onBlur = () => {}, // Default empty function
@@ -18,7 +18,7 @@ export const TextArea: React.FC<TextAreaProps> = ({
   placeholder,
   className = "", // Allow additional custom class names
   error,
-}) => (
+}: TextAreaProps) => (
   <div className="relative">
     <textarea
       name={name}

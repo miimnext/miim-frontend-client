@@ -8,12 +8,12 @@ export interface CheckboxProps {
   name: string;
 }
 
-export const Checkbox: React.FC<CheckboxProps> = ({
+export const Checkbox = ({
   checked,
   onChange,
   onBlur,
   name,
-}) => (
+}: CheckboxProps) => (
   <input
     type="checkbox"
     name={name}

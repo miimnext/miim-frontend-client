@@ -12,7 +12,6 @@ const Home = async () => {
     },
     headers
   );
-  console.log(initialPosts.data.list);
 
   return (
     <div className="p-4 max-w-5xl mx-auto ">

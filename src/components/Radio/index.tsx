@@ -9,13 +9,13 @@ export interface RadioProps {
   value: string;
 }
 
-export const Radio: React.FC<RadioProps> = ({
+export const Radio = ({
   checked,
   onChange,
   onBlur,
   name,
   value,
-}) => (
+}: RadioProps) => (
   <input
     type="radio"
     name={name}

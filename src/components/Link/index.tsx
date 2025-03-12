@@ -15,13 +15,13 @@ interface CustomLinkProps
   needLogin?: boolean;
 }
 
-const Link: React.FC<CustomLinkProps> = ({
+const Link = ({
   href,
   children,
   className,
   needLogin,
   ...props
-}) => {
+}: CustomLinkProps) => {
   const dispatch = useDispatch();
   const isLogin = useSelector((state: RootState) => state.auth.isLogin);
   const router = useRouter();

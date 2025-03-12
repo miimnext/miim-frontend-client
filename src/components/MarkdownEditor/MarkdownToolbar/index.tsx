@@ -14,7 +14,7 @@ type MarkdownToolbarProps = {
   insertText: (before: string, after: string, moveToNewLine?: boolean) => void;
 };
 
-const MarkdownToolbar: React.FC<MarkdownToolbarProps> = ({ insertText }) => {
+const MarkdownToolbar = ({ insertText }: MarkdownToolbarProps) => {
   const toolbarButtons = [
     {
       label: <FaBold />,

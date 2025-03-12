@@ -1,3 +1,4 @@
+"use client";
 import { useRouter } from "@/i18n/routing";
 import { RootState } from "@/store";
 import { useCallback, useRef, useState } from "react";

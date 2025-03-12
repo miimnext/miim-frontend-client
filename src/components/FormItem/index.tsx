@@ -19,13 +19,13 @@ interface FormItemProps {
   children: ReactElement<FieldProps>;
 }
 
-const FormItem: React.FC<FormItemProps> = ({
+const FormItem = ({
   label,
   name,
   children,
   className,
   customize,
-}) => {
+}: FormItemProps) => {
   const { formData, updateFormData, rules } = useFormContext();
   const [error, setError] = React.useState<string | null>(null);
 

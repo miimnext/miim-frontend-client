@@ -1,13 +1,13 @@
+"use client";
 import React from "react";
 import { usePathname } from "@/i18n/routing";
 import MenuItem, { MenuItemProps } from "../MenuItem";
 
 interface CollapsibleMenuProps {
   menuItems: MenuItemProps[];
-  className?: string;
 }
 
-const Menu: React.FC<CollapsibleMenuProps> = ({ menuItems }) => {
+const Menu = ({ menuItems }: CollapsibleMenuProps) => {
   const pathname = usePathname();
   const isActive = (path: string) => pathname === path;
 

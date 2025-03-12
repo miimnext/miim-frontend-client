@@ -14,12 +14,12 @@ interface TabsProps {
   layout?: "horizontal" | "vertical";
 }
 
-const Tabs: React.FC<TabsProps> = ({
+const Tabs = ({
   tabs,
   defaultActive,
   className,
   layout = "horizontal",
-}) => {
+}: TabsProps) => {
   const [activeTab, setActiveTab] = useState<string>(
     defaultActive || tabs[0]?.key
   );

@@ -20,9 +20,7 @@ type NotificationManagerProps = {
   }) => ReactNode;
 };
 
-const NotificationManager: React.FC<NotificationManagerProps> = ({
-  children,
-}) => {
+const NotificationManager = ({ children }: NotificationManagerProps) => {
   const [notifications, setNotifications] = useState<NotificationProps[]>([]);
 
   const showNotification = (

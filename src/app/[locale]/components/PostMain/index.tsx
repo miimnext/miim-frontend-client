@@ -9,7 +9,7 @@ import { RootState, AppDispatch } from "@/store";
 import { addPosts, setPage, setHasMore } from "@/store/postSlice";
 import React from "react";
 
-const PostMain: React.FC = () => {
+const PostMain = () => {
   const dispatch = useDispatch<AppDispatch>();
   // 从 Redux 中获取帖子数据、当前页、hasMore 状态
   const posts = useSelector((state: RootState) => state.post.posts);

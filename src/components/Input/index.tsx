@@ -4,7 +4,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: boolean; // 是否为错误状态
 }
 
-const Input: React.FC<InputProps> = ({ className, error, ...props }) => {
+const Input = ({ className, error, ...props }: InputProps) => {
   return (
     <input
       {...props}

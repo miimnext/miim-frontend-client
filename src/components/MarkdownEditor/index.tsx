@@ -20,7 +20,7 @@ interface optionsType {
   value: number;
   label: string;
 }
-const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ createPost }) => {
+const MarkdownEditor = ({ createPost }: MarkdownEditorProps) => {
   const [isOnload, setIsOnload] = useState(false);
   const [content, setContent] = useState("");
 

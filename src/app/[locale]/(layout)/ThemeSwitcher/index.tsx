@@ -18,7 +18,7 @@ export default function ThemeSwitcher() {
   };
 
   return (
-    <label className="relative inline-flex items-center cursor-pointer">
+    <label className={`relative inline-flex items-center cursor-pointer `}>
       <input
         className="sr-only peer"
         type="checkbox"
