@@ -31,8 +31,8 @@ const MenuItem = ({
       <div
         className={`flex items-center justify-between  px-4 py-2 rounded-md transition-all 
           hover:bg-gray-200 cursor-pointer text-text-1 ${
-            active ? "font-bold" : ""
-          } ${isOpen && subMenu ? "bg-gray-100" : ""} ${className}`}
+            active ? "font-bold bg-button-bg-1" : ""
+          } ${className ? className : ""}`}
       >
         {subMenu ? (
           <p
@@ -56,7 +56,7 @@ const MenuItem = ({
       {subMenu && (
         <div
           ref={contentRef}
-          className="overflow-hidden transition-all duration-300 ease-in-out  text-md"
+          className="overflow-hidden transition-all duration-300 ease-in-out  text-md border-b"
           style={{
             maxHeight: isOpen ? `${contentRef.current?.scrollHeight}px` : "0px",
           }}

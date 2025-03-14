@@ -35,7 +35,8 @@
     "remark-breaks": "^4.0.0",
     "remark-gfm": "^4.0.1",
     "sass": "^1.84.0",
-    "simplemde": "^1.11.2"
+    "simplemde": "^1.11.2",
+    "swiper": "^11.2.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

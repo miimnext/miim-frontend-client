@@ -8,17 +8,15 @@ import { RootState } from "@/store";
 export default function ThemeSwitcher() {
   const initTheme = useSelector((state: RootState) => state.theme.theme);
   const [theme, setThemeState] = useState<Theme>(initTheme); // 默认主题
-
-  // 主题切换函数
   const toggleTheme = () => {
     const newTheme = theme === Theme.Light ? Theme.Dark : Theme.Light;
     document.documentElement.setAttribute("data-theme", newTheme);
     setCookiesTheme(newTheme); // 存储到 Cookies
-    setThemeState(newTheme); // 更新本地状态
+    setThemeState(newTheme); // 更新rtk状态
   };
 
   return (
-    <label className={`relative inline-flex items-center cursor-pointer `}>
+    <label className={`h-full relative items-center cursor-pointer `}>
       <input
         className="sr-only peer"
         type="checkbox"

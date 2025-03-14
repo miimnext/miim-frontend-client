@@ -2,7 +2,11 @@
 "use client";
 import Menu from "@/components/Menu";
 import { EventType } from "@/enum/eventType";
+import { Link } from "@/i18n/routing";
 import eventBus from "@/utils/eventBus";
+import Image from "next/image";
+import LanguageSwitcher from "../../LanguageSwitcher";
+import ThemeSwitcher from "../../ThemeSwitcher";
 import { useEffect, useState } from "react";
 const SidebarMenu = ({ routes }: { routes: any[] }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,7 +26,7 @@ const SidebarMenu = ({ routes }: { routes: any[] }) => {
   return (
     <>
       {/* 桌面端 Sidebar */}
-      <div className="w-[--side-w] h-full sticky top-[--header-height] shadow-md hidden sm:block">
+      <div className="w-[--side-w] h-full sticky top-[--header-height] shadow-md hidden md:block">
         <div className="h-[--main-height] overflow-auto pt-5">
           <Menu menuItems={routes} />
         </div>
@@ -36,8 +40,26 @@ const SidebarMenu = ({ routes }: { routes: any[] }) => {
             isOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <div className="h-[--main-height] overflow-auto pt-5 p-4">
+          <div className="h-[--main-height] overflow-auto  p-4 pt-10">
+            {/* Logo */}
+            <Link key={"/"} href={"/"} className="h-11 block mb-8">
+              <Image
+                src={"/images/logo.png"}
+                alt={"logo"}
+                width={50}
+                height={50}
+                priority={true}
+                className="mx-auto"
+              />
+            </Link>
             <Menu menuItems={routes} />
+            <div className="flex items-center justify-between px-4">
+              <span>Theme</span>
+              <ThemeSwitcher />
+            </div>
+            <div className="flex items-center my-3  px-4">
+              <LanguageSwitcher />
+            </div>
           </div>
         </div>
 

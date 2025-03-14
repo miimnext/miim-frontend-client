@@ -20,16 +20,27 @@ export default async function Layout({
   return (
     <html lang={settting.locale} data-theme={settting.theme}>
       <head>
-        <link rel="manifest" href="/manifest.json" />
+        <>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta
+            name="description"
+            content="Your brief page summary here, ideally 150-160 characters."
+          />
+
+          <link rel="manifest" href="/manifest.json" />
+          <title>miim</title>
+        </>
       </head>
       <body>
         <NextIntlClientProvider messages={settting.messages}>
           <Providers token={token} theme={settting.theme}>
             <InitializeApp></InitializeApp>
             <Header />
-            <main className="flex max-w-[--max-w-main] mx-auto">
+            <main className="flex max-w-[--max-w-main]  mx-auto w-full">
               <Sidebar></Sidebar>
-              <div className="flex-1">{children}</div>
+              <div className="mx-auto w-full max-w-5xl  md:max-w-[--max-w-content]">
+                {children}
+              </div>
             </main>
             {modal}
           </Providers>

@@ -3,6 +3,9 @@
   --main-height: calc(100vh - var(--header-height));
   --max-w-main:1350px;
   --side-w:200px;
+  --aside-w:240px;
+  --max-w-content:calc(100% - var(--side-w));
+
 }
 .bg{
   background: #000;

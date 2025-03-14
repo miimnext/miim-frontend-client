@@ -16,16 +16,16 @@ const PostList = ({ posts }: PostListProps) => {
       {posts?.map((post) => (
         <li
           key={post.id}
-          className="  my-6 cursor-pointer flex flex-col sm:flex-row items-center px-6 py-4 rounded-lg bg-background-1 shadow-lg hover:shadow-xl transition-all dark:bg-gray-800 dark:text-white"
+          className="  my-6 cursor-pointer flex flex-col sm:flex-row items-center px-2 sm:px-6 py-4 rounded-lg bg-background-1 shadow-lg hover:shadow-xl transition-all dark:bg-gray-800 dark:text-white"
         >
-          <div className="w-full sm:w-32 h-32 sm:h-24 flex justify-center items-center bg-gray-100 rounded-xl overflow-hidden">
+          <div className="w-full sm:w-32 h-32 sm:h-24 flex justify-center items-center bg-gray-100 rounded-xl overflow-hidden relative">
             <Image
               src={post.image || "/images/post1.png"}
               alt={post.title}
-              width={120}
-              height={96}
+              fill
+              className="object-cover"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               priority={true}
-              className="object-cover w-full h-full"
             />
           </div>
 

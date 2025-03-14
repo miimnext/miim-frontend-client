@@ -28,7 +28,7 @@ export default React.memo(function LanguageSwitcher() {
   };
 
   return (
-    <div className="flex items-center space-x-4">
+    <div className="flex items-center space-x-4 h-full">
       <Button onClick={() => changeLocale(Locale.zh)}>中文</Button>
       <Button onClick={() => changeLocale(Locale.en)}>English</Button>
     </div>

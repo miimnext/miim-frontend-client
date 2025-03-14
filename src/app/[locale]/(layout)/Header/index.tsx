@@ -15,18 +15,18 @@ export default function Header() {
         <div className="flex items-center ">
           {/* 移动端菜单按钮 */}
           <button
-            className="sm:hidden text-2xl"
+            className="md:hidden text-2xl"
             onClick={() => eventBus.emit(EventType.TOGGLE_SIDEBAR, true)}
           >
             <FaBars></FaBars>
           </button>
           {/* Logo */}
-          <Link key={"/"} href={"/"} className="h-7 ml-5">
+          <Link key={"/"} href={"/"} className="h-11 ml-5">
             <Image
-              src={"/images/logo.svg"}
+              src={"/images/logo.png"}
               alt={"logo"}
-              width={640}
-              height={433}
+              width={50}
+              height={50}
               priority={true}
               className="h-full w-full"
             />

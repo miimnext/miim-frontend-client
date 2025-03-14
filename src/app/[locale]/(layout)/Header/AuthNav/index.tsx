@@ -4,10 +4,10 @@ import { RootState } from "@/store";
 import { useCallback, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaPenNib, FaCaretDown } from "react-icons/fa";
-import Image from "next/image";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import { logout } from "@/store/authSlice";
 import { Button } from "@/components";
+import Avatar from "@/app/[locale]/components/Avatar";
 export default function AuthNav() {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -39,17 +39,17 @@ export default function AuthNav() {
     {
       label: "profile",
       path: "/profile",
-      icon: null,
+      icon: <FaPenNib />,
     },
     {
       label: "settings",
       path: "/settings",
-      icon: null,
+      icon: <FaPenNib />,
     },
     {
       label: "logout",
       path: "/logout",
-      icon: null,
+      icon: <FaPenNib />,
     },
   ];
   useOutsideClick(dropdownRef, () => setIsDropdownOpen(false));
@@ -83,14 +83,7 @@ export default function AuthNav() {
             onClick={() => setIsDropdownOpen((prev) => !prev)}
             className="gap-2 w-25 h-[40px]"
           >
-            <Image
-              src={(user && user.avatar) || "/images/post1.png"}
-              alt={"123"}
-              width={25}
-              height={25}
-              priority={true}
-              className="object-cover rounded-full"
-            />
+            <Avatar avatar={user?.avatar} h={25} w={25}></Avatar>
             <FaCaretDown />
           </Button>
           {isDropdownOpen && (

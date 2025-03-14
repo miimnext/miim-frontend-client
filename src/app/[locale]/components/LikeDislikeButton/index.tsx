@@ -1,5 +1,6 @@
 "use client";
 import CommonApi from "@/api/Common";
+import { useRouter } from "@/i18n/routing";
 import { RootState } from "@/store";
 import React, { useState } from "react";
 import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
@@ -18,14 +19,14 @@ const LikeDislikeButton = ({
 }: LikeDislikeButtonProps) => {
   const [initLikes, setInitLikes] = useState(likes);
   const [reaction, setReaction] = useState(ReactionType);
+  const router = useRouter();
   const { user, isLogin } = useSelector((state: RootState) => state.auth);
-
   const handlePostReaction = (reaction_type: number) => {
-    if (!isLogin) return;
-
+    if (!isLogin) {
+      return router.push("/signin");
+    }
     let newReaction = "none"; // 默认未反应状态
     let likeChange = 0;
-
     // 确保 reaction 从后端获取，表示当前用户的状态
     const currentReaction = reaction; // 假设 reaction 是从 props 或 state 中获取的
 
@@ -76,8 +77,9 @@ const LikeDislikeButton = ({
     <div className="flex space-x-4 text-gray-600 dark:text-gray-400 text-sm">
       <button
         onClick={() => handlePostReaction(1)}
+        aria-label="Like this post"
         className={`flex items-center justify-center border-1 p-2 rounded-full transition-all ease-in-out duration-200 shadow-md hover:shadow-lg
-          ${reaction === "like" ? "border-blue-600 bg-blue-100 text-blue-600" : "border-gray-300 hover:border-blue-600 hover:bg-blue-100"}`}
+      ${reaction === "like" && "border-blue-600 bg-blue-100 text-blue-600"}`}
       >
         <FaRegThumbsUp className="h-4 w-4" />
       </button>
@@ -86,8 +88,9 @@ const LikeDislikeButton = ({
       </span>
       <button
         onClick={() => handlePostReaction(-1)}
+        aria-label="Dislike this post"
         className={`flex items-center justify-center border-1 p-2 rounded-full transition-all ease-in-out duration-200 shadow-md hover:shadow-lg
-          ${reaction === "dislike" ? "border-red-600 bg-red-100 text-red-600" : "border-gray-300 hover:border-red-600 hover:bg-red-100"}`}
+    ${reaction === "dislike" && "border-red-600 bg-red-100 text-red-600"}`}
       >
         <FaRegThumbsDown className="h-4 w-4" />
       </button>

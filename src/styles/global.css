@@ -60,6 +60,28 @@ ol {
 li {
   margin-bottom: 0.5rem; /* Add some space between list items */
 }
+/* 使容器可滚动，且滚动条不会占用空间 */
+.custom-scrollbar {
+  overflow-y: auto;
+  position: relative;
+}
+
+/* 隐藏滚动条的占位空间 */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px; /* 设置滚动条宽度 */
+  height: 8px; /* 如果你有水平滚动条，也可以设置它 */
+}
+
+/* 滚动条的滚动条按钮 */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3); /* 设置滚动条颜色 */
+  border-radius: 10px;
+}
+
+/* 滚动条轨道 */
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent; /* 轨道透明 */
+}
 
 @keyframes slideUp {
   0% {
