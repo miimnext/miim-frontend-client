@@ -10,7 +10,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button = ({
   children,
-  variant = "primary",
+  variant,
   size = "md",
   loading = false,
   disabled = false,
@@ -20,11 +20,11 @@ const Button = ({
 }: ButtonProps) => {
   // 基础样式
   const baseStyles =
-    "rounded-lg font-medium text-text-1  flex items-center justify-center shadow-lg  hover:opacity-80 transition-all active:scale-95";
+    "rounded-lg font-medium text-text-1  flex items-center justify-center shadow-lg  hover:opacity-80 transition-all active:scale-95 bg-button-bg-1 hover:button-bg-1";
   // 按钮类型样式
   let variantStyles = "";
   if (variant === "primary") {
-    variantStyles = "bg-button-bg-1 hover:bg-primary-1";
+    variantStyles = "bg-primary-1 hover:bg-primary-1";
   } else if (variant === "warn") {
     variantStyles = "bg-warn-1 hover:bg-warn-1";
   } else if (variant === "danger") {

@@ -27,7 +27,7 @@ const SidebarMenu = ({ routes }: { routes: any[] }) => {
     <>
       {/* 桌面端 Sidebar */}
       <div className="w-[--side-w] h-full sticky top-[--header-height] shadow-md hidden md:block">
-        <div className="h-[--main-height] overflow-auto pt-5">
+        <div className="h-[--main-height] overflow-scroll scroll-container  pt-5 px-2">
           <Menu menuItems={routes} />
         </div>
       </div>

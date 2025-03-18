@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import request from "@/utils/request";
 import { ApiResponse } from "./type";
 import { User } from "@/types/user";
@@ -16,6 +17,9 @@ const UserApi = {
   },
   userinfo(): Promise<ApiResponse<User>> {
     return request.get(`/userinfo`);
+  },
+  UpdateUserInfo(data: any): Promise<ApiResponse<User>> {
+    return request.post(`/UpdateUserInfo`, data);
   },
 };
 

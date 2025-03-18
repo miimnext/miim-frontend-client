@@ -1,38 +1,31 @@
 "use client";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styles from "./CommentSection.module.scss"; // 引入 SCSS 模块
+import CommonApi from "@/api/Common";
+import { Comments } from "@/types/post";
+import { RootState } from "@/store";
+import { useSelector } from "react-redux";
+export default function CommentSection({ id }: { id: string }) {
+  const [comments, setComments] = useState<Comments[]>([]);
+  const user = useSelector((state: RootState) => state.auth.user);
+  const getList = useCallback(() => {
+    CommonApi.GetCommentsByID(id).then((res) => {
+      setComments(res.data.list);
+    });
+  }, [id]);
 
-type Comment = {
-  id: number;
-  author: string;
-  content: string;
-  timestamp: string;
-};
-
-export default function CommentSection() {
-  const [comments, setComments] = useState<Comment[]>([
-    {
-      id: 1,
-      author: "Alice",
-      content: "Great post!",
-      timestamp: "2025-01-31 10:30",
-    },
-    {
-      id: 2,
-      author: "Bob",
-      content: "Very informative, thanks!",
-      timestamp: "2025-01-31 11:00",
-    },
-  ]);
+  useEffect(() => {
+    getList();
+  }, [getList]);
   const [newComment, setNewComment] = useState("");
 
   const handleAddComment = () => {
     if (!newComment.trim()) return;
-    const newCommentObj: Comment = {
-      id: comments.length + 1,
-      author: "User", // 这里可以改成真实用户名
+    const newCommentObj: Comments = {
+      ID: comments.length + 1,
+      author: user, // 这里可以改成真实用户名
       content: newComment,
-      timestamp: new Date().toLocaleString(),
+      CreatedAt: new Date().toLocaleString(),
     };
     setComments([...comments, newCommentObj]);
     setNewComment("");
@@ -43,11 +36,11 @@ export default function CommentSection() {
       <h3 className={styles.title}>Comments</h3>
       <ul className={styles.commentList}>
         {comments.map((comment) => (
-          <li key={comment.id} className={styles.commentItem}>
+          <li key={comment.ID} className={styles.commentItem}>
             <p className={styles.commentContent}>
-              <strong>{comment.author}:</strong> {comment.content}
+              <strong>{comment.author.username}:</strong> {comment.content}
             </p>
-            <span className={styles.timestamp}>{comment.timestamp}</span>
+            <span className={styles.timestamp}>{comment.CreatedAt}</span>
           </li>
         ))}
       </ul>

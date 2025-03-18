@@ -5,6 +5,7 @@ import Providers from "../providers";
 import InitializeApp, { initFuc } from "../initializeApp";
 
 import Sidebar from "./(layout)/Sidebar";
+import { Suspense } from "react";
 export default async function Layout({
   children,
   modal,
@@ -34,7 +35,9 @@ export default async function Layout({
       <body>
         <NextIntlClientProvider messages={settting.messages}>
           <Providers token={token} theme={settting.theme}>
-            <InitializeApp></InitializeApp>
+            <Suspense>
+              <InitializeApp></InitializeApp>
+            </Suspense>
             <Header />
             <main className="flex max-w-[--max-w-main]  mx-auto w-full">
               <Sidebar></Sidebar>

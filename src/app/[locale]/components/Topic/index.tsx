@@ -1,37 +1,27 @@
 import React from "react";
 
-const TopicList = () => {
-  const topics = [
-    {
-      id: 1,
-      title: "Introduction to JavaScript",
-      description: "Learn the basics of JavaScript programming.",
-    },
-    {
-      id: 2,
-      title: "Advanced React",
-      description: "Dive deeper into React concepts like Hooks and Context.",
-    },
-    {
-      id: 3,
-      title: "Web Development Trends",
-      description: "Explore the latest trends in web development.",
-    },
-    {
-      id: 4,
-      title: "Node.js and Express",
-      description: "Understand server-side JavaScript and backend development.",
-    },
-    {
-      id: 5,
-      title: "CSS Grid and Flexbox",
-      description: "Master responsive layouts with modern CSS.",
-    },
-  ];
+// 模拟异步获取数据的函数，返回 Promise
+const fetchTopics = () => {
+  return new Promise<{ id: number; title: string }[]>((resolve) => {
+    setTimeout(() => {
+      resolve([
+        { id: 1, title: "Introduction to JavaScript" },
+        { id: 2, title: "Advanced React" },
+        { id: 3, title: "Web Development Trends" },
+        { id: 4, title: "Node.js and Express" },
+        { id: 5, title: "CSS Grid and Flexbox" },
+      ]);
+    }, 3000);
+  });
+};
+
+const TopicList = async () => {
+  // 通过 Promise 获取数据
+  const topics = await fetchTopics();
 
   return (
-    <div className="w-full  rounded-lg shadow-md mt-4 ">
-      <h2 className="text-xl font-bold p-2 pb-0">topic </h2>
+    <div className="w-full rounded-lg shadow-md mt-4">
+      <h2 className="text-xl font-bold p-2 pb-0">Topic</h2>
       <ul className="list-none px-2">
         {topics.map((topic) => (
           <li

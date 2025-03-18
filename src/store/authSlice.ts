@@ -3,7 +3,6 @@ import UserApi from "@/api/User";
 import { User } from "@/types/user";
 import { setToken, removeToken } from "@/utils/cookies";
 
-// Async thunk to fetch user info
 export const getUserInfo = createAsyncThunk<User, void>(
   "auth/getUserInfo",
   async (_, { rejectWithValue }) => {

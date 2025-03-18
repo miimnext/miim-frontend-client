@@ -76,10 +76,11 @@ const PostList = ({ posts }: PostListProps) => {
                 {post.content}
               </ReactMarkdown>
             </div>
-            {/* 点赞和踩按钮 */}
+            {/* 点赞和踩按钮 评论数量*/}
             <LikeDislikeButton
               likes={post.likes}
               id={post.id}
+              comment_count={post.comment_count}
               ReactionType={post.ReactionType}
             ></LikeDislikeButton>
           </div>

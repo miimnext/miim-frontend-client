@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import PostMain from "../../components/PostMain";
 import CommonApi from "@/api/Common";
 import PostList from "../../components/PostList";
@@ -15,19 +15,22 @@ const Home = async () => {
     },
     headers
   );
-
   return (
     <div className="max-w-5xl mx-auto flex justify-between ">
       <div className=" max-w-full xl:max-w-3xl p-4 ">
         <Banner />
+
         <PostList posts={initialPosts.data.list || []} />
         <PostMain />
       </div>
-
-      <aside className="hidden xl:block sticky top-[--header-height] w-[--aside-w] h-full">
-        <TopicList></TopicList>
-        <TopAuthor></TopAuthor>
-      </aside>
+      <div className="hidden xl:block sticky top-[--header-height] w-[--aside-w] h-full">
+        <Suspense>
+          <TopAuthor />
+        </Suspense>
+        <Suspense>
+          <TopicList />
+        </Suspense>
+      </div>
     </div>
   );
 };

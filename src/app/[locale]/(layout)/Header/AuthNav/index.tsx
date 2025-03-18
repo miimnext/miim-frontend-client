@@ -3,7 +3,12 @@ import { useRouter } from "@/i18n/routing";
 import { RootState } from "@/store";
 import { useCallback, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaPenNib, FaCaretDown } from "react-icons/fa";
+import {
+  FaPenNib,
+  FaCaretDown,
+  FaFortAwesomeAlt,
+  FaSignOutAlt,
+} from "react-icons/fa";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import { logout } from "@/store/authSlice";
 import { Button } from "@/components";
@@ -39,17 +44,12 @@ export default function AuthNav() {
     {
       label: "profile",
       path: "/profile",
-      icon: <FaPenNib />,
-    },
-    {
-      label: "settings",
-      path: "/settings",
-      icon: <FaPenNib />,
+      icon: <FaFortAwesomeAlt />,
     },
     {
       label: "logout",
       path: "/logout",
-      icon: <FaPenNib />,
+      icon: <FaSignOutAlt />,
     },
   ];
   useOutsideClick(dropdownRef, () => setIsDropdownOpen(false));

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // api/CommonApi.ts
 import request from "@/utils/request";
-import { Post } from "@/types/post";
+import { Comments, Post } from "@/types/post";
 import { ApiListResponse, ApiResponse, optionsType } from "./type";
 // types/api.ts
 export interface PostParams {
@@ -9,6 +9,13 @@ export interface PostParams {
 }
 
 const CommonApi = {
+  upload(formData: FormData): Promise<ApiResponse<{ filePath: string }>> {
+    return request.post(`/upload`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  },
   // 创建文章
   createPost(data: PostParams): Promise<ApiResponse<null>> {
     return request.post("/posts", data);
@@ -46,6 +53,10 @@ const CommonApi = {
     user_id: number;
   }): Promise<ApiResponse<null>> {
     return request.post(`/posts/reaction`, data);
+  },
+  //
+  GetCommentsByID(id: string): Promise<ApiListResponse<Comments[]>> {
+    return request.get(`/comments/post/${id}`);
   },
 };
 

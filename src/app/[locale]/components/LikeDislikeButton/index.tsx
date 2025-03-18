@@ -1,20 +1,26 @@
 "use client";
 import CommonApi from "@/api/Common";
-import { useRouter } from "@/i18n/routing";
+import { Link, useRouter } from "@/i18n/routing";
 import { RootState } from "@/store";
 import React, { useState } from "react";
-import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
+import {
+  FaRegThumbsUp,
+  FaRegThumbsDown,
+  FaRegCommentAlt,
+} from "react-icons/fa";
 import { useSelector } from "react-redux";
 
 type LikeDislikeButtonProps = {
   likes: number;
   id: number;
+  comment_count: number;
   ReactionType: string;
 };
 
 const LikeDislikeButton = ({
   likes,
   id,
+  comment_count,
   ReactionType,
 }: LikeDislikeButtonProps) => {
   const [initLikes, setInitLikes] = useState(likes);
@@ -90,9 +96,21 @@ const LikeDislikeButton = ({
         onClick={() => handlePostReaction(-1)}
         aria-label="Dislike this post"
         className={`flex items-center justify-center border-1 p-2 rounded-full transition-all ease-in-out duration-200 shadow-md hover:shadow-lg
-    ${reaction === "dislike" && "border-red-600 bg-red-100 text-red-600"}`}
+     ${reaction === "dislike" && "border-red-600 bg-red-100 text-red-600"}`}
       >
         <FaRegThumbsDown className="h-4 w-4" />
+      </button>
+      <button
+        className={`flex items-center justify-center border-1 p-2 rounded-full transition-all ease-in-out duration-200 shadow-md hover:shadow-lg`}
+      >
+        <Link
+          href={`/post/${id}`}
+          prefetch={false}
+          className="flex items-center gap-2"
+        >
+          <FaRegCommentAlt className="h-4 w-4"></FaRegCommentAlt>
+          {comment_count}
+        </Link>
       </button>
     </div>
   );
