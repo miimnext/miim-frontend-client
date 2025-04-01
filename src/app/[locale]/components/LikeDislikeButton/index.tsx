@@ -1,6 +1,7 @@
 "use client";
 import CommonApi from "@/api/Common";
-import { Link, useRouter } from "@/i18n/routing";
+import useAuthClick from "@/hooks/useAuthClick";
+import { Link } from "@/i18n/routing";
 import { RootState } from "@/store";
 import React, { useState } from "react";
 import {
@@ -25,12 +26,8 @@ const LikeDislikeButton = ({
 }: LikeDislikeButtonProps) => {
   const [initLikes, setInitLikes] = useState(likes);
   const [reaction, setReaction] = useState(ReactionType);
-  const router = useRouter();
-  const { user, isLogin } = useSelector((state: RootState) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
   const handlePostReaction = (reaction_type: number) => {
-    if (!isLogin) {
-      return router.push("/signin");
-    }
     let newReaction = "none"; // 默认未反应状态
     let likeChange = 0;
     // 确保 reaction 从后端获取，表示当前用户的状态
@@ -82,21 +79,26 @@ const LikeDislikeButton = ({
   return (
     <div className="flex space-x-4 text-gray-600 dark:text-gray-400 text-sm">
       <button
-        onClick={() => handlePostReaction(1)}
+        onClick={useAuthClick(() => {
+          handlePostReaction(1);
+        })}
         aria-label="Like this post"
         className={`flex items-center justify-center border-1 p-2 rounded-full transition-all ease-in-out duration-200 shadow-md hover:shadow-lg
       ${reaction === "like" && "border-blue-600 bg-blue-100 text-blue-600"}`}
       >
         <FaRegThumbsUp className="h-4 w-4" />
       </button>
+
       <span className="font-medium flex items-center justify-center">
         {initLikes}
       </span>
       <button
-        onClick={() => handlePostReaction(-1)}
+        onClick={useAuthClick(() => {
+          handlePostReaction(-1);
+        })}
         aria-label="Dislike this post"
         className={`flex items-center justify-center border-1 p-2 rounded-full transition-all ease-in-out duration-200 shadow-md hover:shadow-lg
-     ${reaction === "dislike" && "border-red-600 bg-red-100 text-red-600"}`}
+       ${reaction === "dislike" && "border-red-600 bg-red-100 text-red-600"}`}
       >
         <FaRegThumbsDown className="h-4 w-4" />
       </button>

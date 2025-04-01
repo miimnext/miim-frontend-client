@@ -170,3 +170,20 @@ li {
 .modal-exit {
   animation: modalExit 0.5s ease-in forwards;
 }
+
+
+.wang-editor-content table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.wang-editor-content th, 
+.wang-editor-content td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+.wang-editor-content th{
+  background: #f5f2f0;
+} 
+

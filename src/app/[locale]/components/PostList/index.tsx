@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Post } from "@/types/post";
 import dayjs from "dayjs";
 import React from "react";
-import ReactMarkdown from "react-markdown";
 import LikeDislikeButton from "../LikeDislikeButton";
 import Avatar from "../Avatar";
 type PostListProps = {
@@ -11,6 +10,17 @@ type PostListProps = {
 };
 
 const PostList = ({ posts }: PostListProps) => {
+  const findFirstImageInHTML = (html: string) => {
+    const regex = /<img[^>]*src="([^"]*)"[^>]*>/g;
+    const match = regex.exec(html);
+
+    if (match) {
+      return match[1]; // match[1] contains the src of the first image
+    }
+
+    return null; // Return null if no image is found
+  };
+
   return (
     <ul className="list-none  p-0 m-0">
       {posts?.map((post) => (
@@ -20,7 +30,7 @@ const PostList = ({ posts }: PostListProps) => {
         >
           <div className="w-full sm:w-32 h-32 sm:h-24 flex justify-center items-center bg-gray-100 rounded-xl overflow-hidden relative">
             <Image
-              src={post.image || "/images/post1.png"}
+              src={findFirstImageInHTML(post.content) || "/images/post1.png"}
               alt={post.title}
               fill
               className="object-cover"
@@ -29,7 +39,7 @@ const PostList = ({ posts }: PostListProps) => {
             />
           </div>
 
-          <div className="flex-1 sm:ml-6 mt-4 sm:mt-0 ">
+          <div className="flex-1 sm:ml-6 mt-4 sm:mt-0  w-full">
             <Link
               href={`/post/${post.id}`}
               className="text-2xl font-bold  hover:text-blue-600 "
@@ -52,29 +62,16 @@ const PostList = ({ posts }: PostListProps) => {
               </Link>
             </div>
             <div className="my-2 text-gray-500 dark:text-gray-300 text-sm line-clamp-3 break-all">
-              <ReactMarkdown
-                components={{
-                  img: () => {
-                    return null;
-                  },
-                  a: ({ ...props }) => <span>{props.children}</span>,
-                  h1: ({ ...props }) => <span>{props.children}</span>,
-                  h2: ({ ...props }) => <span>{props.children}</span>,
-                  h3: ({ ...props }) => <span>{props.children}</span>,
-                  h4: ({ ...props }) => <span>{props.children}</span>,
-                  h5: ({ ...props }) => <span>{props.children}</span>,
-                  h6: ({ ...props }) => <span>{props.children}</span>,
-                  p: ({ ...props }) => <span>{props.children}</span>,
-                  strong: ({ ...props }) => <span>{props.children}</span>,
-                  em: ({ ...props }) => <span>{props.children}</span>,
-                  ul: ({ ...props }) => <span>{props.children}</span>,
-                  ol: ({ ...props }) => <span>{props.children}</span>,
-                  li: ({ ...props }) => <span>{props.children}</span>,
-                  code: ({ ...props }) => <span>{props.children}</span>,
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: post.content
+                    .replace(/<img[^>]*>/g, "") // Remove all <img> tags
+                    .replace(
+                      /<(\/?)(h1|h2|h3|h4|h5|h6|div|p|span|a|ul|ol|li|blockquote|table|thead|tbody|tr|td|th)[^>]*>/g,
+                      "<$1span>"
+                    ), // Replace paired tags with <span>
                 }}
-              >
-                {post.content}
-              </ReactMarkdown>
+              ></div>
             </div>
             {/* 点赞和踩按钮 评论数量*/}
             <LikeDislikeButton

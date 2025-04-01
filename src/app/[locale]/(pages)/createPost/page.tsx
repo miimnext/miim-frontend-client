@@ -1,72 +1,95 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
-import "@wangeditor/editor/dist/css/style.css"; // 引入 css
-import nlp from "compromise";
-
-// Dynamically import only the necessary components from WangEditor
-const Editor = dynamic(
-  () => import("@wangeditor/editor-for-react").then((mod) => mod.Editor),
-  {
-    ssr: false,
-  }
-);
-
-const Toolbar = dynamic(
-  () => import("@wangeditor/editor-for-react").then((mod) => mod.Toolbar),
-  {
-    ssr: false,
-  }
-);
-
-function MyEditor() {
-  const [editor, setEditor] = useState<string | null>(null); // TS 语法
-  const [html, setHtml] = useState<string | null>(null); // TS 语法
-
-  // 工具栏配置
-  const toolbarConfig = {}; // TS 语法
-
-  // 编辑器配置
-  const editorConfig = {
-    placeholder: "请输入内容...",
-    MENU_CONF: {
-      uploadImage: {
-        server: "/api/upload",
-        fieldName: "file",
-      },
-    },
-  };
-
-  // 及时销毁 editor ，重要！
+import React, { useState, useEffect, useRef } from "react";
+import { Button, Form, FormItem, Input } from "@/components";
+import CommonApi from "@/api/Common";
+import MyEditor from "../../components/Editor";
+import Select from "@/components/Select";
+import { FormRef } from "@/components/Form";
+import { createPostParams } from "@/api/type";
+interface optionsType {
+  value: number;
+  label: string;
+}
+function CreatePost() {
+  const [tagSelect, setTagSelect] = useState<optionsType[]>([]);
+  const [categorys, setCategorys] = useState<optionsType[]>([]);
   useEffect(() => {
-    return () => {
-      if (editor == null) return;
-      editor.destroy();
-      setEditor(null);
-    };
-  }, [editor]);
+    CommonApi.GetTags().then((res) => {
+      const options = res.data.map((item) => {
+        return {
+          value: item.id,
+          label: item.name,
+        };
+      });
+      setTagSelect(options);
+    });
+    CommonApi.GetCategorys().then((res) => {
+      const options = res.data.map((item) => {
+        return {
+          value: item.id,
+          label: item.name,
+        };
+      });
+      setCategorys(options);
+    });
+  }, []);
+  const formRef = useRef<FormRef>(null);
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
+  const formRules = {
+    title: [{ required: true, message: "title is required" }],
+    category_id: [{ required: true, message: "title is required" }],
+    tag_ids: [{ required: true, message: "title is required" }],
+  };
+  const [editorValue, setEditorValue] = useState<string>("");
+  const formData = {
+    title: null,
+    category_id: null,
+    tag_ids: null,
+  };
+  const handleSubmit = (data: createPostParams) => {
+    // 1️⃣ 给 <table> 添加 `border-collapse`
 
+    console.log(data, editorValue);
+    CommonApi.createPost({ ...data, content: editorValue }).then((res) => {
+      console.log(res);
+    });
+  };
   return (
-    <>
-      <div style={{ border: "1px solid #ccc", zIndex: 100 }}>
-        {/* Ensure the components are loaded properly */}
-        <Toolbar
-          editor={editor}
-          defaultConfig={toolbarConfig}
-          mode="default"
-          style={{ borderBottom: "1px solid #ccc" }}
-        />
-        <Editor
-          defaultConfig={editorConfig}
-          value={html}
-          onCreated={setEditor}
-          onChange={(editor) => setHtml(editor.getHtml())}
-          mode="default"
-          style={{ height: "500px", overflowY: "hidden" }}
-        />
+    <div className="max-w-5xl mx-auto p-4 ">
+      <div className="shadow-md p-4">
+        <Form
+          onSubmit={handleSubmit}
+          form={formData}
+          rules={formRules}
+          ref={formRef}
+          onValidityChange={setIsFormValid}
+        >
+          <FormItem label="title" name="title">
+            <Input className="w-[200px]"></Input>
+          </FormItem>
+          <FormItem label="category" name="category_id">
+            <Select options={categorys} className="w-[200px]"></Select>
+          </FormItem>
+          <FormItem label="tags" name="tag_ids">
+            <Select
+              options={tagSelect}
+              className="w-[200px]"
+              multiple={true}
+            ></Select>
+          </FormItem>
+          <MyEditor value={editorValue} changeEditor={setEditorValue} />
+          <div className="flex justify-end gap-20">
+            <FormItem label="" name="submit" className="flex justify-center ">
+              <Button>保存</Button>
+            </FormItem>
+            <FormItem label="" name="submit" className="flex justify-center ">
+              <Button disabled={!isFormValid}>发布</Button>
+            </FormItem>
+          </div>
+        </Form>
       </div>
-    </>
+    </div>
   );
 }
 
-export default MyEditor;
+export default CreatePost;

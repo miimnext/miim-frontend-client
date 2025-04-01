@@ -1,0 +1,25 @@
+.w-e-full-screen-container {
+    z-index: 1000;
+    background-color: var(--background-1);
+}
+.w-e-text-container [data-slate-editor] {
+    * {
+        margin: 0 !important;
+    }
+}
+.w-e-toolbar {
+    margin-bottom: 10px;
+}
+.w-e-text-container .w-e-scroll {
+    min-height: 300px;
+}
+.w-e-bar-item {
+    background-color: var(--background-1);
+    height: 30px;
+    button {
+        height: 25px;
+    }
+}
+.w-e-text-placeholder {
+    top: 0;
+}

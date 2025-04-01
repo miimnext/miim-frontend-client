@@ -58,6 +58,12 @@ const CommonApi = {
   GetCommentsByID(id: string): Promise<ApiListResponse<Comments[]>> {
     return request.get(`/comments/post/${id}`);
   },
+  CreateComments(
+    post_id: string,
+    content: string
+  ): Promise<ApiResponse<Comments>> {
+    return request.post(`/comments/${post_id}`, { content: content });
+  },
 };
 
 export default CommonApi;

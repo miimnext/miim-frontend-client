@@ -19,7 +19,7 @@ const AuthorPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   );
   const authorInfo = await AuthorApi.getAuthorInfo(id);
   return (
-    <div className="max-w-4xl mx-auto p-4">
+    <div className="max-w-5xl mx-auto p-4">
       <AuthorInfo authorInfo={authorInfo.data} />
       <PostList posts={postsResponse.data.list} />
       {postsResponse.data.list.length >= page_size && (

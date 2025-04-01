@@ -1,11 +1,9 @@
 import { notFound } from "next/navigation";
 // import CommentSection from "@/components/CommentSection";
-import Image from "next/image";
 import CommonApi from "@/api/Common";
-import ReactMarkdown from "react-markdown";
 import React from "react";
 import dayjs from "dayjs";
-import CommentSection from "@/components/CommentSection";
+import CommentSection from "@/app/[locale]/components/CommentSection";
 // 获取单篇文章
 const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
@@ -37,28 +35,10 @@ const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
           {dayjs(post.created_at).format("YYYY-MM-DD HH:mm:ss")}
         </p>
 
-        <div className="prose prose-lg dark:prose-invert  break-all">
-          <ReactMarkdown
-            components={{
-              img: ({ src }) => {
-                if (!src) return null; // 避免空 src 时报错
-                return (
-                  <Image
-                    src={src || "/images/post1.png"}
-                    alt={post.title}
-                    width={200}
-                    height={150}
-                    priority={true}
-                    className="object-cover w-full h-full"
-                  />
-                );
-              },
-            }}
-          >
-            {post.content}
-          </ReactMarkdown>
+        <div className="prose prose-lg dark:prose-invert  break-all wang-editor-content ">
+          <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
         </div>
-        <div className="mt-10">
+        <div className="mt-4">
           <CommentSection id={id} />
         </div>
       </div>

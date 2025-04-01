@@ -40,7 +40,7 @@ const SidebarMenu = ({ routes }: { routes: any[] }) => {
             isOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <div className="h-[--main-height] overflow-auto  p-4 pt-10">
+          <div className="h-full overflow-auto  p-4 pt-10 scroll-container ">
             {/* Logo */}
             <Link key={"/"} href={"/"} className="h-11 block mb-8">
               <Image
